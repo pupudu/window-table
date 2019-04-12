@@ -1,6 +1,6 @@
 {
   "name": "window-table",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Windowing Table for React based on React Window",
   "author": "pupudu",
   "license": "MIT",
@@ -21,7 +21,10 @@
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-window": "^1.7.2"
+  },
   "peerDependencies": {
     "prop-types": "^15.5.4",
     "react": "^15.0.0 || ^16.0.0",
@@ -32,6 +35,8 @@
     "@types/jest": "^23.1.5",
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
+    "@types/react-virtualized-auto-sizer": "^1.0.0",
+    "@types/react-window": "^1.7.1",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",
     "babel-core": "^6.26.3",
@@ -47,8 +52,8 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "gh-pages": "^1.2.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-scripts-ts": "^2.16.0",
     "rollup": "^0.62.0",
     "rollup-plugin-babel": "^3.0.7",
