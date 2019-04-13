@@ -1,6 +1,6 @@
 {
   "name": "window-table",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Windowing Table for React based on React Window",
   "author": "pupudu",
   "license": "MIT",
@@ -22,13 +22,13 @@
     "deploy": "gh-pages -d example/build"
   },
   "dependencies": {
-    "react-virtualized-auto-sizer": "^1.0.2",
-    "react-window": "^1.7.2"
+    "react-virtualized-auto-sizer": "^1.0.2"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-window": "^1.0.0"
   },
   "devDependencies": {
     "@svgr/rollup": "^2.4.1",
@@ -55,6 +55,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts-ts": "^2.16.0",
+    "react-window": "^1.7.2",
     "rollup": "^0.62.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-commonjs": "^9.1.3",
