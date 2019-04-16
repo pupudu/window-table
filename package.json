@@ -1,6 +1,6 @@
 {
   "name": "window-table",
-  "version": "0.0.11-alpha.0",
+  "version": "0.0.11-alpha.1",
   "description": "Windowing Table for React based on React Window",
   "author": "pupudu",
   "license": "MIT",
@@ -22,7 +22,6 @@
     "deploy": "gh-pages -d example/build"
   },
   "dependencies": {
-    "@types/lodash-es": "^4.17.3",
     "lodash-es": "^4.17.11"
   },
   "peerDependencies": {
@@ -35,6 +34,7 @@
   "devDependencies": {
     "@svgr/rollup": "^2.4.1",
     "@types/jest": "^23.1.5",
+    "@types/lodash-es": "^4.17.3",
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
