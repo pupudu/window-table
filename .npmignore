@@ -1,0 +1,13 @@
+src
+node_modules
+.idea
+yarn.lock
+package-lock.json
+.travis.yml
+.eslintrc
+.gitignore
+.editorconfig
+tsconfig.json
+tsconfig.test.json
+rollup.config.json
+example

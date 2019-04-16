@@ -1,7 +1,7 @@
-import ExampleComponent from './';
+import { WindowTable } from './';
 
-describe('ExampleComponent', () => {
+describe('WindowTable', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy();
+    expect(WindowTable).toBeTruthy();
   });
 });

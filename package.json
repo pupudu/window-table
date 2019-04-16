@@ -1,6 +1,6 @@
 {
   "name": "window-table",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Windowing Table for React based on React Window",
   "author": "pupudu",
   "license": "MIT",
@@ -25,6 +25,7 @@
     "lodash-es": "^4.17.11"
   },
   "peerDependencies": {
+    "lodash-es": "^4.0.0",
     "prop-types": "^15.5.4",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
