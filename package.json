@@ -1,10 +1,22 @@
 {
   "name": "window-table",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Windowing Table for React based on React Window",
   "author": "pupudu",
   "license": "MIT",
   "repository": "pupudu/window-table",
+  "keywords": [
+    "react",
+    "reactjs",
+    "virtual",
+    "window",
+    "windowed",
+    "list",
+    "scrolling",
+    "infinite",
+    "virtualized",
+    "table"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
