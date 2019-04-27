@@ -7,8 +7,14 @@
 This ReactJs table library is a tiny, yet powerful implementation of a windowed/virtualized table, based off the awesome
 virtualization library, `react-window` by Brian Vaughn. 
 
+* Blazing Fast - thanks to `react-window`
+* Tiny footprint - <2kB
+* Super easy to customize - Custom tags, class names and what not
+* Supports HTML5 table tags
+* Production Ready - Being used all over the Admin application at hipages, Australia
+
 One big caveat of using a custom table is styling. For instance, a normal HTML based table can be easily
-styled with a style system such as bootstrap.
+styled with a style system such as bootstrap, but a `div` based table requires a bit more effort.
 
 Thus, in addition to the basic window table, we export an HTML 5 tags (i.e. `<table>`, `<thead>`, `<tr>`, `<td>`, etc) based table, which is compatible with
 popular style systems such as bootstrap. 
@@ -102,9 +108,45 @@ function Table (props) {
 }
 ```
 
+## Custom Cells by Column
+Some cells in a table most likely needs to render something other than plain text.
+In such cases, you can define the custom Component in the column options object.
+
+```tsx
+const CustomCell = props => {
+  const {row, column} = props; // row comes from table data, column comes from column metadata
+  
+  function toggle() {
+    // Do something based on data row, or column
+  }
+  
+  // Render any react component
+  return <Button onClick={toggle}>Click Me</Button>
+}
+
+const columns = [
+  {key: 'col1', width: 100, title: 'Column A'},
+  {key: 'col2', width: 120, title: 'Column B'},
+  {key: 'col3', width: 150, title: 'Column C', Component: CustomCell},
+];
+
+function Table (props) {
+  return (
+    <WindowTable
+      data={data}
+      columns={columns}
+      rowHeight={50}
+    />
+  )
+}
+```
+
+Similarly you can pass a custom react component as `HeaderCell` to the column options
+to render a custom header cell.
+
 ## Dynamic Row Heights
 
-Sometime, you know what the row height could be, but sometimes you don't. In the latter case,
+Sometimes you know what the row height could be, but some other times you just don't. In the latter case,
 you can pass in a sample cell, which will be used internally to derive a row height. As of now,
 sadly, all rows will have the same height.
  
