@@ -30,6 +30,8 @@ npm install --save window-table
 
 ## Basic Usage
 
+*See it live at* https://codesandbox.io/s/6w5ov594vn
+
 ```tsx
 import * as React from 'react'
 
@@ -48,7 +50,7 @@ const columns = [
   {key: 'clan', width: 150, title: 'Clan'}
 ];
 
-function NinjaTable (props) {
+function ShinobiTable (props) {
   return (
     <div style={{height: '500px'}}>
       <WindowTable
