@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactWindow from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { isEqual } from 'lodash-es';
+import { isEqual, debounce } from 'lodash-es';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
-const { useContext, createContext, memo, useReducer } = React;
+const { useContext, createContext, memo, useReducer, useMemo } = React;
 
 export type column<T = string, K = any> = {
   key: T;
@@ -22,17 +22,15 @@ const context = createContext({
   classNamePrefix: ''
 });
 
-const Measurer = ({
-  dispatch,
-  entity
-}: {
-  dispatch: Function;
-  entity: string;
-}) => {
+const Measurer = ({ dispatch, entity }: { dispatch: any; entity: string }) => {
+  const debouncedDispatch = useMemo(
+    () => debounce(dispatch, 100, { leading: true }),
+    []
+  );
   return (
     <AutoSizer>
       {({ height, width }) => {
-        dispatch({ dimensions: [height, width], entity });
+        debouncedDispatch({ dimensions: [height, width], entity });
         return null;
       }}
     </AutoSizer>
@@ -124,6 +122,11 @@ const HeaderRowRenderer = ({
   );
 };
 
+// Define the initial state of dimensions
+// Also to be used as a state which will not trigger a re-render on changes
+// So that we can change state from the useReducer, only once per all three dimension entities
+let cache = { header: [10, 100], cell: [10, 20], table: [100, 100] };
+
 function WindowTable<T = any>({
   columns,
   data,
@@ -168,15 +171,20 @@ function WindowTable<T = any>({
 
   const [dimensions, dispatch] = useReducer(
     (state, { entity, dimensions } = {}) => {
-      if (entity && !isEqual(state[entity], dimensions)) {
-        return {
-          ...state,
+      if (entity) {
+        // Keep updates in cache
+        cache = {
+          ...cache,
           [entity]: dimensions
         };
+        // Update state only when `table` entity dimensions have updated
+        if (entity === 'table' && !isEqual(state[entity], cache[entity])) {
+          return cache;
+        }
       }
       return state;
     },
-    { header: [10, 100], cell: [10, 20], table: [100, 100] }
+    cache
   );
 
   const [tableHeight, tableWidth] = dimensions.table;
@@ -211,11 +219,12 @@ function WindowTable<T = any>({
             display: 'block',
             margin: 0
           }}
+          className={`${classNamePrefix}table`}
         >
-          <Body>
-            <Row>
+          <Body className={`${classNamePrefix}table-body`}>
+            <Row className={`${classNamePrefix}table-row`}>
               <Measurer dispatch={dispatch} entity="cell" />
-              <Cell>
+              <Cell className={`${classNamePrefix}table-cell`}>
                 {SampleCell === 'div' ? (
                   <SampleCell>{data[0][columns[0].key]}</SampleCell>
                 ) : (
@@ -226,7 +235,6 @@ function WindowTable<T = any>({
           </Body>
         </Table>
       )}
-      <Measurer dispatch={dispatch} entity="table" />
 
       <context.Provider
         value={{
@@ -260,6 +268,8 @@ function WindowTable<T = any>({
           </List>
         </div>
       </context.Provider>
+
+      <Measurer dispatch={dispatch} entity="table" />
     </div>
   );
 }
