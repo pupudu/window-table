@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactWindow from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { debounce } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
-const { useContext, createContext, useState, memo, useMemo } = React;
+const { useContext, createContext, memo, useReducer } = React;
 
 export type column<T = string, K = any> = {
   key: T;
@@ -22,33 +22,21 @@ const context = createContext({
   classNamePrefix: ''
 });
 
-const useMeasurer = (
-  initialHeight = 1,
-  initialWidth = 1
-): [number, number, React.ElementType] => {
-  const [{ height: _height, width: _width }, setDimensions] = useState({
-    height: initialHeight,
-    width: initialWidth
-  });
-  const debouncedSetDimensions = useMemo(
-    () => debounce(setDimensions, 1000),
-    []
+const Measurer = ({
+  dispatch,
+  entity
+}: {
+  dispatch: Function;
+  entity: string;
+}) => {
+  return (
+    <AutoSizer>
+      {({ height, width }) => {
+        dispatch({ dimensions: [height, width], entity });
+        return null;
+      }}
+    </AutoSizer>
   );
-
-  const Measurer: React.ElementType = () => {
-    return (
-      <AutoSizer>
-        {({ width, height }) => {
-          if (_height !== height || _width !== width) {
-            debouncedSetDimensions({ height, width });
-          }
-          return null;
-        }}
-      </AutoSizer>
-    );
-  };
-
-  return [_height, _height, Measurer];
 };
 
 const RowRenderer = memo(function RowRenderer({
@@ -91,13 +79,13 @@ areEqual);
 
 const HeaderRowRenderer = ({
   width,
-  Measurer,
+  dispatch,
   Header,
   HeaderRow,
   HeaderCell: DefaultHeaderCell
 }: {
   width: number;
-  Measurer: React.ElementType;
+  dispatch: Function;
   Header: React.ElementType;
   HeaderRow: React.ElementType;
   HeaderCell: React.ElementType;
@@ -113,7 +101,7 @@ const HeaderRowRenderer = ({
         }}
         className={`${classNamePrefix}table-header-row`}
       >
-        <Measurer />
+        <Measurer dispatch={dispatch} entity="header" />
         {columns.map(
           ({ key, width, title, HeaderCell = DefaultHeaderCell }) => {
             return (
@@ -177,9 +165,23 @@ function WindowTable<T = any>({
       ? VariableSizeList
       : FixedSizeList;
   const columnWidthsSum = columns.reduce((sum, { width }) => sum + width, 0);
-  const [tableHeight, tableWidth, TableMeasurer] = useMeasurer(100, 100);
-  const [headerHeight, , HeaderMeasurer] = useMeasurer(10, 100);
-  const [sampleCellHeight, , CellMeasurer] = useMeasurer(10, 10);
+
+  const [dimensions, dispatch] = useReducer(
+    (state, { entity, dimensions } = {}) => {
+      if (entity && !isEqual(state[entity], dimensions)) {
+        return {
+          ...state,
+          [entity]: dimensions
+        };
+      }
+      return state;
+    },
+    { header: [10, 100], cell: [10, 20], table: [100, 100] }
+  );
+
+  const [tableHeight, tableWidth] = dimensions.table;
+  const [headerHeight] = dimensions.header;
+  const [sampleCellHeight] = dimensions.cell;
 
   const bodyHeight: number = (height || tableHeight) - headerHeight;
   const effectiveWidth = Math.max(columnWidthsSum, tableWidth);
@@ -212,7 +214,7 @@ function WindowTable<T = any>({
         >
           <Body>
             <Row>
-              <CellMeasurer />
+              <Measurer dispatch={dispatch} entity="cell" />
               <Cell>
                 {SampleCell === 'div' ? (
                   <SampleCell>{data[0][columns[0].key]}</SampleCell>
@@ -224,6 +226,7 @@ function WindowTable<T = any>({
           </Body>
         </Table>
       )}
+      <Measurer dispatch={dispatch} entity="table" />
 
       <context.Provider
         value={{
@@ -238,7 +241,7 @@ function WindowTable<T = any>({
           <Table>
             <HeaderRowRenderer
               width={effectiveWidth}
-              Measurer={HeaderMeasurer}
+              dispatch={dispatch}
               Header={Header}
               HeaderRow={HeaderRow}
               HeaderCell={HeaderCell}
@@ -257,8 +260,6 @@ function WindowTable<T = any>({
           </List>
         </div>
       </context.Provider>
-
-      <TableMeasurer />
     </div>
   );
 }
