@@ -23,27 +23,32 @@ const context = createContext({
 });
 
 const useMeasurer = (
-  initialWidth = 1,
-  initialHeight = 1
+  initialHeight = 1,
+  initialWidth = 1
 ): [number, number, React.ElementType] => {
-  const [height, setHeight] = useState(initialWidth);
-  const [width, setWidth] = useState(initialHeight);
-  const debouncedSetHeight = useMemo(() => debounce(setHeight, 10), []);
-  const debouncedSetWidth = useMemo(() => debounce(setWidth, 10), []);
+  const [{ height: _height, width: _width }, setDimensions] = useState({
+    height: initialHeight,
+    width: initialWidth
+  });
+  const debouncedSetDimensions = useMemo(
+    () => debounce(setDimensions, 1000),
+    []
+  );
 
   const Measurer: React.ElementType = () => {
     return (
       <AutoSizer>
         {({ width, height }) => {
-          debouncedSetHeight(height);
-          debouncedSetWidth(width);
+          if (_height !== height || _width !== width) {
+            debouncedSetDimensions({ height, width });
+          }
           return null;
         }}
       </AutoSizer>
     );
   };
 
-  return [height, width, Measurer];
+  return [_height, _height, Measurer];
 };
 
 const RowRenderer = memo(function RowRenderer({
@@ -71,6 +76,7 @@ const RowRenderer = memo(function RowRenderer({
               display: 'inline-block',
               overflow: 'auto'
             }}
+            className={`${classNamePrefix}table-cell`}
           >
             <Component row={data[index]} column={column}>
               {data[index][key]}
@@ -99,13 +105,13 @@ const HeaderRowRenderer = ({
   const { columns, classNamePrefix } = useContext(context);
 
   return (
-    <Header>
+    <Header className={`${classNamePrefix}table-header`}>
       <HeaderRow
         style={{
           width: `${width}px`,
           display: 'flex'
         }}
-        className={`${classNamePrefix}table-header`}
+        className={`${classNamePrefix}table-header-row`}
       >
         <Measurer />
         {columns.map(
@@ -118,6 +124,7 @@ const HeaderRowRenderer = ({
                   display: 'inline-block',
                   flexGrow: width
                 }}
+                className={`${classNamePrefix}table-header-cell`}
               >
                 {title}
               </HeaderCell>
@@ -133,6 +140,8 @@ function WindowTable<T = any>({
   columns,
   data,
   rowHeight,
+  height,
+  overscanCount = 1,
   style = {},
   Cell = 'div',
   HeaderCell = 'div',
@@ -148,7 +157,9 @@ function WindowTable<T = any>({
 }: {
   columns: Array<column<keyof T, T>>;
   data: Array<T>;
-  rowHeight: number;
+  height?: number;
+  rowHeight?: number;
+  overscanCount?: number;
   style?: object;
   Cell?: React.ElementType;
   HeaderCell?: React.ElementType;
@@ -166,24 +177,25 @@ function WindowTable<T = any>({
       ? VariableSizeList
       : FixedSizeList;
   const columnWidthsSum = columns.reduce((sum, { width }) => sum + width, 0);
-  const [headerHeight, , HeaderMeasurer] = useMeasurer(100, 24);
   const [tableHeight, tableWidth, TableMeasurer] = useMeasurer(100, 100);
+  const [headerHeight, , HeaderMeasurer] = useMeasurer(10, 100);
   const [sampleCellHeight, , CellMeasurer] = useMeasurer(10, 10);
 
-  const bodyHeight: number = tableHeight - headerHeight;
+  const bodyHeight: number = (height || tableHeight) - headerHeight;
   const effectiveWidth = Math.max(columnWidthsSum, tableWidth);
 
   const TableBody = ({ children, ...props }: React.ComponentProps<any>) => (
-    <Table {...props}>
-      <Body>{children}</Body>
+    <Table {...props} className={`${classNamePrefix}table`}>
+      <Body className={`${classNamePrefix}table-body`}>{children}</Body>
     </Table>
   );
 
   return (
     <div
       style={{
-        height: 'calc(100% - 20px)', // 20px less to avoid possible unnecessary scrollbars
+        height: 'calc(100% - 16px)', // 16px less to avoid possible unnecessary scrollbars
         width: '100%',
+        maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
         ...style
       }}
       {...rest}
@@ -202,13 +214,16 @@ function WindowTable<T = any>({
             <Row>
               <CellMeasurer />
               <Cell>
-                <SampleCell />
+                {SampleCell === 'div' ? (
+                  <SampleCell>{data[0][columns[0].key]}</SampleCell>
+                ) : (
+                  <SampleCell />
+                )}
               </Cell>
             </Row>
           </Body>
         </Table>
       )}
-      <TableMeasurer />
 
       <context.Provider
         value={{
@@ -236,12 +251,14 @@ function WindowTable<T = any>({
             itemSize={rowHeight || sampleCellHeight}
             width={effectiveWidth}
             innerElementType={TableBody}
-            overscanCount={5}
+            overscanCount={overscanCount}
           >
             {RowRenderer}
           </List>
         </div>
       </context.Provider>
+
+      <TableMeasurer />
     </div>
   );
 }
