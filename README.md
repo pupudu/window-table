@@ -36,28 +36,40 @@ import * as React from 'react'
 import {WindowTable} from 'window-table'
 
 const data = [
-  {col1: 12, col2: 20, col3: 10, col4: 50},
-  {col1: 11, col2: 99, col3: 30, col4: 12}
-  //...
+  {name: 'Naruto', age: 24, clan: 'Uzomaki'},
+  {name: 'Hinata', age: 22, clan: 'Huga'},
+  {name: 'Itachi', age: 28, clan: 'Uchiha'},
+  //...and thousands or millions of data
 ];
 
 const columns = [
-  {key: 'col1', width: 100, title: 'Column A'},
-  {key: 'col2', width: 120, title: 'Column B'},
-  {key: 'col3', width: 150, title: 'Column C'},
-  {key: 'col4', width: 100, title: 'Column D'}
+  {key: 'name', width: 100, title: 'Name'},
+  {key: 'age', width: 80, title: 'Age'},
+  {key: 'clan', width: 150, title: 'Clan'}
 ];
 
-function Table (props) {
+function NinjaTable (props) {
   return (
-    <WindowTable
-      data={data}
-      columns={columns}
-      rowHeight={50}
-    />
+    <div style={{height: '500px'}}>
+      <WindowTable
+        data={data}
+        columns={columns}
+      />
+    </div>
   )
 }
 ```
+
+Note that we are wrapping the `WindowTable` with a `div` which has a height of `500px`.
+Instead, we could have set that height in the `WindowTable` itself, or even in a parent of `NinjaTable`.
+Or we can pass the pixel height as a prop, `height`.
+
+It is important to set the height somewhere. 
+Unless we do this, some random height will be used by the table, which is not ideal.
+
+In fact, this requirement is intuitive, because we obviously don't want to render all the cells.
+
+The code examples below this, will assume that a parent container will have set the height for the table.
 
 ## HTML 5 tags based table
 
