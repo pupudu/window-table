@@ -9,10 +9,7 @@ body {
   color: #FFF;
 }
 
-.table-header-cell {
-  padding: 5px;
-}
-
+.table-header-cell,
 .table-cell {
-  padding: 5px;
+  padding: 5px 10px;
 }

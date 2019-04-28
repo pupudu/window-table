@@ -28,9 +28,9 @@ control over what these tags/components should be.
 npm install --save window-table
 ```
 
-## Basic Usage
+*See live example at:* https://codesandbox.io/s/6w5ov594vn
 
-*See it live at* https://codesandbox.io/s/6w5ov594vn
+## Basic Usage
 
 ```tsx
 import * as React from 'react'

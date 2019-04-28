@@ -6,23 +6,21 @@ import './index.css';
 
 const Avatar = ({ row, column }) => {
   return (
-    <div>
-      <img
-        src={row[column.key]}
-        alt="avatar"
-        style={{
-          height: '50px'
-        }}
-      />
-    </div>
+    <img
+      src={row[column.key]}
+      alt="avatar"
+      style={{
+        height: '40px'
+      }}
+    />
   );
 };
 
 const columns = [
-  { key: 'avatar', width: 80, title: 'Avatar', Component: Avatar },
+  { key: 'avatar', width: 40, title: 'Avatar', Component: Avatar },
   { key: 'name', width: 100, title: 'Name' },
-  { key: 'clan', width: 150, title: 'Clan' },
-  { key: 'age', width: 80, title: 'Age' }
+  { key: 'clan', width: 100, title: 'Clan' },
+  { key: 'age', width: 40, title: 'Age' }
 ];
 
 function App() {
