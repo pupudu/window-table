@@ -249,16 +249,12 @@ function WindowTable<T = any>({
             height: 0,
             opacity: 0,
             display: 'block',
-            margin: 0
+            margin: 0,
+            width: `${effectiveWidth}px`
           }}
           className={`${classNamePrefix}table`}
         >
-          <Body
-            className={`${classNamePrefix}table-body`}
-            style={{
-              width: `${effectiveWidth}px`
-            }}
-          >
+          <Body className={`${classNamePrefix}table-body`}>
             <Row className={`${classNamePrefix}table-row`}>
               <Measurer dispatch={dispatch} entity="row" />
               <RowCells
