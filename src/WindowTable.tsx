@@ -100,7 +100,6 @@ const RowRenderer = memo(function RowRenderer({
 areEqual);
 
 const HeaderRowRenderer = ({
-  width,
   dispatch,
   Header,
   HeaderRow,
@@ -115,12 +114,7 @@ const HeaderRowRenderer = ({
   const { columns, classNamePrefix } = useContext(context);
 
   return (
-    <Header
-      className={`${classNamePrefix}table-header`}
-      style={{
-        width: `${width}px`
-      }}
-    >
+    <Header className={`${classNamePrefix}table-header`}>
       <HeaderRow
         style={{
           display: 'flex'
@@ -280,7 +274,7 @@ function WindowTable<T = any>({
         }}
       >
         <div>
-          <Table>
+          <Table style={{ width: `${effectiveWidth}px` }}>
             <HeaderRowRenderer
               width={effectiveWidth}
               dispatch={dispatch}
