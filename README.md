@@ -61,17 +61,12 @@ function ShinobiTable (props) {
   )
 }
 ```
-
 Note that we are wrapping the `WindowTable` with a `div` which has a height of `500px`.
-Instead, we could have set that height in the `WindowTable` itself, or even in a parent of `NinjaTable`.
-Or we can pass the pixel height as a prop, `height`.
+Instead, we could have set that height in the `WindowTable` itself, 
+or even in a parent container of `NinjaTable`.
 
-It is important to set the height somewhere. 
-Unless we do this, some random height will be used by the table, which is not ideal.
-
-In fact, this requirement is intuitive, because we obviously don't want to render all the cells.
-
-The code examples below this, will assume that a parent container will have set the height for the table.
+We can also pass an explicit height. But this is discouraged unless
+you know what you are doing.
 
 ## HTML 5 tags based table
 
@@ -158,35 +153,36 @@ function Table (props) {
 Similarly you can pass a custom react component as `HeaderCell` to the column options
 to render a custom header cell.
 
-## Dynamic Row Heights
+## Row Heights
+The height of a row in the table is determined internally by rendering 
+the first data row.
+You can pass an index to `sampleRowIndex` prop to instruct the table
+which data row to be used to measure the row height.
 
-Sometimes you know what the row height could be, but some other times you just don't. In the latter case,
-you can pass in a sample cell, which will be used internally to derive a row height. As of now,
-sadly, all rows will have the same height.
- 
+## Static table dimensions
+The window table tries to measure both row dimensions and
+table dimensions for you. 
+However, you can opt-out of this behavior by supplying
+explicit dimensions. 
+
+The following example shows how table height, table width,
+and rowHeight can be customized. The ones which are
+not supplied will be measured. 
+
 ```tsx
-import * as React from 'react'
-
-import {Html5Table} from 'window-table'
-
-const SampleCell = props => {
-  // As an example, custom styles based on rem values which are not directly convertable to pixels
-  // But this can be pretty much anything
-  return <div style={{height: '3rem', padding: '0.5rem'}}>
-    Some Data
-  <div>;
-}
-
 function Table (props) {
   return (
-    <Html5Table
-      data={data}
-      columns={columns}
-      SampleCell={SampleCell}
+    <WindowTable
+      height={600}
+      width={400}
+      rowHeight={50}
     />
   )
 }
 ```
+
+This behaviour is not optimal if you want the table
+dimensions to change based on CSS or window resize events.
 
 ## License
 
