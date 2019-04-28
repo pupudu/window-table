@@ -155,9 +155,34 @@ to render a custom header cell.
 
 ## Row Heights
 The height of a row in the table is determined internally by rendering 
-the first data row.
-You can pass an index to `sampleRowIndex` prop to instruct the table
-which data row to be used to measure the row height.
+the first data row covertly.
+
+However, we cannot always rely on the first data row to
+represent all rows. Thus you can pass different options
+to suit your requirement. Let's have a look:
+
+#### 1. sampleRow
+For changing data, you can pass a sample data row, which
+will be used internally to measure the resulting height.
+
+#### 2. sampleRowIndex
+You can pass the index of the best data row to determine the
+height for table rows.
+
+Please create an issue in the github repo if you
+are using this option. This might get deprecated soon
+if otherwise.
+
+#### 3. rowHeight
+You can pass a static explicit height, which will disable
+the row measurer mechanism. 
+
+#### 4. rowHeight as a function
+You can also pass a function which accepts the index
+of the row being rendered as a parameter. The value
+returned from this function will be used as the row height
+for that row. This option can be useful for a table
+with variable row heights.
 
 ## Static table dimensions
 The window table tries to measure both row dimensions and

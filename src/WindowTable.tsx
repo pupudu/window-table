@@ -170,7 +170,8 @@ function WindowTable<T = any>({
   HeaderRow = 'div',
   Row = 'div',
   Body = 'div',
-  cellMeasurerIndex = 0,
+  sampleRowIndex = 0,
+  sampleRow = null,
   className = '',
   classNamePrefix = '',
   ...rest
@@ -189,7 +190,8 @@ function WindowTable<T = any>({
   HeaderRow?: React.ElementType;
   Row?: React.ElementType;
   Body?: React.ElementType;
-  cellMeasurerIndex?: number;
+  sampleRowIndex?: number;
+  sampleRow?: any;
   className?: string;
   classNamePrefix?: string;
 }) {
@@ -258,7 +260,7 @@ function WindowTable<T = any>({
             <Row className={`${classNamePrefix}table-row`}>
               <Measurer dispatch={dispatch} entity="row" />
               <RowCells
-                datum={data[cellMeasurerIndex]}
+                datum={sampleRow || data[sampleRowIndex]}
                 columns={columns}
                 classNamePrefix={classNamePrefix}
                 Cell={Cell}
