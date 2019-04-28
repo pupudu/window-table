@@ -37,6 +37,42 @@ const Measurer = ({ dispatch, entity }: { dispatch: any; entity: string }) => {
   );
 };
 
+const RowCells = ({
+  columns,
+  classNamePrefix,
+  datum,
+  Cell
+}: {
+  columns: Array<any>;
+  classNamePrefix: string;
+  datum: Object;
+  Cell: React.ElementType;
+}) => {
+  return (
+    <>
+      {columns.map(column => {
+        const { key, width, Component = 'div' } = column;
+        return (
+          <Cell
+            key={key}
+            style={{
+              width: `${width}px`,
+              flexGrow: width,
+              display: 'inline-block',
+              overflow: 'auto'
+            }}
+            className={`${classNamePrefix}table-cell`}
+          >
+            <Component row={datum} column={column}>
+              {datum[key]}
+            </Component>
+          </Cell>
+        );
+      })}
+    </>
+  );
+};
+
 const RowRenderer = memo(function RowRenderer({
   index,
   style
@@ -51,25 +87,12 @@ const RowRenderer = memo(function RowRenderer({
       }}
       className={`${classNamePrefix}table-row`}
     >
-      {columns.map(column => {
-        const { key, width, Component = 'div' } = column;
-        return (
-          <Cell
-            key={key}
-            style={{
-              width: `${width}px`,
-              flexGrow: width,
-              display: 'inline-block',
-              overflow: 'auto'
-            }}
-            className={`${classNamePrefix}table-cell`}
-          >
-            <Component row={data[index]} column={column}>
-              {data[index][key]}
-            </Component>
-          </Cell>
-        );
-      })}
+      <RowCells
+        datum={data[index]}
+        Cell={Cell}
+        classNamePrefix={classNamePrefix}
+        columns={columns}
+      />
     </Row>
   );
 },
@@ -125,13 +148,14 @@ const HeaderRowRenderer = ({
 // Define the initial state of dimensions
 // Also to be used as a state which will not trigger a re-render on changes
 // So that we can change state from the useReducer, only once per all three dimension entities
-let cache = { header: [10, 100], cell: [10, 20], table: [100, 100] };
+let cache = { header: [10, 100], row: [10, 20], table: [100, 100] };
 
 function WindowTable<T = any>({
   columns,
   data,
   rowHeight,
   height,
+  width,
   overscanCount = 1,
   style = {},
   Cell = 'div',
@@ -141,14 +165,15 @@ function WindowTable<T = any>({
   HeaderRow = 'div',
   Row = 'div',
   Body = 'div',
+  cellMeasurerIndex = 0,
   className = '',
   classNamePrefix = '',
-  SampleCell = 'div',
   ...rest
 }: {
   columns: Array<column<keyof T, T>>;
   data: Array<T>;
   height?: number;
+  width?: number;
   rowHeight?: number;
   overscanCount?: number;
   style?: object;
@@ -159,7 +184,7 @@ function WindowTable<T = any>({
   HeaderRow?: React.ElementType;
   Row?: React.ElementType;
   Body?: React.ElementType;
-  SampleCell?: React.ElementType;
+  cellMeasurerIndex?: number;
   className?: string;
   classNamePrefix?: string;
 }) {
@@ -189,10 +214,10 @@ function WindowTable<T = any>({
 
   const [tableHeight, tableWidth] = dimensions.table;
   const [headerHeight] = dimensions.header;
-  const [sampleCellHeight] = dimensions.cell;
+  const [sampleRowHeight] = dimensions.row;
 
   const bodyHeight: number = (height || tableHeight) - headerHeight;
-  const effectiveWidth = Math.max(columnWidthsSum, tableWidth);
+  const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
 
   const TableBody = ({ children, ...props }: React.ComponentProps<any>) => (
     <Table {...props} className={`${classNamePrefix}table`}>
@@ -212,6 +237,7 @@ function WindowTable<T = any>({
       className={`${classNamePrefix}${className}`}
     >
       {!rowHeight && (
+        /*Measure row height only if not supplied explicitly*/
         <Table
           style={{
             height: 0,
@@ -223,14 +249,13 @@ function WindowTable<T = any>({
         >
           <Body className={`${classNamePrefix}table-body`}>
             <Row className={`${classNamePrefix}table-row`}>
-              <Measurer dispatch={dispatch} entity="cell" />
-              <Cell className={`${classNamePrefix}table-cell`}>
-                {SampleCell === 'div' ? (
-                  <SampleCell>{data[0][columns[0].key]}</SampleCell>
-                ) : (
-                  <SampleCell />
-                )}
-              </Cell>
+              <Measurer dispatch={dispatch} entity="row" />
+              <RowCells
+                datum={data[cellMeasurerIndex]}
+                columns={columns}
+                classNamePrefix={classNamePrefix}
+                Cell={Cell}
+              />
             </Row>
           </Body>
         </Table>
@@ -256,10 +281,9 @@ function WindowTable<T = any>({
             />
           </Table>
           <List
-            itemData={{ data1: data, columns }}
             height={bodyHeight}
             itemCount={data.length}
-            itemSize={rowHeight || sampleCellHeight}
+            itemSize={rowHeight || sampleRowHeight}
             width={effectiveWidth}
             innerElementType={TableBody}
             overscanCount={overscanCount}
@@ -269,7 +293,10 @@ function WindowTable<T = any>({
         </div>
       </context.Provider>
 
-      <Measurer dispatch={dispatch} entity="table" />
+      {(!height || !width) && (
+        /*Measure table dimensions only if explicit height or width are not supplied*/
+        <Measurer dispatch={dispatch} entity="table" />
+      )}
     </div>
   );
 }
