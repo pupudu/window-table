@@ -59,7 +59,8 @@ const RowCells = ({
               width: `${width}px`,
               flexGrow: width,
               display: 'inline-block',
-              overflow: 'auto'
+              overflow: 'auto',
+              boxSizing: 'border-box'
             }}
             className={`${classNamePrefix}table-cell`}
           >
@@ -114,10 +115,14 @@ const HeaderRowRenderer = ({
   const { columns, classNamePrefix } = useContext(context);
 
   return (
-    <Header className={`${classNamePrefix}table-header`}>
+    <Header
+      className={`${classNamePrefix}table-header`}
+      style={{
+        width: `${width}px`
+      }}
+    >
       <HeaderRow
         style={{
-          width: `${width}px`,
           display: 'flex'
         }}
         className={`${classNamePrefix}table-header-row`}
@@ -230,6 +235,7 @@ function WindowTable<T = any>({
       style={{
         height: 'calc(100% - 16px)', // 16px less to avoid possible unnecessary scrollbars
         width: '100%',
+        overflow: 'auto',
         maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
         ...style
       }}
@@ -247,7 +253,12 @@ function WindowTable<T = any>({
           }}
           className={`${classNamePrefix}table`}
         >
-          <Body className={`${classNamePrefix}table-body`}>
+          <Body
+            className={`${classNamePrefix}table-body`}
+            style={{
+              width: `${effectiveWidth}px`
+            }}
+          >
             <Row className={`${classNamePrefix}table-row`}>
               <Measurer dispatch={dispatch} entity="row" />
               <RowCells
