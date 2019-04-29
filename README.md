@@ -4,6 +4,14 @@
 
 [![NPM](https://img.shields.io/npm/v/window-table.svg)](https://www.npmjs.com/package/window-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+## DEMO
+
+Live Preview: https://6w5ov594vn.codesandbox.io/
+
+Editable preview: https://codesandbox.io/s/6w5ov594vn
+
+## Introduction
+
 This ReactJs table library is a tiny, yet powerful implementation of a windowed/virtualized table, based off the awesome
 virtualization library, `react-window` by Brian Vaughn. 
 
@@ -27,8 +35,6 @@ control over what these tags/components should be.
 ```bash
 npm install --save window-table
 ```
-
-*See live example at:* https://codesandbox.io/s/6w5ov594vn
 
 ## Basic Usage
 
@@ -63,7 +69,7 @@ function ShinobiTable (props) {
 ```
 Note that we are wrapping the `WindowTable` with a `div` which has a height of `500px`.
 Instead, we could have set that height in the `WindowTable` itself, 
-or even in a parent container of `NinjaTable`.
+or even in a parent container of `ShinobiTable`.
 
 We can also pass an explicit height. But this is discouraged unless
 you know what you are doing.
@@ -80,7 +86,6 @@ function Table (props) {
     <Html5Table
       data={data}
       columns={columns}
-      rowHeight={50}
     />
   )
 }
@@ -102,7 +107,6 @@ function Table (props) {
     <WindowTable
       data={data}
       columns={columns}
-      rowHeight={50}
       
       className="table"
       Cell="td"
@@ -144,7 +148,6 @@ function Table (props) {
     <WindowTable
       data={data}
       columns={columns}
-      rowHeight={50}
     />
   )
 }
