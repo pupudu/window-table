@@ -6,25 +6,28 @@ import { isEqual, debounce } from 'lodash-es';
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useReducer, useMemo } = React;
 
-export type column<T = string, K = any> = {
+export type Column<T = string, K = any> = {
   key: T;
   width: number;
   title?: string;
-  Component?: React.ElementType<{ row?: K; column?: column<T, K> }>;
+  Component?: React.ElementType<{ row?: K; column?: Column<T, K> }>;
   HeaderCell?: React.ElementType;
 };
 
-const context = createContext({
-  columns: [] as column<any, any>[],
+const TableContext = createContext({
+  columns: [] as Column<any, any>[],
   data: [] as any[],
   Cell: 'div' as React.ElementType,
   Row: 'div' as React.ElementType,
   classNamePrefix: ''
 });
 
-const Measurer = ({ dispatch, entity }: { dispatch: any; entity: string }) => {
+const Measurer: React.FunctionComponent<{
+  measure: React.Dispatch<MeasureAction>;
+  entity: TableEntity;
+}> = ({ measure, entity }) => {
   const debouncedDispatch = useMemo(
-    () => debounce(dispatch, 100, { leading: true }),
+    () => debounce(measure, 100, { leading: true }),
     []
   );
   return (
@@ -43,9 +46,9 @@ const RowCells = ({
   datum,
   Cell
 }: {
-  columns: Array<any>;
+  columns: any[];
   classNamePrefix: string;
-  datum: Object;
+  datum: any;
   Cell: React.ElementType;
 }) => {
   return (
@@ -74,11 +77,12 @@ const RowCells = ({
   );
 };
 
-const RowRenderer = memo(function RowRenderer({
-  index,
-  style
-}: ReactWindow.ListChildComponentProps) {
-  const { columns, data, Cell, classNamePrefix, Row } = useContext(context);
+const RowRenderer: React.FunctionComponent<
+  ReactWindow.ListChildComponentProps
+> = ({ index, style }) => {
+  const { columns, data, Cell, classNamePrefix, Row } = useContext(
+    TableContext
+  );
 
   return (
     <Row
@@ -96,22 +100,17 @@ const RowRenderer = memo(function RowRenderer({
       />
     </Row>
   );
-},
-areEqual);
+};
+const MemoRowRenderer = memo(RowRenderer, areEqual);
 
-const HeaderRowRenderer = ({
-  dispatch,
-  Header,
-  HeaderRow,
-  HeaderCell: DefaultHeaderCell
-}: {
+const HeaderRowRenderer: React.FunctionComponent<{
   width: number;
-  dispatch: Function;
+  measure: React.Dispatch<MeasureAction>;
   Header: React.ElementType;
   HeaderRow: React.ElementType;
   HeaderCell: React.ElementType;
-}) => {
-  const { columns, classNamePrefix } = useContext(context);
+}> = ({ measure, Header, HeaderRow, HeaderCell: DefaultHeaderCell }) => {
+  const { columns, classNamePrefix } = useContext(TableContext);
 
   return (
     <Header className={`${classNamePrefix}table-header`}>
@@ -121,7 +120,7 @@ const HeaderRowRenderer = ({
         }}
         className={`${classNamePrefix}table-header-row`}
       >
-        <Measurer dispatch={dispatch} entity="header" />
+        <Measurer measure={measure} entity="header" />
         {columns.map(
           ({ key, width, title, HeaderCell = DefaultHeaderCell }) => {
             return (
@@ -147,7 +146,40 @@ const HeaderRowRenderer = ({
 // Define the initial state of dimensions
 // Also to be used as a state which will not trigger a re-render on changes
 // So that we can change state from the useReducer, only once per all three dimension entities
-let cache = { header: [10, 100], row: [10, 20], table: [100, 100] };
+interface ReducerState {
+  header: [number, number];
+  row: [number, number];
+  table: [number, number];
+}
+
+type TableEntity = keyof ReducerState;
+interface MeasureAction {
+  entity: TableEntity;
+  dimensions: [number, number];
+}
+let cache: ReducerState = {
+  header: [10, 100],
+  row: [10, 20],
+  table: [100, 100]
+};
+
+const reducer: React.Reducer<ReducerState, MeasureAction> = (
+  state,
+  { entity, dimensions }
+) => {
+  if (entity) {
+    // Keep updates in cache
+    cache = {
+      ...cache,
+      [entity]: dimensions
+    };
+    // Update state only when `table` entity dimensions have updated
+    if (entity === 'table' && !isEqual(state[entity], cache[entity])) {
+      return cache;
+    }
+  }
+  return state;
+};
 
 function WindowTable<T = any>({
   columns,
@@ -165,18 +197,18 @@ function WindowTable<T = any>({
   Row = 'div',
   Body = 'div',
   sampleRowIndex = 0,
-  sampleRow = null,
+  sampleRow,
   className = '',
   classNamePrefix = '',
   ...rest
 }: {
-  columns: Array<column<keyof T, T>>;
-  data: Array<T>;
+  columns: Column<keyof T, T>[];
+  data: T[];
   height?: number;
   width?: number;
   rowHeight?: number;
   overscanCount?: number;
-  style?: object;
+  style?: React.CSSProperties;
   Cell?: React.ElementType;
   HeaderCell?: React.ElementType;
   Table?: React.ElementType;
@@ -185,33 +217,17 @@ function WindowTable<T = any>({
   Row?: React.ElementType;
   Body?: React.ElementType;
   sampleRowIndex?: number;
-  sampleRow?: any;
+  sampleRow?: T;
   className?: string;
   classNamePrefix?: string;
 }) {
-  const List =
+  const List: React.ElementType =
     rowHeight && typeof rowHeight === 'function'
       ? VariableSizeList
       : FixedSizeList;
   const columnWidthsSum = columns.reduce((sum, { width }) => sum + width, 0);
 
-  const [dimensions, dispatch] = useReducer(
-    (state, { entity, dimensions } = {}) => {
-      if (entity) {
-        // Keep updates in cache
-        cache = {
-          ...cache,
-          [entity]: dimensions
-        };
-        // Update state only when `table` entity dimensions have updated
-        if (entity === 'table' && !isEqual(state[entity], cache[entity])) {
-          return cache;
-        }
-      }
-      return state;
-    },
-    cache
-  );
+  const [dimensions, dispatchMeasure] = useReducer(reducer, cache);
 
   const [tableHeight, tableWidth] = dimensions.table;
   const [headerHeight] = dimensions.header;
@@ -220,7 +236,7 @@ function WindowTable<T = any>({
   const bodyHeight: number = (height || tableHeight) - headerHeight;
   const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
 
-  const TableBody = ({ children, ...props }: React.ComponentProps<any>) => (
+  const TableBody: React.FunctionComponent = ({ children, ...props }) => (
     <Table {...props} className={`${classNamePrefix}table`}>
       <Body className={`${classNamePrefix}table-body`}>{children}</Body>
     </Table>
@@ -252,7 +268,7 @@ function WindowTable<T = any>({
         >
           <Body className={`${classNamePrefix}table-body`}>
             <Row className={`${classNamePrefix}table-row`}>
-              <Measurer dispatch={dispatch} entity="row" />
+              <Measurer measure={dispatchMeasure} entity="row" />
               <RowCells
                 datum={sampleRow || data[sampleRowIndex]}
                 columns={columns}
@@ -264,7 +280,7 @@ function WindowTable<T = any>({
         </Table>
       )}
 
-      <context.Provider
+      <TableContext.Provider
         value={{
           columns,
           data,
@@ -277,7 +293,7 @@ function WindowTable<T = any>({
           <Table style={{ width: `${effectiveWidth}px` }}>
             <HeaderRowRenderer
               width={effectiveWidth}
-              dispatch={dispatch}
+              measure={dispatchMeasure}
               Header={Header}
               HeaderRow={HeaderRow}
               HeaderCell={HeaderCell}
@@ -291,14 +307,14 @@ function WindowTable<T = any>({
             innerElementType={TableBody}
             overscanCount={overscanCount}
           >
-            {RowRenderer}
+            {MemoRowRenderer}
           </List>
         </div>
-      </context.Provider>
+      </TableContext.Provider>
 
       {(!height || !width) && (
         /*Measure table dimensions only if explicit height or width are not supplied*/
-        <Measurer dispatch={dispatch} entity="table" />
+        <Measurer measure={dispatchMeasure} entity="table" />
       )}
     </div>
   );

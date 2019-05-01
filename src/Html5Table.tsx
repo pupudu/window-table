@@ -1,11 +1,13 @@
 import * as React from 'react';
 import WindowTable from './WindowTable';
 
-const THead: React.ElementType = props => {
+const THead: React.FunctionComponent<
+  React.HTMLAttributes<HTMLTableSectionElement>
+> = props => {
   return <thead {...props} className="thead-dark" />;
 };
 
-const HtmlTable: React.ElementType = props => {
+const HtmlTable: typeof WindowTable = props => {
   return (
     <WindowTable
       className="table"
