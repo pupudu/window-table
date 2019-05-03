@@ -7,6 +7,9 @@
   "repository": "pupudu/window-table",
   "keywords": [
     "react",
+    "react-window-table",
+    "react-virtualized-table",
+    "window-table",
     "reactjs",
     "virtual",
     "window",
