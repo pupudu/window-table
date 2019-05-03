@@ -15,6 +15,7 @@
     ],
     "no-var": "error",
     "prefer-const": "error",
-    "prefer-template": "error"
+    "prefer-template": "error",
+    "react/prop-types": 0
   }
 }
