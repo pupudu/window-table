@@ -2,7 +2,9 @@
 
 > Windowing Table for React based on React Window
 
-[![NPM](https://img.shields.io/npm/v/window-table.svg)](https://www.npmjs.com/package/window-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/window-table.svg)](https://www.npmjs.com/package/window-table) 
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![CircleCI](https://circleci.com/gh/pupudu/window-table.svg?style=svg)](https://circleci.com/gh/pupudu/window-table)
 
 ## DEMO
 
