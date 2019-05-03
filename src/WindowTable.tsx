@@ -28,7 +28,7 @@ const Measurer: React.FunctionComponent<{
 }> = ({ measure, entity }) => {
   const debouncedDispatch = useMemo(
     () => debounce(measure, 100, { leading: true }),
-    []
+    [measure]
   );
   return (
     <AutoSizer>
