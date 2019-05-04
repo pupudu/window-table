@@ -37,7 +37,9 @@
     "deploy": "gh-pages -d example/build",
     "lint": "eslint src/**",
     "docz": "docz dev",
-    "docz:build": "docz build"
+    "docz:build": "docz build",
+    "now-build": "docz build",
+    "now-dev": "docz dev"
   },
   "dependencies": {
     "lodash-es": "^4.17.11",
