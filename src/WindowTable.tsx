@@ -44,12 +44,14 @@ const RowCells = ({
   columns,
   classNamePrefix,
   datum,
-  Cell
+  Cell,
+  index = 0
 }: {
   columns: any[];
   classNamePrefix: string;
   datum: any;
   Cell: React.ElementType;
+  index?: number;
 }) => {
   return (
     <>
@@ -67,7 +69,7 @@ const RowCells = ({
             }}
             className={`${classNamePrefix}table-cell`}
           >
-            <Component row={datum} column={column}>
+            <Component row={datum} column={column} index={index}>
               {datum[key]}
             </Component>
           </Cell>
@@ -97,6 +99,7 @@ const RowRenderer: React.FunctionComponent<
         Cell={Cell}
         classNamePrefix={classNamePrefix}
         columns={columns}
+        index={index}
       />
     </Row>
   );
