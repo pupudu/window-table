@@ -121,23 +121,23 @@ const HeaderRowRenderer: React.FunctionComponent<{
         className={`${classNamePrefix}table-header-row`}
       >
         <Measurer measure={measure} entity="header" />
-        {columns.map(
-          ({ key, width, title, HeaderCell = DefaultHeaderCell }) => {
-            return (
-              <HeaderCell
-                key={`header${key}`}
-                style={{
-                  width: `${width}px`,
-                  display: 'inline-block',
-                  flexGrow: width
-                }}
-                className={`${classNamePrefix}table-header-cell`}
-              >
-                {title}
-              </HeaderCell>
-            );
-          }
-        )}
+        {columns.map(column => {
+          const { key, width, title, HeaderCell = DefaultHeaderCell } = column;
+          return (
+            <HeaderCell
+              key={`header${key}`}
+              style={{
+                width: `${width}px`,
+                display: 'inline-block',
+                flexGrow: width
+              }}
+              className={`${classNamePrefix}table-header-cell`}
+              column={column}
+            >
+              {title}
+            </HeaderCell>
+          );
+        })}
       </HeaderRow>
     </Header>
   );
