@@ -1,0 +1,32 @@
+---
+menu: Components API
+name: HTML5Table
+---
+
+# HTML5Table
+
+The `HTML5Table` component has the exact same props as the
+`WindowTable` component.
+
+The only difference is that, here, we have overriden the wrapping components.
+
+Here's the code from the library, to explain that:
+
+```jsx harmony
+const Html5Table = props => {
+  return (
+    <WindowTable
+      className="table"
+      Cell="td"
+      HeaderCell="th"
+      Header='thead'
+      HeaderRow="tr"
+      Row="tr"
+      Body="tbody"
+      Table="table"
+      {...props}
+    />
+  );
+};
+```
+

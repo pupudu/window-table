@@ -1,0 +1,86 @@
+---
+menu: Getting Started
+name: Basic Usage
+---
+
+# Basic Usage
+
+## Installation
+
+First install the library with npm or yarn
+
+```bash
+yarn add window-table
+```
+
+## Basic Usage
+
+Let's start with an example. 
+
+To begin, we will need some data to be rendered by the table.
+This data can be either an array of objects, or an array
+of arrays. **For this example, we will use an array of objects.**
+
+For the time being, let's define the data statically.
+In a real world situation, this data would potentially 
+come from an API.
+
+```jsx harmony
+const data = [
+  {name: 'Naruto', age: 24, clan: 'Uzomaki'},
+  {name: 'Hinata', age: 22, clan: 'Huga'},
+  {name: 'Itachi', age: 28, clan: 'Uchiha'},
+  //...and thousands or millions of data
+];
+```
+
+Now we need to define the column metadata, which will
+instruct the window-table on aspects such as the
+width of each column, order of the columns, the column
+headings etc.
+
+```jsx harmony
+const columns = [
+  {key: 'name', width: 100, title: 'Name'},
+  {key: 'age', width: 80, title: 'Age'},
+  {key: 'clan', width: 150, title: 'Clan'}
+];
+```
+
+Now we can render the table by supplying these two pieces
+information as props. 
+
+```jsx harmony
+import { WindowTable } from 'window-table';
+
+const data = [
+  {name: 'Naruto', age: 24, clan: 'Uzomaki'},
+  {name: 'Hinata', age: 22, clan: 'Huga'},
+  {name: 'Itachi', age: 28, clan: 'Uchiha'},
+  //...and thousands or millions of data
+];
+
+const columns = [
+  {key: 'name', width: 100, title: 'Name'},
+  {key: 'age', width: 80, title: 'Age'},
+  {key: 'clan', width: 150, title: 'Clan'}
+];
+
+function ShinobiTable (props) {
+  return (
+    <WindowTable
+      data={data}
+      columns={columns}
+      style={{height: '500px'}}
+    />
+  )
+}
+```
+
+Note: We have used an inline style to define the 
+height of the table. This can however be done by any other
+means like CSS, Styled Components or even by passing the 
+height as a prop to the table. 
+
+If none is specified, the height will be bounded by
+100% of the view port height.
