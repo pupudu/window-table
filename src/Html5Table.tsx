@@ -7,10 +7,10 @@ const THead: React.FunctionComponent<
   return <thead {...props} className="thead-dark" />;
 };
 
-const HtmlTable: typeof WindowTable = props => {
+const HtmlTable: typeof WindowTable = ({ className, ...props }) => {
   return (
     <WindowTable
-      className="table"
+      className={`${className} table`}
       Cell="td"
       HeaderCell="th"
       Header={THead}
