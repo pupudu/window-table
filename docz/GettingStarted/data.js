@@ -23,8 +23,9 @@ const shinobi = [
 /* eslint-enable */
 
 const repeatingShinobi = [];
-for (let i = 0; i < 1000; i++) {
-  repeatingShinobi.push(...shinobi);
+for (let i = 0; i < 100000; i++) {
+  const index = Math.floor(Math.random() * shinobi.length);
+  repeatingShinobi.push(shinobi[index]);
 }
 
 export default repeatingShinobi;

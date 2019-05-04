@@ -77,11 +77,12 @@ This is the column title. Header cells can be customized using the
 
 ### `Component`: React.Component
 You can customize the column cells by supplying a custom React Component
-for this attribute. The component can accept 3 props: `children`, `row` and `column`.
+for this attribute. The component can accept 4 props: `children`, `column`, `row` and `index`.
 
-* column: The `column` itself
-* row: A data row from the data array
-* children: A single data unit from the `data` array. Can be derived from the `row` and `column` as `row[column.key]`
+* `children`: A single data unit from the `data` array. Can be derived from the `row` and `column` as `row[column.key]`
+* `column`: The `column` itself
+* `row`: A data row from the data array
+* `index`: Index of the row being rendered
 
 ```jsx harmony
 const columns = [
@@ -103,8 +104,8 @@ Similar to the `Component` above, the HeaderCell attribute can be used
 to customize the header cells. The component supplied to this attribute
 can accept two props: `children` and `column`.
 
-* children: The value of the `title` attribute in the column metadata
-* column: The column itself
+* `children`: The value of the `title` attribute in the column metadata
+* `column`: The column itself
 
 
 ## **Height**: Number | **Width**: Number

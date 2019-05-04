@@ -12,7 +12,7 @@ export default {
   ],
   menu: [
     { name: 'Getting Started', menu: ['Introduction', 'Basic Usage'] },
-    { name: 'Examples', menu: ['Custom Cell Renderer'] },
+    // { name: 'Examples', menu: ['Custom Cell Renderer'] },
     { name: 'Components API', menu: ['WindowTable', 'HTML5Table'] },
     { name: 'Github', href: 'https://github.com/pupudu/window-table' }
   ]
