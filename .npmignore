@@ -10,4 +10,5 @@ package-lock.json
 tsconfig.json
 tsconfig.test.json
 rollup.config.json
-example
+docz
+website
