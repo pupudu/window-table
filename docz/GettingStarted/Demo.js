@@ -31,7 +31,7 @@ function ShinobiTable() {
   return (
     <Bootstrap
       style={{
-        height: '300px'
+        height: '250px'
       }}
     >
       <Table data={data} columns={columns} className="table-sm" />
