@@ -34,7 +34,12 @@ function ShinobiTable() {
         height: '250px'
       }}
     >
-      <Table data={data} columns={columns} className="table-sm" />
+      <Table
+        data={data}
+        columns={columns}
+        className="table-sm table-striped"
+        headerClassName="thead-dark"
+      />
     </Bootstrap>
   );
 }

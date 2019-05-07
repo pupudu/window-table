@@ -1,19 +1,30 @@
 import * as React from 'react';
-import WindowTable from './WindowTable';
+import WindowTable, { WindowTableProps } from './WindowTable';
 
-const THead: React.FunctionComponent<
-  React.HTMLAttributes<HTMLTableSectionElement>
-> = props => {
-  return <thead {...props} className="thead-dark" />;
+const getTHead = (headerClassName: string) => {
+  const THead: React.FunctionComponent<
+    React.HTMLAttributes<HTMLTableSectionElement>
+  > = props => {
+    return (
+      <thead {...props} className={`${headerClassName} ${props.className}`} />
+    );
+  };
+  return THead;
 };
 
-const HtmlTable: typeof WindowTable = ({ className, ...props }) => {
+interface Html5TableProps<T> extends WindowTableProps<T> {
+  headerClassName: string;
+}
+
+function Html5Table<T = any>({
+  headerClassName,
+  ...props
+}: Html5TableProps<T>) {
   return (
     <WindowTable
-      className={`${className} table`}
       Cell="td"
       HeaderCell="th"
-      Header={THead}
+      Header={getTHead(headerClassName)}
       HeaderRow="tr"
       Row="tr"
       Body="tbody"
@@ -21,6 +32,6 @@ const HtmlTable: typeof WindowTable = ({ className, ...props }) => {
       {...props}
     />
   );
-};
+}
 
-export default HtmlTable;
+export default Html5Table;
