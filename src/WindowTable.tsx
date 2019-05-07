@@ -184,6 +184,27 @@ const reducer: React.Reducer<ReducerState, MeasureAction> = (
   return state;
 };
 
+export type WindowTableProps<T> = {
+  columns: Column<keyof T, T>[];
+  data: T[];
+  height?: number;
+  width?: number;
+  rowHeight?: number;
+  overscanCount?: number;
+  style?: React.CSSProperties;
+  Cell?: React.ElementType;
+  HeaderCell?: React.ElementType;
+  Table?: React.ElementType;
+  Header?: React.ElementType;
+  HeaderRow?: React.ElementType;
+  Row?: React.ElementType;
+  Body?: React.ElementType;
+  sampleRowIndex?: number;
+  sampleRow?: T;
+  className?: string;
+  classNamePrefix?: string;
+};
+
 function WindowTable<T = any>({
   columns,
   data,
@@ -204,26 +225,7 @@ function WindowTable<T = any>({
   className = '',
   classNamePrefix = '',
   ...rest
-}: {
-  columns: Column<keyof T, T>[];
-  data: T[];
-  height?: number;
-  width?: number;
-  rowHeight?: number;
-  overscanCount?: number;
-  style?: React.CSSProperties;
-  Cell?: React.ElementType;
-  HeaderCell?: React.ElementType;
-  Table?: React.ElementType;
-  Header?: React.ElementType;
-  HeaderRow?: React.ElementType;
-  Row?: React.ElementType;
-  Body?: React.ElementType;
-  sampleRowIndex?: number;
-  sampleRow?: T;
-  className?: string;
-  classNamePrefix?: string;
-}) {
+}: WindowTableProps<T>) {
   const List: React.ElementType =
     rowHeight && typeof rowHeight === 'function'
       ? VariableSizeList
@@ -239,8 +241,10 @@ function WindowTable<T = any>({
   const bodyHeight: number = (height || tableHeight) - headerHeight;
   const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
 
+  const tableClassName = `${classNamePrefix}table ${className}`;
+
   const TableBody: React.FunctionComponent = ({ children, ...props }) => (
-    <Table {...props} className={`${classNamePrefix}table`}>
+    <Table {...props} className={tableClassName}>
       <Body className={`${classNamePrefix}table-body`}>{children}</Body>
     </Table>
   );
@@ -255,7 +259,6 @@ function WindowTable<T = any>({
         ...style
       }}
       {...rest}
-      className={`${classNamePrefix}${className}`}
     >
       {!rowHeight && (
         /*Measure row height only if not supplied explicitly*/
@@ -267,7 +270,7 @@ function WindowTable<T = any>({
             margin: 0,
             width: `${effectiveWidth}px`
           }}
-          className={`${classNamePrefix}table`}
+          className={tableClassName}
         >
           <Body className={`${classNamePrefix}table-body`}>
             <Row className={`${classNamePrefix}table-row`}>
@@ -293,7 +296,10 @@ function WindowTable<T = any>({
         }}
       >
         <div>
-          <Table style={{ width: `${effectiveWidth}px` }}>
+          <Table
+            style={{ width: `${effectiveWidth}px`, marginBottom: 0 }}
+            className={tableClassName}
+          >
             <HeaderRowRenderer
               width={effectiveWidth}
               measure={dispatchMeasure}

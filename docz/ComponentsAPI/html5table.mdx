@@ -8,12 +8,12 @@ name: HTML5Table
 The `HTML5Table` component has the exact same props as the
 `WindowTable` component.
 
-The only difference is that, here, we have overriden the wrapping components.
+The main difference is that, here, we have overriden the wrapping components.
 
-Here's the code from the library, to explain that:
+Let's look at some code to understand what that means...
 
 ```jsx harmony
-const Html5Table = props => {
+const Html5TableExample = props => {
   return (
     <WindowTable
       className="table"
@@ -30,3 +30,28 @@ const Html5Table = props => {
 };
 ```
 
+In addition to that, the `Html5Table` component accepts an additional prop: `headerClassName`.
+This is convenient for cases where the `thead` components need special class names.
+
+eg:
+```jsx harmony
+<Html5Table
+    data={data}
+    columns={columns}
+    className="table-sm table-striped"
+    headerClassName="thead-dark"
+/>
+```
+
+of course, this could have been done by overriding the `Header` by yourself.
+
+```jsx harmony
+<Html5Table
+    data={data}
+    columns={columns}
+    className="table-sm table-striped"
+    Header={function THead(props) {
+      return <thead {...props} className="thead-dark" />
+    }}
+/>
+```
