@@ -3,7 +3,7 @@ import * as ReactWindow from 'react-window';
 import { Measurer, MeasureAction, useTableMeasurer } from './Measurer';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
-const { useContext, createContext, memo } = React;
+const { useContext, createContext, memo, useMemo } = React;
 
 export type Column<T = string, K = any> = {
   key: T;
@@ -18,7 +18,8 @@ const TableContext = createContext({
   data: [] as any[],
   Cell: 'div' as React.ElementType,
   Row: 'div' as React.ElementType,
-  classNamePrefix: ''
+  classNamePrefix: '',
+  rowClassName: '' as string | Function
 });
 
 const RowCells = ({
@@ -63,8 +64,19 @@ const RowCells = ({
 const RowRenderer: React.FunctionComponent<
   ReactWindow.ListChildComponentProps
 > = ({ index, style }) => {
-  const { columns, data, Cell, classNamePrefix, Row } = useContext(
-    TableContext
+  const {
+    columns,
+    data,
+    Cell,
+    classNamePrefix,
+    Row,
+    rowClassName
+  } = useContext(TableContext);
+
+  const rowClassNameStr = useMemo(
+    () =>
+      typeof rowClassName === 'function' ? rowClassName(index) : rowClassName,
+    [index, rowClassName]
   );
 
   return (
@@ -73,7 +85,7 @@ const RowRenderer: React.FunctionComponent<
         ...style,
         display: 'flex'
       }}
-      className={`${classNamePrefix}table-row`}
+      className={`${classNamePrefix}${rowClassNameStr}`}
     >
       <RowCells
         datum={data[index]}
@@ -145,6 +157,7 @@ export type WindowTableProps<T> = {
   sampleRowIndex?: number;
   sampleRow?: T;
   className?: string;
+  rowClassName?: string;
   classNamePrefix?: string;
 };
 
@@ -166,6 +179,7 @@ function WindowTable<T = any>({
   sampleRowIndex = 0,
   sampleRow,
   className = '',
+  rowClassName = 'table-row',
   classNamePrefix = '',
   ...rest
 }: WindowTableProps<T>) {
@@ -235,7 +249,8 @@ function WindowTable<T = any>({
           data,
           Cell,
           Row,
-          classNamePrefix
+          classNamePrefix,
+          rowClassName
         }}
       >
         <div>
