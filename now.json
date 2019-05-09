@@ -7,5 +7,6 @@
       "use": "@now/static-build",
       "config": { "distDir": "website" }
     }
-  ]
+  ],
+  "alias": ["window-table.now.sh"]
 }
