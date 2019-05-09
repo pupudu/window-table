@@ -155,6 +155,25 @@ same classes. In such cases, you can supply a prefix string, which will
 be prepended to all the classNames used by window-table.
 
 
+## **rowClassName**: String | Function
+When a string is provided, it will be concatenated with the 
+classNamePrefix and will be applied to the table rows.
+
+When a Function is provided, it will be called with the index
+of the row that is being rendered. The return value of that
+function should be a string, which will be applied to the 
+tableRows as the className, concatenated with the classNamePrefix. 
+
+For instance, imagine we want to have different classNames for
+odd and even rows:
+```jsx harmony
+<WindowTable 
+  data={data}
+  columns={columns}
+  rowClassName={index => index % 2 === 0 ? 'even-row' : 'odd-row'}
+/>
+```
+
 ## **overscanCount**: Number
 This is the same `overscanCount` prop from react-window, serving the same purpose.
 
@@ -164,6 +183,31 @@ By default, each table cell will be rendered using a `div`.
 You can change this behavior by supplying a custom React Component
 or a primitive like `td`.
 
+Internally, two props; `className` and `style` are passed to the
+component you provide for this prop. Therefor, if you are passing
+a custom component, remember to merge these props as appropriate.
+
+For example,
+```jsx harmony
+const CustomCell = props => {
+  return (
+    <Td 
+      {...props /*Pass all the props*/}
+      className={props.className + ' another_className'}
+      style={{
+        ...props.style, // Merge with the original styles
+        background: '#F80'
+      }} 
+    />
+  );
+}
+
+<WindowTable
+  data={data}
+  columns={columns}
+  Cell={CustomCell}
+/>
+```
 
 ## **HeaderCell**: React.Component
 Same as `Cell`, but for the Header Cells. 
@@ -193,3 +237,7 @@ Think of it as a `tbody` primitive.
 ## **Row**: React.Component
 Same as `Cell`, but for the Table Rows.
 Think of it as a `tr` primitive, nested inside a `tbody`.
+
+However, in addition to the `style` and `className` props,
+`Row` will be passed the `index` of the table row being
+rendered.  

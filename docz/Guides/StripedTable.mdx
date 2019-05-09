@@ -1,0 +1,75 @@
+---
+menu: Guides
+name: Striped Table
+---
+
+import { Playground } from 'docz';
+import ShinobiTable from '../Demo/Demo';
+
+# Striped Table
+The most common way of adding strips to a table is using CSS.
+You would simply define a CSS rule as follows, or may even
+just add the `table-striped` class name with Bootstrap.
+
+```css
+tr:nth-of-type(odd) {
+  background-color: rgba(0,0,0,.05);
+}
+```
+
+**Unfortunately though, this strategy cannot be used with a
+windowed table**. Table rows are created and destroyed as you scroll,
+changing the odd-even nature of the rows. This would cause the
+table strips to flip as you scroll, causing a janky behaviour.
+
+<ShinobiTable 
+  className="table-sm table-striped"
+/>
+
+So we will introduce two escape hatches which will allow you
+to do striped tabled with a minimal effort.
+
+## Using the `rowClassName` prop
+The rowClassName prop can accept either a string or a function.
+
+When a function is provided, it will be passed the index of the
+row that is being rendered. Thus we can check the odd-even nature
+of the index and apply a className to change the background color.
+
+```jsx harmony
+<Table
+  data={data}
+  columns={columns}
+  rowClassName={index => (index % 2 === 0 ? 'even-row' : 'odd-row')}
+/>
+```
+
+And then apply a CSS rule for the className as follows,
+
+```css
+.odd-row {
+  background: rgba(0, 0, 0, 0.05);
+}
+```
+
+## Using the `Row` prop
+You've seen that the WindowTable components allow you to
+pass custom components for the different "parts" of the
+table. Thus you can pass a custom Row component to get strips. 
+
+```jsx harmony
+const StripedRow = props => {
+ return (
+   <tr {...props} style={{
+     ...props.style,
+     background: props.index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : '#FFF'
+   }}/>
+ );
+};
+
+<Table 
+  data={data}
+  columns={columns}
+  Row={StripedRow}
+/>
+```
