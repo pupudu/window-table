@@ -86,6 +86,7 @@ const RowRenderer: React.FunctionComponent<
         display: 'flex'
       }}
       className={`${classNamePrefix}${rowClassNameStr}`}
+      index={index}
     >
       <RowCells
         datum={data[index]}

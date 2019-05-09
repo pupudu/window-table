@@ -183,6 +183,31 @@ By default, each table cell will be rendered using a `div`.
 You can change this behavior by supplying a custom React Component
 or a primitive like `td`.
 
+Internally, two props; `className` and `style` are passed to the
+component you provide for this prop. Therefor, if you are passing
+a custom component, remember to merge these props as appropriate.
+
+For example,
+```jsx harmony
+const CustomCell = props => {
+  return (
+    <Td 
+      {...props /*Pass all the props*/}
+      className={props.className + ' another_className'}
+      style={{
+        ...props.style, // Merge with the original styles
+        background: '#F80'
+      }} 
+    />
+  );
+}
+
+<WindowTable
+  data={data}
+  columns={columns}
+  Cell={CustomCell}
+/>
+```
 
 ## **HeaderCell**: React.Component
 Same as `Cell`, but for the Header Cells. 
@@ -212,3 +237,7 @@ Think of it as a `tbody` primitive.
 ## **Row**: React.Component
 Same as `Cell`, but for the Table Rows.
 Think of it as a `tr` primitive, nested inside a `tbody`.
+
+However, in addition to the `style` and `className` props,
+`Row` will be passed the `index` of the table row being
+rendered.  
