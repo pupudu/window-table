@@ -5,7 +5,7 @@ route: /
 ---
 
 import GhStars from './GhStars';
-import ShinobiTable from './Demo';
+import ShinobiTable from '../Demo/Demo';
 
 # Window-Table
 
@@ -16,7 +16,9 @@ without compromising performance.
 Let's render a table with **100,000** rows of data.
 Scroll as fast as you can!
 
-<ShinobiTable />
+<ShinobiTable 
+  rowClassName={index => (index % 2 === 0 ? 'even-row' : 'odd-row')}
+/>
 
 Like the idea? **Don't forget to support us by giving a Star on Github!**
 <GhStars />
@@ -28,7 +30,7 @@ table classes for styling.
 <Html5Table
     data={data}
     columns={columns}
-    className="table-sm table-striped"
+    className="table-sm"
     headerClassName="thead-dark"
 />
 ```
