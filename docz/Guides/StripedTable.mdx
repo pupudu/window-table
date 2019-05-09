@@ -51,3 +51,25 @@ And then apply a CSS rule for the className as follows,
   background: rgba(0, 0, 0, 0.05);
 }
 ```
+
+## Using the `Row` prop
+You've seen that the WindowTable components allow you to
+pass custom components for the different "parts" of the
+table. Thus you can pass a custom Row component to get strips. 
+
+```jsx harmony
+const StripedRow = props => {
+ return (
+   <tr {...props} style={{
+     ...props.style,
+     background: props.index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : '#FFF'
+   }}/>
+ );
+};
+
+<Table 
+  data={data}
+  columns={columns}
+  Row={StripedRow}
+/>
+```
