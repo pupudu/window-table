@@ -2,6 +2,7 @@ import React from 'react';
 import { Html5Table as Table } from '../../';
 import data from './data';
 import Bootstrap from '../bootstrap';
+import './demo.scss';
 
 const Avatar = ({ row, column }) => {
   return (
@@ -27,7 +28,7 @@ const columns = [
   { key: 'age', width: 40, title: 'Age' }
 ];
 
-function ShinobiTable() {
+function ShinobiTable(props) {
   return (
     <Bootstrap
       style={{
@@ -37,8 +38,9 @@ function ShinobiTable() {
       <Table
         data={data}
         columns={columns}
-        className="table-sm table-striped"
+        className="table-sm"
         headerClassName="thead-dark"
+        {...props}
       />
     </Bootstrap>
   );
