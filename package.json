@@ -15,10 +15,14 @@
     "window",
     "windowed",
     "list",
-    "scrolling",
-    "infinite",
+    "infinite-scrolling",
     "virtualized",
-    "table"
+    "table",
+    "data-table",
+    "fixed-data-table",
+    "brian-vaughn",
+    "typescript",
+    "light-weight"
   ],
   "main": "dist/index.js",
   "module": "dist/index.es.js",
