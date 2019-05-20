@@ -210,8 +210,8 @@ function WindowTable<T = any>({
   return (
     <div
       style={{
-        height: 'calc(100% - 16px)', // 16px less to avoid possible unnecessary scrollbars
-        width: '100%',
+        height: height ? `${height}px` : 'calc(100% - 16px)', // 16px less to avoid possible unnecessary scrollbars
+        width: width ? `${width}px` : '100%',
         overflow: 'auto',
         maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
         ...style
