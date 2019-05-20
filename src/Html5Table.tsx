@@ -1,7 +1,7 @@
 import * as React from 'react';
 import WindowTable, { WindowTableProps } from './WindowTable';
 
-const getTHead = (headerClassName: string) => {
+const getTHead = (headerClassName: string = '') => {
   const THead: React.FunctionComponent<
     React.HTMLAttributes<HTMLTableSectionElement>
   > = props => {
