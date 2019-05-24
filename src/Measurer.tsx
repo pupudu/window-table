@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { debounce, isEqual } from 'lodash-es';
+import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 const { useMemo, useReducer } = React;

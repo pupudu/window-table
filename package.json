@@ -46,12 +46,12 @@
     "now-dev": "docz dev"
   },
   "dependencies": {
-    "lodash-es": "^4.17.11",
+    "lodash": "^4.17.11",
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.1"
   },
   "peerDependencies": {
-    "lodash-es": "^4.0.0",
+    "lodash": "^4.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-virtualized-auto-sizer": "^1.0.0",
