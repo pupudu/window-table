@@ -15,9 +15,9 @@ interface ReducerState {
 }
 
 let cache: ReducerState = {
-  header: [10, 100],
-  row: [10, 20],
-  table: [100, 100]
+  header: [0, 0],
+  row: [0, 0],
+  table: [0, 0]
 };
 
 export const reducer: React.Reducer<ReducerState, MeasureAction> = (
@@ -31,7 +31,7 @@ export const reducer: React.Reducer<ReducerState, MeasureAction> = (
       [entity]: dimensions
     };
     // Update state only when `table` entity dimensions have updated
-    if (entity === 'table' && !isEqual(state[entity], cache[entity])) {
+    if (!isEqual(state[entity], cache[entity])) {
       return cache;
     }
   }
@@ -47,15 +47,17 @@ export interface MeasureAction {
 export const Measurer: React.FunctionComponent<{
   measure: React.Dispatch<MeasureAction>;
   entity: TableEntity;
-}> = ({ measure, entity }) => {
-  const debouncedDispatch = useMemo(
-    () => debounce(measure, 100, { leading: true }),
-    [measure]
+  debounceWait: number;
+}> = ({ measure, entity, debounceWait }) => {
+  const debounced = useMemo(
+    () => debounce(measure, debounceWait, { leading: true }),
+    [measure, debounceWait]
   );
+  const dispatch = debounceWait > 0 ? debounced : measure;
   return (
     <AutoSizer>
       {({ height, width }) => {
-        debouncedDispatch({ dimensions: [height, width], entity });
+        dispatch({ dimensions: [height, width], entity });
         return null;
       }}
     </AutoSizer>

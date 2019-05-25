@@ -177,6 +177,14 @@ odd and even rows:
 ## **overscanCount**: Number
 This is the same `overscanCount` prop from react-window, serving the same purpose.
 
+## **debounceWait**: Number
+Window Table internally uses a measurer to measure the optimal
+table and cell dimensions. In rare cases, this may cause react
+to re-render indefinitely until the app crashes.
+
+To prevent such scenarios, and to debug in such cases, a number
+can be passed to the `debounceWait` to examine how the dimensions
+change over time.
 
 ## **Cell**: React.Component
 By default, each table cell will be rendered using a `div`. 

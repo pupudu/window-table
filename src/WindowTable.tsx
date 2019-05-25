@@ -101,12 +101,18 @@ const RowRenderer: React.FunctionComponent<
 const MemoRowRenderer = memo(RowRenderer, areEqual);
 
 const HeaderRowRenderer: React.FunctionComponent<{
-  width: number;
   measure: React.Dispatch<MeasureAction>;
   Header: React.ElementType;
   HeaderRow: React.ElementType;
   HeaderCell: React.ElementType;
-}> = ({ measure, Header, HeaderRow, HeaderCell: DefaultHeaderCell }) => {
+  debounceWait: number;
+}> = ({
+  measure,
+  Header,
+  HeaderRow,
+  HeaderCell: DefaultHeaderCell,
+  debounceWait
+}) => {
   const { columns, classNamePrefix } = useContext(TableContext);
 
   return (
@@ -117,7 +123,11 @@ const HeaderRowRenderer: React.FunctionComponent<{
         }}
         className={`${classNamePrefix}table-header-row`}
       >
-        <Measurer measure={measure} entity="header" />
+        <Measurer
+          measure={measure}
+          entity="header"
+          debounceWait={debounceWait}
+        />
         {columns.map(column => {
           const { key, width, title, HeaderCell = DefaultHeaderCell } = column;
           return (
@@ -160,6 +170,7 @@ export type WindowTableProps<T> = {
   className?: string;
   rowClassName?: string;
   classNamePrefix?: string;
+  debounceWait?: number;
 };
 
 function WindowTable<T = any>({
@@ -182,6 +193,7 @@ function WindowTable<T = any>({
   className = '',
   rowClassName = 'table-row',
   classNamePrefix = '',
+  debounceWait = 0,
   ...rest
 }: WindowTableProps<T>) {
   const List: React.ElementType =
@@ -232,7 +244,11 @@ function WindowTable<T = any>({
         >
           <Body className={`${classNamePrefix}table-body`}>
             <Row className={`${classNamePrefix}table-row`}>
-              <Measurer measure={measure} entity="row" />
+              <Measurer
+                measure={measure}
+                entity="row"
+                debounceWait={debounceWait}
+              />
               <RowCells
                 datum={sampleRow || data[sampleRowIndex]}
                 columns={columns}
@@ -255,18 +271,20 @@ function WindowTable<T = any>({
         }}
       >
         <div>
-          <Table
-            style={{ width: `${effectiveWidth}px`, marginBottom: 0 }}
-            className={tableClassName}
-          >
-            <HeaderRowRenderer
-              width={effectiveWidth}
-              measure={measure}
-              Header={Header}
-              HeaderRow={HeaderRow}
-              HeaderCell={HeaderCell}
-            />
-          </Table>
+          {tableWidth > 0 && (
+            <Table
+              style={{ width: `${effectiveWidth}px`, marginBottom: 0 }}
+              className={tableClassName}
+            >
+              <HeaderRowRenderer
+                measure={measure}
+                debounceWait={debounceWait}
+                Header={Header}
+                HeaderRow={HeaderRow}
+                HeaderCell={HeaderCell}
+              />
+            </Table>
+          )}
           <List
             height={bodyHeight}
             itemCount={data.length}
@@ -282,7 +300,11 @@ function WindowTable<T = any>({
 
       {(!height || !width) && (
         /*Measure table dimensions only if explicit height or width are not supplied*/
-        <Measurer measure={measure} entity="table" />
+        <Measurer
+          measure={measure}
+          entity="table"
+          debounceWait={debounceWait}
+        />
       )}
     </div>
   );
