@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "next": "^8.1.0",
+    "window-table": "link:../../dist/"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  }
+}
