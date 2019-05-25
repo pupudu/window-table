@@ -7,7 +7,7 @@ const { useMemo, useReducer } = React;
 
 // Define the initial state of dimensions
 // Also to be used as a state which will not trigger a re-render on changes
-// So that we can change state from the useReducer, only once per all three dimension entities
+// So that we can change state from the useReducer, only when required
 interface ReducerState {
   header: [number, number];
   row: [number, number];
@@ -30,8 +30,10 @@ export const reducer: React.Reducer<ReducerState, MeasureAction> = (
       ...cache,
       [entity]: dimensions
     };
-    // Update state only when `table` entity dimensions have updated
-    if (!isEqual(state[entity], cache[entity])) {
+    if (
+      ['row', 'table'].includes(entity) &&
+      !isEqual(state[entity], cache[entity])
+    ) {
       return cache;
     }
   }
