@@ -10,7 +10,7 @@ const { useState, useMemo } = React;
  */
 export function useDebouncedState(
   initialState: any,
-  wait: number = 50
+  wait: number = 100
 ): [any, any, (state: any) => void] {
   const [immediateState, setImmediateState] = useState(initialState);
   const [debouncedState, setState] = useState(initialState);
