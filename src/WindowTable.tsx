@@ -230,7 +230,7 @@ function WindowTable<T = any>({
       }}
       {...rest}
     >
-      {!rowHeight && (
+      {!rowHeight && !!data.length && (
         /*Measure row height only if not supplied explicitly*/
         <Table
           style={{
@@ -285,16 +285,18 @@ function WindowTable<T = any>({
               />
             </Table>
           )}
-          <List
-            height={bodyHeight}
-            itemCount={data.length}
-            itemSize={rowHeight || sampleRowHeight}
-            width={effectiveWidth}
-            innerElementType={TableBody}
-            overscanCount={overscanCount}
-          >
-            {MemoRowRenderer}
-          </List>
+          {!!data.length && (
+            <List
+              height={bodyHeight}
+              itemCount={data.length}
+              itemSize={rowHeight || sampleRowHeight}
+              width={effectiveWidth}
+              innerElementType={TableBody}
+              overscanCount={overscanCount}
+            >
+              {MemoRowRenderer}
+            </List>
+          )}
         </div>
       </TableContext.Provider>
 
