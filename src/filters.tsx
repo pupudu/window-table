@@ -55,9 +55,11 @@ export function createFilter(fields: string[]) {
   return (originalData: any, filterText: string) =>
     originalData.filter((data: any) =>
       fields.some((field: string) => {
-        return data[field]
-          .toLowerCase()
-          .includes(filterText.trim().toLowerCase());
+        return (
+          data[field] &&
+          filterText &&
+          data[field].toLowerCase().includes(filterText.trim().toLowerCase())
+        );
       })
     );
 }
