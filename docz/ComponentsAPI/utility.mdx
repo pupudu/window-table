@@ -1,0 +1,136 @@
+---
+menu: Components API
+name: Utility Functions
+---
+
+# Utility Functions
+
+## **useDebouncedState**
+This is a slight variation of React's useState hook.
+
+```
+const [state, debouncedState, setState] = useDebouncedState(initialState, wait);
+```
+
+### **Arguments:**
+
+### `initialState`: any
+Same as the initialState of the `useState` hook
+
+### `wait`: number (default = 50)
+The debounce wait value in milliseconds.
+
+### **Return Values Array:**
+
+### `state`: any
+Same as the `state` from the `useState` hook
+
+### `debouncedState`: any
+Similar to state, except, this will be updated at most once per every `wait` milliseconds.
+
+For example, if you call `setState`, 3 times(with values 'foo', 'bar', and 'baz') within 50 milliseconds,
+* state will get all three values: 'foo', 'bar', and 'baz'
+* debouncedState will get only `baz`
+
+### `setState`: Function
+Same as the `setState` from the `useState` hook
+
+## **useFilter**
+This hook does two simple things
+
+1. Return the original data list when the `filterText` is empty
+1. Memoize the search results for fast updates
+
+```jsx harmony
+const filteredData = useFilter(filterFn, data, filterText);
+```
+
+as shown above, it accepts 3 arguments,
+
+### `filterFn`: Function
+The filter function should take the following form,
+
+```jsx harmony
+function filterFn(data, filterText) {
+  // filter logic
+  return filteredData;
+}
+```
+
+### `data`: Array
+Original data array to be filtered.
+
+### `filterText`: string
+Search text to base the filtering on.
+
+The key idea here is that, the `filterFn` function will be
+called internally with the `data` and `filterText` search
+string in an optimal manner. 
+
+## **createFilter**
+
+Given a list of attributes, return a function which will filter data
+based on those attributes.
+
+It takes the following form:
+
+```
+const filterFn = createFilter(attributes);
+```
+
+### `attributes`: string[]
+Object keys to base the filtering on.
+
+### `filterFn`: Function
+A function which can filter data given a search text.
+More about this function can be found after the following example.
+
+Suppose we have a data set as follows,
+```
+const dataList = [
+  { name: 'Paolo', profession: 'Software Engineer', company: 'hipages'},
+  { name: 'Ayesha', profession: 'Flight Dispatcher', company: 'SL Airlines'},
+  { name: 'Daham', profession: 'Tech Lead', company: 'Sysco Labs'},
+  // ...
+]
+```
+
+And we create a filter function which can filter data based on `name` and `profession`
+```
+const filterFn = createFilter(['name', 'profession']);
+```
+
+Now if we supply the dataList to this function, along with some text,
+we will get the following results
+
+```
+// Returns row #3
+filterFn(dataList, 'Daham');
+
+// Returns rows #1 and #2 since it matches: "Engineer" and "Dispatcher"
+filterFn(dataList, 'er');
+
+// Returns rows #1 and #2 since it matches: "Paolo" and "Dispatcher"
+filterFn(dataList, 'pa');
+
+// Doesn't yield any rows, as we didn't add `company` to the filter list
+filterFn(dataList, 'Sysco Labs');
+```
+
+###
+
+The filter function returned from the createFilter function takes two arguments,
+and returns an array of filtered data
+
+```
+const filteredData = filterFn(dataList, filterText);
+```
+
+### `dataList`: array
+Original object array to be filtered.
+
+### `filterText`: string
+Search text to base the filtering on.
+
+### `filteredData`: array
+Similar structure to `dataList`, just with fewer entries.
