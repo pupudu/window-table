@@ -1,4 +1,6 @@
 /* eslint-disable */
+import React from "react";
+
 const shinobi = [
   { name: 'Naruto', age: 24, clan: 'Uzomaki', avatar: 'https://media1.giphy.com/media/A8KKbVZwr4wOk/giphy.gif' },
   { name: 'Hinata', age: 22, clan: 'Hyuga', avatar: 'https://media.giphy.com/media/bEWpI12th8pTq/giphy.gif' },
@@ -22,10 +24,35 @@ const shinobi = [
 ];
 /* eslint-enable */
 
-const repeatingShinobi = [];
-for (let i = 0; i < 100000; i++) {
-  const index = Math.floor(Math.random() * shinobi.length);
-  repeatingShinobi.push(shinobi[index]);
-}
+export const getData = (limit = 100000) => {
+  const repeatingShinobi = [];
+  for (let i = 0; i < limit; i++) {
+    const index = Math.floor(Math.random() * shinobi.length);
+    repeatingShinobi.push({
+      id: i,
+      ...shinobi[index]
+    });
+  }
+  return repeatingShinobi;
+};
+export const data = getData();
 
-export default repeatingShinobi;
+const Avatar = ({ row, column }) => {
+  return (
+    <img
+      src={row[column.key]}
+      alt="avatar"
+      style={{
+        height: '40px'
+      }}
+    />
+  );
+};
+
+export const columns = [
+  { key: 'id', width: 25, title: 'Index' },
+  { key: 'avatar', width: 40, title: 'Avatar', Component: Avatar },
+  { key: 'name', width: 100, title: 'Name' },
+  { key: 'clan', width: 100, title: 'Clan' },
+  { key: 'age', width: 40, title: 'Age' }
+];
