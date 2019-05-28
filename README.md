@@ -12,6 +12,8 @@ We have a website **now**!!!
 
 Checkout [**window-table.now.sh**](http://window-table.now.sh)
 
+**Like the idea? Support us by pressing the star button.**
+
 ## Introduction
 
 This is a light-weight, powerful implementation of a virtualized 

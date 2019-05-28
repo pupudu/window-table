@@ -1,18 +1,46 @@
 import React from 'react';
-import { Html5Table as Table } from '../../';
+import {
+  Html5Table as Table,
+  useDebouncedState,
+  createFilter,
+  useFilter
+} from '../../';
 import { data, columns } from './helpers';
 import './demo.scss';
+import { Card, CardBody } from 'stylestrap';
+
+const filterFn = createFilter(['name', 'clan']);
 
 function ShinobiTable(props) {
+  const [text, debouncedText, setText] = useDebouncedState('');
+  const filteredData = useFilter(filterFn, data, debouncedText);
+
   return (
-    <div className="bootstrap-wrapper" style={{ height: '250px' }}>
-      <Table
-        data={data}
-        columns={columns}
-        className="table-sm"
-        headerClassName="thead-dark"
-        {...props}
-      />
+    <div className="bootstrap-wrapper">
+      <Card>
+        <CardBody>
+          <input
+            onChange={e => setText(e.target.value)}
+            value={text}
+            placeholder="Filter by Name or Clan"
+            style={{
+              marginBottom: '5px',
+              padding: '2px 5px',
+              borderRadius: '3px',
+              border: '1px solid #ccc',
+              width: '200px'
+            }}
+          />
+          <Table
+            style={{ height: '250px' }}
+            data={filteredData}
+            columns={columns}
+            className="table-sm"
+            headerClassName="thead-dark"
+            {...props}
+          />
+        </CardBody>
+      </Card>
     </div>
   );
 }
