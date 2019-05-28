@@ -15,5 +15,6 @@ export default {
     { name: 'Components API', menu: ['WindowTable', 'HTML5Table'] },
     { name: 'Guides', menu: ['Striped Table'] },
     { name: 'Github', href: 'https://github.com/pupudu/window-table' }
-  ]
+  ],
+  wrapper: 'docz/DoczRoot'
 };
