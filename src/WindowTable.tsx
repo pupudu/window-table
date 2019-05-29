@@ -312,4 +312,4 @@ function WindowTable<T = any>({
   );
 }
 
-export default WindowTable;
+export default memo(WindowTable) as typeof WindowTable;
