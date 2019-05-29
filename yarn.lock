@@ -14542,10 +14542,10 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-stylestrap@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/stylestrap/-/stylestrap-0.2.0.tgz#e01130d6cbbb265d503a56fff2ed8607086952d3"
-  integrity sha512-DRrfMva3VjLK3lw2H95mUPidka6x9LKcz7w31RjIq1ulmi8cl5Dp+fzJ3D0dyA0jsrUIT77bPdncTI216JmyhA==
+stylestrap@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/stylestrap/-/stylestrap-0.2.1.tgz#7dafa19614dedfa9630784f23f5c8a4a5f4fdcd0"
+  integrity sha512-NCOnksl13s/s7WXPAUs4zDWc39zCMYpNoZHjvY6PWK2toXuaYNhMCDmVZmJrhTVlOFewlkuq9PmeI4fZ01jp5Q==
   dependencies:
     classnames "^2.2.6"
     reactstrap "^8.0.0"
