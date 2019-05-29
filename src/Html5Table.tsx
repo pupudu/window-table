@@ -34,4 +34,4 @@ function Html5Table<T = any>({
   );
 }
 
-export default Html5Table;
+export default React.memo(Html5Table) as typeof Html5Table;
