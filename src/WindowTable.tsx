@@ -50,6 +50,9 @@ const RowCells = ({
               boxSizing: 'border-box'
             }}
             className={`${classNamePrefix}table-cell`}
+            row={datum}
+            column={column}
+            index={index}
           >
             <Component row={datum} column={column} index={index}>
               {datum[key]}
@@ -87,6 +90,7 @@ const RowRenderer: React.FunctionComponent<
       }}
       className={`${classNamePrefix}${rowClassNameStr}`}
       index={index}
+      row={data[index]}
     >
       <RowCells
         datum={data[index]}
