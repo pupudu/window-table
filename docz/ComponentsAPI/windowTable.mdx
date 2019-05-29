@@ -248,4 +248,12 @@ Think of it as a `tr` primitive, nested inside a `tbody`.
 
 However, in addition to the `style` and `className` props,
 `Row` will be passed the `index` of the table row being
-rendered.  
+rendered, and the `row` data itself.
+
+```jsx harmony
+function CustomRow({index, row, ...rest}) {
+  // index -> one of 0, 1, 2, 3, ...
+  // row -> corresponding data row. eg: { id: 2, name: 'Naruto', ...}
+  return <tr {...rest} />
+}
+```  

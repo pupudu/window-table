@@ -1,0 +1,196 @@
+---
+menu: Guides
+name: Adding Event Listeners
+---
+
+import { Playground } from 'docz';
+import RowEventListener from './RowEventListener';
+
+# Adding Event Listeners
+
+In this guide, we will explore how we can leverage the
+customizability of this library to add a table row **event listener**
+in a matter of few lines of code. 
+
+To explain this concept, we will add a click listener to the
+rows of the table. let's have a
+sneak peak at what we are going to achieve. 
+Go ahead and click on a row. 
+
+<RowEventListener />
+
+For the purpose of styling, we will use a bootstrap based
+library called `stylestrap`, but pretty much any library
+out there can be used for that. 
+
+First let's see what the final implementation looks like.
+
+```jsx harmony
+import React, { useState } from 'react';
+import { Html5Table } from 'window-table';
+
+// Components like `Card`, `CardHeader`... come from the stylestrap library
+
+// We store the state handler outside the component
+// This is done only as a performance optimization
+const handlers = {
+  setState: null
+};
+
+// Here we define our custom Row component
+// along with our intended click event listener
+// index: The index of each row being rendered 
+const CustomRow = ({ index, ...rest }) => {
+  return (
+    <tr
+      // Here we call the stored state handler
+      onClick={() => handlers.setState(index)}
+      
+      // It's important that we pass all the remaining props here
+      {...rest}
+    />
+  );
+};
+
+export default function ShinobiTable(props) {
+  const [state, setState] = useState({});
+  
+  // Store the setState handler in an object outside the parent component
+  // This is done, only as a performance optimization
+  handlers.setState = rowIndex => {
+    // Given the rowIndex of the clicked row, we store the corresponding data in the state
+    // rowIndex is passed from the CustomRow onClick handler
+    setState(data[rowIndex]);
+  };
+
+  return (
+    <Card>
+      <CardBody>
+        <Html5Table
+          // Here we pass our customized Row component
+          Row={CustomRow}
+          // data and columns come from an internal helper
+          // More props can be passed for styling and customizing
+          data={data}
+          columns={columns}
+        />
+      </CardBody>
+      <CardFooter>
+        {/*Code for showing the selection goes here. For now, just show the stringified data*/}
+        {JSON.stringify(state)}
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+As you can see, all of the techniques used here are plain
+React patterns. We are not introducing any black magic, and instead
+we leverage the known React patterns.
+
+**Let's go through the important pieces of code which ensures
+both flexibility and performance.**
+
+## Custom Components
+In this guide, we created our own custom Row component. This allows
+us to customize pretty much anything in addition to the event
+listener we added. For example, you can add classNames, inline-styles,
+use a component from a 3rd party components library and what not. 
+
+```jsx harmony
+const CustomRow = props => {
+  // Here we are using the `Tr` component from stylestrap
+  // ...which allows us to pass in a css attribute  
+  return (
+    <Tr 
+      {...props} // It is important that we forward the original props
+      styles={{
+        // It is important that we merge the original styles
+        // See the components API for more details
+        ...props.styles,
+        cursor: 'pointer'
+      }}
+      css={{ background: '#EEE'}}
+      onMouseDown={e => { /* Do something on Mouse Move*/ }}
+    />
+  );
+}
+```
+As commented on the code snippet above, it is important that
+we forward the original props. This is because, WindowTable internally
+passes such attributes which are crucial for the rows to 
+get windowed as expected. If you are using the style attribute,
+you should merge it with the original styles as above. 
+Yet, you would normally avoid using inline styles anyway. 
+
+If you head on to the Components API, you will see that all
+other Table elements like, `Table`, `Body`, `Cell`, etc can be
+fully customized in the same way as above. 
+
+## External Event handlers
+I bet the first thing you noticed about this example is that
+we store the `setState` function outside the `ShinobiTable` 
+component. This has nothing to do with `window-table` itself.
+This is a powerful technique to prevent unnecessary re-renders in React.
+
+We want to access `setState` from the `onClick` listener
+of `CustomRow`. The most intuitive way of doing that is to 
+define the component inside the ShinobiTable. 
+
+```jsx harmony
+export default function ShinobiTable(props) {
+  const [rowIndex, setRowIndex] = useState({});
+  const CustomRow = ({index, ...props}) => {
+    return <tr onClick={() => setRowIndex(index)} {...props} />  
+  };
+  
+  return <WindowTable {/*props*/} />
+}
+```
+
+However, if we do that, the `CustomRow` will be declared
+on each row click. This is because, the component internal
+state is changed every time we call `setRowIndex`, making
+React trigger another render. 
+
+The performance impact explained here may not be
+visible to the eye at first, but will start to appear as the 
+application grows. 
+
+One way of working around this issue is by using the `React.useMemo`
+hook. We can wrap the CustomRow in a useMemo call as follows.
+Then, `CustomRow` will not be updated every time `rowIndex` changes.
+
+```jsx harmony
+const CustomRow = useMemo(  
+  () => ({index, props}) => {
+    return <tr onClick={() => setRowIndex(index)} {...props} />  
+  },
+  [setRowIndex]
+)
+```
+
+You can use this technique if you prefer that, or else,
+we can avoid the issue in the first place, by defining the 
+`CustomRow` component outside of the `ShinobiTable`. 
+However, this takes the access to the `setRowIndex` function
+away from the `CustomRow`. This can be solved by attaching the 
+function to a regular JS object defined outside of both the 
+components, as shown in the first example. 
+
+This may first seem like React's context, except, changes to 
+this plain JS object does not trigger any re-renders. 
+
+## Using row instead of row Index
+In the above example, we used the `index` prop to find the row index
+and then used it to find the row data from `data`. A shorter way to
+access the row data is to use the `row` prop directly.
+
+```jsx harmony
+const CustomRow = ({index, row, ...props}) => {
+  console.log(data[index]); // {id: 2, name: 'Naruto', ...}
+  console.log(row); // {id: 2, name: 'Naruto', ...}
+  
+  // render TableRow.
+}
+```
