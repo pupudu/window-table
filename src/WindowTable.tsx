@@ -7,6 +7,7 @@ import {
   RowCellsProps,
   HeaderRowProps
 } from './types';
+import { areTablePropsEqual } from './areTablePropsEqual';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useMemo } = React;
@@ -279,4 +280,4 @@ function WindowTable<T = any>({
   );
 }
 
-export default memo(WindowTable) as typeof WindowTable;
+export default memo(WindowTable, areTablePropsEqual) as typeof WindowTable;
