@@ -1,8 +1,6 @@
-export {
-  default,
-  default as WindowTable,
-  Column as column
-} from './WindowTable';
+export { default, default as WindowTable } from './WindowTable';
+
+export { Column as column } from './types';
 
 export { default as Html5Table } from './Html5Table';
 

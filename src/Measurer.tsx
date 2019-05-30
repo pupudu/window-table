@@ -2,18 +2,13 @@ import * as React from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { MeasureAction, ReducerState, TableEntity } from './types';
 
 const { useMemo, useReducer } = React;
 
 // Define the initial state of dimensions
 // Also to be used as a state which will not trigger a re-render on changes
 // So that we can change state from the useReducer, only when required
-interface ReducerState {
-  header: [number, number];
-  row: [number, number];
-  table: [number, number];
-}
-
 let cache: ReducerState = {
   header: [0, 0],
   row: [0, 0],
@@ -39,12 +34,6 @@ export const reducer: React.Reducer<ReducerState, MeasureAction> = (
   }
   return state;
 };
-
-type TableEntity = keyof ReducerState;
-export interface MeasureAction {
-  entity: TableEntity;
-  dimensions: [number, number];
-}
 
 export const Measurer: React.FunctionComponent<{
   measure: React.Dispatch<MeasureAction>;

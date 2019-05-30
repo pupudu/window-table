@@ -1,5 +1,6 @@
 import * as React from 'react';
-import WindowTable, { WindowTableProps } from './WindowTable';
+import WindowTable from './WindowTable';
+import { Html5TableProps } from './types';
 
 const getTHead = (headerClassName: string = '') => {
   const THead: React.FunctionComponent<
@@ -11,10 +12,6 @@ const getTHead = (headerClassName: string = '') => {
   };
   return THead;
 };
-
-interface Html5TableProps<T> extends WindowTableProps<T> {
-  headerClassName: string;
-}
 
 function Html5Table<T = any>({
   headerClassName,

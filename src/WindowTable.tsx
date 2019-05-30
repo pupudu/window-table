@@ -1,17 +1,15 @@
 import * as React from 'react';
 import * as ReactWindow from 'react-window';
-import { Measurer, MeasureAction, useTableMeasurer } from './Measurer';
+import { Measurer, useTableMeasurer } from './Measurer';
+import {
+  Column,
+  WindowTableProps,
+  RowCellsProps,
+  HeaderRowProps
+} from './types';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useMemo } = React;
-
-export type Column<T = string, K = any> = {
-  key: T;
-  width: number;
-  title?: string;
-  Component?: React.ElementType<{ row?: K; column?: Column<T, K> }>;
-  HeaderCell?: React.ElementType;
-};
 
 const TableContext = createContext({
   columns: [] as Column<any, any>[],
@@ -28,13 +26,7 @@ const RowCells = ({
   datum,
   Cell,
   index = 0
-}: {
-  columns: any[];
-  classNamePrefix: string;
-  datum: any;
-  Cell: React.ElementType;
-  index?: number;
-}) => {
+}: RowCellsProps) => {
   return (
     <>
       {columns.map(column => {
@@ -104,13 +96,7 @@ const RowRenderer: React.FunctionComponent<
 };
 const MemoRowRenderer = memo(RowRenderer, areEqual);
 
-const HeaderRowRenderer: React.FunctionComponent<{
-  measure: React.Dispatch<MeasureAction>;
-  Header: React.ElementType;
-  HeaderRow: React.ElementType;
-  HeaderCell: React.ElementType;
-  debounceWait: number;
-}> = ({
+const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
   measure,
   Header,
   HeaderRow,
@@ -152,29 +138,6 @@ const HeaderRowRenderer: React.FunctionComponent<{
       </HeaderRow>
     </Header>
   );
-};
-
-export type WindowTableProps<T> = {
-  columns: Column<keyof T, T>[];
-  data: T[];
-  height?: number;
-  width?: number;
-  rowHeight?: number;
-  overscanCount?: number;
-  style?: React.CSSProperties;
-  Cell?: React.ElementType;
-  HeaderCell?: React.ElementType;
-  Table?: React.ElementType;
-  Header?: React.ElementType;
-  HeaderRow?: React.ElementType;
-  Row?: React.ElementType;
-  Body?: React.ElementType;
-  sampleRowIndex?: number;
-  sampleRow?: T;
-  className?: string;
-  rowClassName?: string;
-  classNamePrefix?: string;
-  debounceWait?: number;
 };
 
 function WindowTable<T = any>({
