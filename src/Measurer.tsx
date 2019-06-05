@@ -25,10 +25,7 @@ export const reducer: React.Reducer<ReducerState, MeasureAction> = (
       ...cache,
       [entity]: dimensions
     };
-    if (
-      ['row', 'table'].includes(entity) &&
-      !isEqual(state[entity], cache[entity])
-    ) {
+    if (!isEqual(state[entity], cache[entity])) {
       return cache;
     }
   }
