@@ -30,11 +30,13 @@ const RowCells = ({
 }: RowCellsProps) => {
   return (
     <>
-      {columns.map(column => {
+      {columns.map((column, i) => {
         const { key, width, Component = 'div' } = column;
+        // Using i as the key, because it doesn't matter much,
+        // as we are only looping through columns in one row only
         return (
           <Cell
-            key={key}
+            key={i}
             style={{
               width: `${width}px`,
               flexGrow: width,
