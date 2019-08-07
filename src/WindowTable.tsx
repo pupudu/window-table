@@ -100,11 +100,10 @@ const RowRenderer: React.FunctionComponent<
 const MemoRowRenderer = memo(RowRenderer, areEqual);
 
 const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
-  measure,
   Header,
   HeaderRow,
   HeaderCell: DefaultHeaderCell,
-  debounceWait
+  children
 }) => {
   const { columns, classNamePrefix } = useContext(TableContext);
 
@@ -116,11 +115,7 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
         }}
         className={`${classNamePrefix}table-header-row`}
       >
-        <Measurer
-          measure={measure}
-          entity="header"
-          debounceWait={debounceWait}
-        />
+        {children}
         {columns.map(column => {
           const { key, width, title, HeaderCell = DefaultHeaderCell } = column;
           return (
@@ -206,12 +201,23 @@ function WindowTable<T = any>({
           style={{
             height: 0,
             opacity: 0,
-            display: 'block',
+            display: 'grid',
             margin: 0,
             width: `${effectiveWidth}px`
           }}
           className={tableClassName}
         >
+          <HeaderRowRenderer
+            Header={Header}
+            HeaderRow={HeaderRow}
+            HeaderCell={HeaderCell}
+          >
+            <Measurer
+              measure={measure}
+              entity="header"
+              debounceWait={debounceWait}
+            />
+          </HeaderRowRenderer>
           <Body className={`${classNamePrefix}table-body`}>
             <Row className={`${classNamePrefix}table-row`}>
               <Measurer
@@ -247,8 +253,6 @@ function WindowTable<T = any>({
               className={tableClassName}
             >
               <HeaderRowRenderer
-                measure={measure}
-                debounceWait={debounceWait}
                 Header={Header}
                 HeaderRow={HeaderRow}
                 HeaderCell={HeaderCell}
