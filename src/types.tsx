@@ -53,11 +53,10 @@ export interface RowCellsProps {
 }
 
 export interface HeaderRowProps {
-  measure: React.Dispatch<MeasureAction>;
   Header: React.ElementType;
   HeaderRow: React.ElementType;
   HeaderCell: React.ElementType;
-  debounceWait: number;
+  children?: any;
 }
 
 export interface Html5TableProps<T> extends WindowTableProps<T> {
