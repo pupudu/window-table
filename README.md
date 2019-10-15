@@ -10,7 +10,7 @@
 
 We have a website **now**!!!
 
-Checkout [**window-table.now.sh**](http://window-table.now.sh)
+Checkout [**window-table.netlify.com**](https://window-table.netlify.com/)
 
 **Like the idea? Support us by pressing the star button.**
 
@@ -31,7 +31,7 @@ Why Window Table?
 * Supports HTML5 table tags
 * Production Ready - Being used all in the Admin application at hipages, Australia
 
-checkout the [website](http://window-table.now.sh) 
+checkout the [website](https://window-table.netlify.com/) 
 for getting started, API docs, examples and guides. 
 
 Check a [live preview](https://6w5ov594vn.codesandbox.io/) and
