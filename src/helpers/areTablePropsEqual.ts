@@ -7,7 +7,7 @@ const otherProps = [
   'width',
   'className',
   'rowClassName',
-  'classNamePrefix'
+  'classNamePrefix',
 ];
 
 export function areTablePropsEqual(prev: any, next: any) {

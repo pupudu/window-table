@@ -5,7 +5,7 @@ import {
   Column,
   WindowTableProps,
   RowCellsProps,
-  HeaderRowProps
+  HeaderRowProps,
 } from './core/types';
 import { areTablePropsEqual } from './helpers/areTablePropsEqual';
 
@@ -18,7 +18,7 @@ const TableContext = createContext({
   Cell: 'div' as React.ElementType,
   Row: 'div' as React.ElementType,
   classNamePrefix: '',
-  rowClassName: '' as string | Function
+  rowClassName: '' as string | Function,
 });
 
 const RowCells = ({
@@ -26,7 +26,7 @@ const RowCells = ({
   classNamePrefix,
   datum,
   Cell,
-  index = 0
+  index = 0,
 }: RowCellsProps) => {
   return (
     <>
@@ -42,7 +42,7 @@ const RowCells = ({
               flexGrow: width,
               display: 'inline-block',
               overflow: 'auto',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
             }}
             className={`${classNamePrefix}table-cell`}
             row={datum}
@@ -68,7 +68,7 @@ const RowRenderer: React.FunctionComponent<
     Cell,
     classNamePrefix,
     Row,
-    rowClassName
+    rowClassName,
   } = useContext(TableContext);
 
   const rowClassNameStr = useMemo(
@@ -81,7 +81,7 @@ const RowRenderer: React.FunctionComponent<
     <Row
       style={{
         ...style,
-        display: 'flex'
+        display: 'flex',
       }}
       className={`${classNamePrefix}${rowClassNameStr}`}
       index={index}
@@ -103,7 +103,7 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
   Header,
   HeaderRow,
   HeaderCell: DefaultHeaderCell,
-  children
+  children,
 }) => {
   const { columns, classNamePrefix } = useContext(TableContext);
 
@@ -111,7 +111,7 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
     <Header className={`${classNamePrefix}table-header`}>
       <HeaderRow
         style={{
-          display: 'flex'
+          display: 'flex',
         }}
         className={`${classNamePrefix}table-header-row`}
       >
@@ -124,7 +124,7 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
               style={{
                 width: `${width}px`,
                 display: 'inline-block',
-                flexGrow: width
+                flexGrow: width,
               }}
               className={`${classNamePrefix}table-header-cell`}
               column={column}
@@ -193,7 +193,7 @@ function WindowTable<T = any>({
         width: width ? `${width}px` : '100%',
         overflow: 'auto',
         maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
-        ...style
+        ...style,
       }}
       {...rest}
     >
@@ -206,7 +206,7 @@ function WindowTable<T = any>({
             display: 'grid',
             overflow: 'hidden',
             margin: 0,
-            width: `${effectiveWidth}px`
+            width: `${effectiveWidth}px`,
           }}
           className={tableClassName}
         >

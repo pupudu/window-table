@@ -12,7 +12,7 @@ const { useMemo, useReducer } = React;
 let cache: ReducerState = {
   header: [0, 0],
   row: [0, 0],
-  table: [0, 0]
+  table: [0, 0],
 };
 
 export const reducer: React.Reducer<ReducerState, MeasureAction> = (
@@ -23,7 +23,7 @@ export const reducer: React.Reducer<ReducerState, MeasureAction> = (
     // Keep updates in cache
     cache = {
       ...cache,
-      [entity]: dimensions
+      [entity]: dimensions,
     };
     if (!isEqual(state[entity], cache[entity])) {
       return cache;

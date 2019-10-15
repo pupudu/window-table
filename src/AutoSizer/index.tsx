@@ -55,12 +55,12 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
     onResize: () => {},
     disableHeight: false,
     disableWidth: false,
-    style: {}
+    style: {},
   };
 
   state = {
     height: this.props.defaultHeight || 0,
-    width: this.props.defaultWidth || 0
+    width: this.props.defaultWidth || 0,
   };
 
   _parentNode?: HTMLElement;
@@ -109,7 +109,7 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
       className,
       disableHeight,
       disableWidth,
-      style
+      style,
     } = this.props;
     const { height, width } = this.state;
 
@@ -147,7 +147,7 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
         ref={this._setRef as any}
         style={{
           ...outerStyle,
-          ...style
+          ...style,
         }}
       >
         {!bailoutOnChildren && children(childParams)}
@@ -181,7 +181,7 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
       ) {
         this.setState({
           height: height - paddingTop - paddingBottom,
-          width: width - paddingLeft - paddingRight
+          width: width - paddingLeft - paddingRight,
         });
 
         onResize({ height, width });

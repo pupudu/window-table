@@ -1,4 +1,5 @@
-export { default, default as WindowTable } from './WindowTable';
+export { default } from './WindowTable';
+export { default as WindowTable } from './WindowTable';
 
 export { Column as column } from './core/types';
 
