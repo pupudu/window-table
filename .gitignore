@@ -26,3 +26,6 @@ website
 .docz
 
 .next
+
+.rts2_cache_esm/
+.rts2_cache_cjs/
