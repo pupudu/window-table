@@ -42,6 +42,8 @@ export type WindowTableProps<T> = {
   rowClassName?: string;
   classNamePrefix?: string;
   debounceWait?: number;
+  headerCellInnerElementType?: string;
+  tableCellInnerElementType?: string;
 };
 
 export interface RowCellsProps {

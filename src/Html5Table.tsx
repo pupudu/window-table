@@ -26,6 +26,8 @@ function Html5Table<T = any>({
       Row="tr"
       Body="tbody"
       Table="table"
+      headerCellInnerElementType="th"
+      tableCellInnerElementType="td"
       {...props}
     />
   );

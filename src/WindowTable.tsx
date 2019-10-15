@@ -159,6 +159,8 @@ function WindowTable<T = any>({
   rowClassName = 'table-row',
   classNamePrefix = '',
   debounceWait = 0,
+  headerCellInnerElementType = 'div',
+  tableCellInnerElementType = 'div',
   ...rest
 }: WindowTableProps<T>) {
   const List: React.ElementType =
@@ -220,7 +222,7 @@ function WindowTable<T = any>({
                 measure={measure}
                 entity="header"
                 debounceWait={debounceWait}
-                innerElementType={HeaderCell}
+                innerElementType={headerCellInnerElementType}
               />
             </HeaderRowRenderer>
           </TableContext.Provider>
@@ -230,7 +232,7 @@ function WindowTable<T = any>({
                 measure={measure}
                 entity="row"
                 debounceWait={debounceWait}
-                innerElementType={Cell}
+                innerElementType={tableCellInnerElementType}
               />
               <RowCells
                 datum={sampleRow || data[sampleRowIndex]}
