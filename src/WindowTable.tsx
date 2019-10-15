@@ -220,6 +220,7 @@ function WindowTable<T = any>({
                 measure={measure}
                 entity="header"
                 debounceWait={debounceWait}
+                innerElementType={HeaderCell}
               />
             </HeaderRowRenderer>
           </TableContext.Provider>
@@ -229,6 +230,7 @@ function WindowTable<T = any>({
                 measure={measure}
                 entity="row"
                 debounceWait={debounceWait}
+                innerElementType={Cell}
               />
               <RowCells
                 datum={sampleRow || data[sampleRowIndex]}

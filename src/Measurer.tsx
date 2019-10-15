@@ -1,8 +1,8 @@
 import * as React from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { MeasureAction, ReducerState, TableEntity } from './types';
+import AutoSizer from './AutoSizer';
+import { MeasureAction, ReducerState, TableEntity } from './core/types';
 
 const { useMemo, useReducer } = React;
 
@@ -36,14 +36,15 @@ export const Measurer: React.FunctionComponent<{
   measure: React.Dispatch<MeasureAction>;
   entity: TableEntity;
   debounceWait: number;
-}> = ({ measure, entity, debounceWait }) => {
+  innerElementType?: any;
+}> = ({ measure, entity, debounceWait, innerElementType = 'div' }) => {
   const debounced = useMemo(
     () => debounce(measure, debounceWait, { leading: true }),
     [measure, debounceWait]
   );
   const dispatch = debounceWait > 0 ? debounced : measure;
   return (
-    <AutoSizer>
+    <AutoSizer innerElementType={innerElementType}>
       {({ height, width }) => {
         dispatch({ dimensions: [height, width], entity });
         return null;
