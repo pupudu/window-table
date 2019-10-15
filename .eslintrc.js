@@ -1,21 +1,14 @@
-{
-  "parser": "@typescript-eslint/parser",
+module.exports = {
   "extends": [
     "react-app",
-    "plugin:prettier/recommended",
-    "plugin:react/recommended",
-    "prettier/react"
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
   ],
   "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true
-      }
-    ],
     "no-var": "error",
     "prefer-const": "error",
     "prefer-template": "error",
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "@typescript-eslint/consistent-type-assertions": "off"
   }
-}
+};
