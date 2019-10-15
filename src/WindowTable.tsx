@@ -184,6 +184,8 @@ function WindowTable<T = any>({
     </Table>
   );
 
+  const tblCtx = { columns, data, Cell, Row, classNamePrefix, rowClassName };
+
   return (
     <div
       style={{
@@ -208,17 +210,19 @@ function WindowTable<T = any>({
           }}
           className={tableClassName}
         >
-          <HeaderRowRenderer
-            Header={Header}
-            HeaderRow={HeaderRow}
-            HeaderCell={HeaderCell}
-          >
-            <Measurer
-              measure={measure}
-              entity="header"
-              debounceWait={debounceWait}
-            />
-          </HeaderRowRenderer>
+          <TableContext.Provider value={tblCtx}>
+            <HeaderRowRenderer
+              Header={Header}
+              HeaderRow={HeaderRow}
+              HeaderCell={HeaderCell}
+            >
+              <Measurer
+                measure={measure}
+                entity="header"
+                debounceWait={debounceWait}
+              />
+            </HeaderRowRenderer>
+          </TableContext.Provider>
           <Body className={`${classNamePrefix}table-body`}>
             <Row className={`${classNamePrefix}table-row`}>
               <Measurer
@@ -237,16 +241,7 @@ function WindowTable<T = any>({
         </Table>
       )}
 
-      <TableContext.Provider
-        value={{
-          columns,
-          data,
-          Cell,
-          Row,
-          classNamePrefix,
-          rowClassName
-        }}
-      >
+      <TableContext.Provider value={tblCtx}>
         <div>
           {tableWidth > 0 && (
             <Table
