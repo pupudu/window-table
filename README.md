@@ -10,7 +10,7 @@
 
 We have a website **now**!!!
 
-Checkout [**window-table.now.sh**](http://window-table.now.sh)
+Checkout [**window-table.netlify.com**](https://window-table.netlify.com/)
 
 **Like the idea? Support us by pressing the star button.**
 
