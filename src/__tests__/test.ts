@@ -1,4 +1,4 @@
-import { WindowTable } from './';
+import { WindowTable } from '../index';
 
 describe('WindowTable', () => {
   it('is truthy', () => {

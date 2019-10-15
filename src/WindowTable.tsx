@@ -6,8 +6,8 @@ import {
   WindowTableProps,
   RowCellsProps,
   HeaderRowProps
-} from './types';
-import { areTablePropsEqual } from './areTablePropsEqual';
+} from './core/types';
+import { areTablePropsEqual } from './helpers/areTablePropsEqual';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useMemo } = React;

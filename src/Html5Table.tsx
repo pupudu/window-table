@@ -1,6 +1,6 @@
 import * as React from 'react';
 import WindowTable from './WindowTable';
-import { Html5TableProps } from './types';
+import { Html5TableProps } from './core/types';
 
 const getTHead = (headerClassName: string = '') => {
   const THead: React.FunctionComponent<
