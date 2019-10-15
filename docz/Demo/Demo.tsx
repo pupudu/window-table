@@ -4,7 +4,7 @@ import {
   useDebouncedState,
   createFilter,
   useFilter
-} from '../../';
+} from '../../src';
 import { data, columns } from './helpers';
 import './demo.scss';
 import { Card, CardBody } from 'stylestrap';
