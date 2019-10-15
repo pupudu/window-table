@@ -12,9 +12,9 @@
 
 /* eslint-disable */
 
-export default function createDetectElementResize(nonce) {
+export default function createDetectElementResize(nonce: any) {
   // Check `document` and `window` in case of server-side rendering
-  var _window;
+  let _window: any;
   if (typeof window !== 'undefined') {
     _window = window;
   } else if (typeof self !== 'undefined') {
@@ -23,54 +23,54 @@ export default function createDetectElementResize(nonce) {
     _window = global;
   }
 
-  var attachEvent = typeof document !== 'undefined' && document.attachEvent;
+  const attachEvent = typeof document !== 'undefined' && (document as any).attachEvent;
 
   if (!attachEvent) {
-    var requestFrame = (function () {
-      var raf =
+    const requestFrame = (function() {
+      const raf =
         _window.requestAnimationFrame ||
         _window.mozRequestAnimationFrame ||
         _window.webkitRequestAnimationFrame ||
-        function (fn) {
+        function(fn: any) {
           return _window.setTimeout(fn, 20);
         };
-      return function (fn) {
+      return function(fn: any) {
         return raf(fn);
       };
     })();
 
-    var cancelFrame = (function () {
-      var cancel =
+    const cancelFrame = (function() {
+      const cancel =
         _window.cancelAnimationFrame ||
         _window.mozCancelAnimationFrame ||
         _window.webkitCancelAnimationFrame ||
         _window.clearTimeout;
-      return function (id) {
+      return function(id: any) {
         return cancel(id);
       };
     })();
 
-    var resetTriggers = function (element) {
-      var triggers = element.__resizeTriggers__,
+    var resetTriggers = function(element: any) {
+      const triggers = element.__resizeTriggers__,
         expand = triggers.firstElementChild,
         contract = triggers.lastElementChild,
         expandChild = expand.firstElementChild;
       contract.scrollLeft = contract.scrollWidth;
       contract.scrollTop = contract.scrollHeight;
-      expandChild.style.width = expand.offsetWidth + 1 + 'px';
-      expandChild.style.height = expand.offsetHeight + 1 + 'px';
+      expandChild.style.width = `${expand.offsetWidth + 1}px`;
+      expandChild.style.height = `${expand.offsetHeight + 1}px`;
       expand.scrollLeft = expand.scrollWidth;
       expand.scrollTop = expand.scrollHeight;
     };
 
-    var checkTriggers = function (element) {
+    const checkTriggers = function(element: any) {
       return (
         element.offsetWidth != element.__resizeLast__.width ||
         element.offsetHeight != element.__resizeLast__.height
       );
     };
 
-    var scrollListener = function (e) {
+    var scrollListener = function(e: any) {
       // Don't measure (which forces) reflow for scrolls that happen inside of children!
       if (
         e.target.className.indexOf('contract-trigger') < 0 &&
@@ -79,16 +79,18 @@ export default function createDetectElementResize(nonce) {
         return;
       }
 
-      var element = this;
-      resetTriggers(this);
-      if (this.__resizeRAF__) {
-        cancelFrame(this.__resizeRAF__);
+      // @ts-ignore
+      const _this: any = this;
+      const element = _this;
+      resetTriggers(_this);
+      if (_this.__resizeRAF__) {
+        cancelFrame(_this.__resizeRAF__);
       }
-      this.__resizeRAF__ = requestFrame(function () {
+      _this.__resizeRAF__ = requestFrame(function() {
         if (checkTriggers(element)) {
           element.__resizeLast__.width = element.offsetWidth;
           element.__resizeLast__.height = element.offsetHeight;
-          element.__resizeListeners__.forEach(function (fn) {
+          element.__resizeListeners__.forEach(function(fn: any) {
             fn.call(element, e);
           });
         }
@@ -101,20 +103,20 @@ export default function createDetectElementResize(nonce) {
       animationstartevent = 'animationstart',
       domPrefixes = 'Webkit Moz O ms'.split(' '),
       startEvents = 'webkitAnimationStart animationstart oAnimationStart MSAnimationStart'.split(
-        ' ',
+        ' '
       ),
       pfx = '';
     {
-      var elm = document.createElement('fakeelement');
+      const elm = document.createElement('fakeelement');
       if (elm.style.animationName !== undefined) {
         animation = true;
       }
 
       if (animation === false) {
-        for (var i = 0; i < domPrefixes.length; i++) {
-          if (elm.style[domPrefixes[i] + 'AnimationName'] !== undefined) {
+        for (let i = 0; i < domPrefixes.length; i++) {
+          if (elm.style[`${domPrefixes[i]}AnimationName`] !== undefined) {
             pfx = domPrefixes[i];
-            keyframeprefix = '-' + pfx.toLowerCase() + '-';
+            keyframeprefix = `-${pfx.toLowerCase()}-`;
             animationstartevent = startEvents[i];
             animation = true;
             break;
@@ -124,25 +126,18 @@ export default function createDetectElementResize(nonce) {
     }
 
     var animationName = 'resizeanim';
-    var animationKeyframes =
-      '@' +
-      keyframeprefix +
-      'keyframes ' +
-      animationName +
-      ' { from { opacity: 0; } to { opacity: 0; } } ';
-    var animationStyle =
-      keyframeprefix + 'animation: 1ms ' + animationName + '; ';
+    var animationKeyframes = `@${keyframeprefix}keyframes ${animationName} { from { opacity: 0; } to { opacity: 0; } } `;
+    var animationStyle = `${keyframeprefix}animation: 1ms ${animationName}; `;
   }
 
-  var createStyles = function (doc) {
+  const createStyles = function(doc: any) {
     if (!doc.getElementById('detectElementResize')) {
       //opacity:0 works around a chrome bug https://code.google.com/p/chromium/issues/detail?id=286360
-      var css =
-        (animationKeyframes ? animationKeyframes : '') +
-        '.resize-triggers { ' +
-        (animationStyle ? animationStyle : '') +
-        'visibility: hidden; opacity: 0; } ' +
-        '.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: " "; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; z-index: -1; } .resize-triggers > div { background: #eee; overflow: auto; } .contract-trigger:before { width: 200%; height: 200%; }',
+      const css =
+          `${animationKeyframes ? animationKeyframes : ''}.resize-triggers { ${
+            animationStyle ? animationStyle : ''
+          }visibility: hidden; opacity: 0; } ` +
+          `.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: " "; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; z-index: -1; } .resize-triggers > div { background: #eee; overflow: auto; } .contract-trigger:before { width: 200%; height: 200%; }`,
         head = doc.head || doc.getElementsByTagName('head')[0],
         style = doc.createElement('style');
 
@@ -163,13 +158,13 @@ export default function createDetectElementResize(nonce) {
     }
   };
 
-  var addResizeListener = function (element, fn) {
+  const addResizeListener = function(element: any, fn: any) {
     if (attachEvent) {
       element.attachEvent('onresize', fn);
     } else {
       if (!element.__resizeTriggers__) {
-        var doc = element.ownerDocument;
-        var elementStyle = _window.getComputedStyle(element);
+        const doc = element.ownerDocument;
+        const elementStyle = _window.getComputedStyle(element);
         if (elementStyle && elementStyle.position == 'static') {
           element.style.position = 'relative';
         }
@@ -188,7 +183,7 @@ export default function createDetectElementResize(nonce) {
         /* Listen for a css animation to detect element display/re-attach */
         if (animationstartevent) {
           element.__resizeTriggers__.__animationListener__ = function animationListener(
-            e,
+            e: any
           ) {
             if (e.animationName == animationName) {
               resetTriggers(element);
@@ -196,7 +191,7 @@ export default function createDetectElementResize(nonce) {
           };
           element.__resizeTriggers__.addEventListener(
             animationstartevent,
-            element.__resizeTriggers__.__animationListener__,
+            element.__resizeTriggers__.__animationListener__
           );
         }
       }
@@ -204,26 +199,26 @@ export default function createDetectElementResize(nonce) {
     }
   };
 
-  var removeResizeListener = function (element, fn) {
+  const removeResizeListener = function(element: any, fn: any) {
     if (attachEvent) {
       element.detachEvent('onresize', fn);
     } else {
       element.__resizeListeners__.splice(
         element.__resizeListeners__.indexOf(fn),
-        1,
+        1
       );
       if (!element.__resizeListeners__.length) {
         element.removeEventListener('scroll', scrollListener, true);
         if (element.__resizeTriggers__.__animationListener__) {
           element.__resizeTriggers__.removeEventListener(
             animationstartevent,
-            element.__resizeTriggers__.__animationListener__,
+            element.__resizeTriggers__.__animationListener__
           );
           element.__resizeTriggers__.__animationListener__ = null;
         }
         try {
           element.__resizeTriggers__ = !element.removeChild(
-            element.__resizeTriggers__,
+            element.__resizeTriggers__
           );
         } catch (e) {
           // Preact compat; see developit/preact-compat/issues/228
