@@ -175,7 +175,7 @@ function WindowTable<T = any>({
   const [headerHeight] = dimensions.header;
   const [sampleRowHeight] = dimensions.row;
 
-  const bodyHeight: number = (height || tableHeight) - headerHeight;
+  const bodyHeight: number = (height || tableHeight) - headerHeight - 2; // 2px less to avoid possible unnecessary scrollbars
   const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
 
   const tableClassName = `${classNamePrefix}table ${className}`;
@@ -191,7 +191,7 @@ function WindowTable<T = any>({
   return (
     <div
       style={{
-        height: height ? `${height}px` : 'calc(100% - 16px)', // 16px less to avoid possible unnecessary scrollbars
+        height: height ? `${height}px` : '100%',
         width: width ? `${width}px` : '100%',
         overflow: 'auto',
         maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
