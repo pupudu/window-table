@@ -9,12 +9,12 @@ Let's go through all the props accepted by the `WindowTable` component.
 
 Note: In addition to the props documented here, all basic props such as
 `className`, `style`, `key` and all the props from the react-window itself
-can be supplied.  
+can be supplied.
 
 ## **data**: Array
 This should be an array of objects(`key`-`value` pairs); each object representing
 a single row of the table. The `key` will be picked up by the `columns`
-prop, to render the `value` of each pair. 
+prop, to render the `value` of each pair.
 
 Example data:
 ```jsx harmony
@@ -35,11 +35,11 @@ the number of columns rendered by the table are somewhat independent
 of the format of the data supplied. It is this prop that
 controls it.
 
-Each object in the columns array can have the following 
+Each object in the columns array can have the following
 attributes.
 
 ### `key`: String
-This maps an item in a data row to a column. 
+This maps an item in a data row to a column.
 
 Suppose we feed the table with the example data from the `data` prop section above.
 
@@ -55,12 +55,12 @@ const columns = [
 
 Note: If the `key` does not match a value in the data, it will render
 nothing by default. However, you can pass a custom `Component`
-to render something useful based on the `column` and `row`. 
+to render something useful based on the `column` and `row`.
 See the `Component` attribute for more details.
 
 ### `width`: Number
 The pixel value of this value will be used as the base width of the
-column. 
+column.
 
 However, the actual column widths grow if the table width
 is greater than the total column width.
@@ -72,8 +72,8 @@ divided among the three columns, making them 150 pixels each.
 This behavior is achieved by setting the flex-grow property internally.
 
 ### `title`: String
-This is the column title. Header cells can be customized using the 
-`HeaderCell` attribute. 
+This is the column title. Header cells can be customized using the
+`HeaderCell` attribute.
 
 ### `Component`: React.Component
 You can customize the column cells by supplying a custom React Component
@@ -91,7 +91,7 @@ const columns = [
 
 const AbilityRenderer = props => {
   const {children, row, column} = props;
-  return ( 
+  return (
     <div>
       {/*Something based on children, row and column*/}
     </div>
@@ -113,19 +113,19 @@ We measure the dimensions of the table based on the parent container
 and the styles applied on the table itself. However, you can also
 supply explicit values for the width and height attributes.
 
-This will result in the table not having to measure, giving a 
-performance boost. However, it will stop the table from adjusting its 
+This will result in the table not having to measure, giving a
+performance boost. However, it will stop the table from adjusting its
 content based on the window size or window resize events.
 
 
 ## **rowHeight**: Number|Function
 Similar to how we can supply explicit values for the table width and height,
-we can also supply an explicit value for a rowHeight. 
+we can also supply an explicit value for a rowHeight.
 
 We can also supply a function which accepts the row index of the data array
 that's being rendered. This can be useful for changing the row height
-based on each row content. Nonetheless, how you measure the height based on the content 
-can be tricky. 
+based on each row content. Nonetheless, how you measure the height based on the content
+can be tricky.
 
 
 ## **sampleRow**: Object
@@ -150,24 +150,24 @@ a sample data row as mentioned above in `sampleRow` prop.
 All important elements will be given a className by the window-table.
 These classes can be used for styling the table with CSS.
 
-However, there can be cases where some other library, or component has the 
+However, there can be cases where some other library, or component has the
 same classes. In such cases, you can supply a prefix string, which will
 be prepended to all the classNames used by window-table.
 
 
 ## **rowClassName**: String | Function
-When a string is provided, it will be concatenated with the 
+When a string is provided, it will be concatenated with the
 classNamePrefix and will be applied to the table rows.
 
 When a Function is provided, it will be called with the index
 of the row that is being rendered. The return value of that
-function should be a string, which will be applied to the 
-tableRows as the className, concatenated with the classNamePrefix. 
+function should be a string, which will be applied to the
+tableRows as the className, concatenated with the classNamePrefix.
 
 For instance, imagine we want to have different classNames for
 odd and even rows:
 ```jsx harmony
-<WindowTable 
+<WindowTable
   data={data}
   columns={columns}
   rowClassName={index => index % 2 === 0 ? 'even-row' : 'odd-row'}
@@ -187,7 +187,7 @@ can be passed to the `debounceWait` to examine how the dimensions
 change over time.
 
 ## **Cell**: React.Component
-By default, each table cell will be rendered using a `div`. 
+By default, each table cell will be rendered using a `div`.
 You can change this behavior by supplying a custom React Component
 or a primitive like `td`.
 
@@ -199,13 +199,13 @@ For example,
 ```jsx harmony
 const CustomCell = props => {
   return (
-    <Td 
+    <Td
       {...props /*Pass all the props*/}
       className={props.className + ' another_className'}
       style={{
         ...props.style, // Merge with the original styles
         background: '#F80'
-      }} 
+      }}
     />
   );
 }
@@ -218,22 +218,22 @@ const CustomCell = props => {
 ```
 
 ## **HeaderCell**: React.Component
-Same as `Cell`, but for the Header Cells. 
+Same as `Cell`, but for the Header Cells.
 Think of it as a `th` primitive.
 
 
 ## **Table**: React.Component
-Same as `Cell`, but for the Table. 
+Same as `Cell`, but for the Table.
 Think of it as a `table` primitive.
 
 
 ## **Header**: React.Component
-Same as `Cell`, but for the Table Header. 
+Same as `Cell`, but for the Table Header.
 Think of it as a `thead` primitive.
 
 
 ## **HeaderRow**: React.Component
-Same as `Cell`, but for the Header Row. 
+Same as `Cell`, but for the Header Row.
 Think of it as a `tr` primitive, nested inside a `thead`.
 
 
@@ -256,4 +256,37 @@ function CustomRow({index, row, ...rest}) {
   // row -> corresponding data row. eg: { id: 2, name: 'Naruto', ...}
   return <tr {...rest} />
 }
-```  
+```
+
+## **headerCellInnerElementType**: string
+_Note: The default value of 'div' is automatically changed to 'th' when using the HTML5Table_
+
+WindowTable internally uses a measurer to derive table width, height and row height.
+When passing custom components to a table, the measurer being of type 'div' can cause
+HTML standard violations. To work around the problem, you must pass this prop to be the
+same type as the HeaderCell.
+
+```typescript jsx
+const CustomHeaderCell = props => {
+  return (
+    <th {/* Custom props and whatnot */}>
+      <span>
+        {props.children} {/* A span inside Header Cell because why not */}
+      </span>
+    </th>
+  );
+}
+
+<WindowTable
+  data={data}
+  columns={columns}
+  HeaderCell={CustomHeaderCell}
+  headerCellInnerElementType="th"
+/>
+```
+
+Note that the headerCellInnerElementType should only specify the primitive
+element type. Not the custom cell itself.
+
+## **tableCellInnerElementType**: string
+Same as **headerCellInnerElementType**, but for table cell.
