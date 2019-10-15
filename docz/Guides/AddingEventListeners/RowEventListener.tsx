@@ -6,16 +6,16 @@ import {
   FormInput,
   Grid,
   Heading,
-  Tr
+  Tr,
 } from 'stylestrap';
-import { Html5Table } from '../../../';
+import { Html5Table } from '../../../src';
 import { getData, columns } from '../../Demo/helpers';
 
 const data = getData(50000);
 
 const handlers = {
-  setState: null
-};
+  setState: null,
+} as any;
 
 const Row = ({ index, ...rest }) => {
   return (
@@ -29,8 +29,8 @@ const Row = ({ index, ...rest }) => {
   );
 };
 
-export default function ShinobiTable(props) {
-  const [state, setState] = useState({});
+export default function ShinobiTable() {
+  const [state, setState] = useState({} as any);
   handlers.setState = rowIndex => {
     setState(data[rowIndex]);
   };

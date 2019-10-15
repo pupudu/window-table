@@ -4,8 +4,8 @@ import {
   Html5Table,
   useDebouncedState,
   createFilter,
-  useFilter
-} from '../../../';
+  useFilter,
+} from '../../../src';
 import { getData, columns } from '../../Demo/helpers';
 
 const data = getData(50000);
@@ -28,7 +28,7 @@ export default function ShinobiTable(props) {
               padding: '2px 5px',
               borderRadius: '3px',
               border: '1px solid #ccc',
-              width: '200px'
+              width: '200px',
             }}
           />
           <Html5Table

@@ -3,7 +3,7 @@ import {
   Html5Table as Table,
   useDebouncedState,
   createFilter,
-  useFilter
+  useFilter,
 } from '../../src';
 import { data, columns } from './helpers';
 import './demo.scss';
@@ -28,7 +28,7 @@ function ShinobiTable(props) {
               padding: '2px 5px',
               borderRadius: '3px',
               border: '1px solid #ccc',
-              width: '200px'
+              width: '200px',
             }}
           />
           <Table

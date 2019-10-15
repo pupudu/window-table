@@ -25,12 +25,12 @@ const shinobi = [
 /* eslint-enable */
 
 export const getData = (limit = 100000) => {
-  const repeatingShinobi = [];
+  const repeatingShinobi = [] as any;
   for (let i = 0; i < limit; i++) {
     const index = Math.floor(Math.random() * shinobi.length);
     repeatingShinobi.push({
       id: i,
-      ...shinobi[index]
+      ...shinobi[index],
     });
   }
   return repeatingShinobi;
@@ -43,7 +43,7 @@ const Avatar = ({ row, column }) => {
       src={row[column.key]}
       alt="avatar"
       style={{
-        height: '40px'
+        height: '40px',
       }}
     />
   );
@@ -54,5 +54,5 @@ export const columns = [
   { key: 'avatar', width: 40, title: 'Avatar', Component: Avatar },
   { key: 'name', width: 100, title: 'Name' },
   { key: 'clan', width: 100, title: 'Clan' },
-  { key: 'age', width: 40, title: 'Age' }
+  { key: 'age', width: 40, title: 'Age' },
 ];
