@@ -47,14 +47,12 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.1"
   },
   "peerDependencies": {
     "lodash": "^4.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
-    "react-virtualized-auto-sizer": "^1.0.0",
     "react-window": "^1.0.0"
   },
   "devDependencies": {
@@ -63,7 +61,6 @@
     "@types/lodash-es": "^4.17.3",
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
-    "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.7.1",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",
