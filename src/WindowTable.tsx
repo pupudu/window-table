@@ -202,6 +202,7 @@ function WindowTable<T = any>({
             height: 0,
             opacity: 0,
             display: 'grid',
+            overflow: 'hidden',
             margin: 0,
             width: `${effectiveWidth}px`
           }}
