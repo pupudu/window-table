@@ -208,6 +208,8 @@ function WindowTable<T = any>({
             display: 'grid',
             overflow: 'hidden',
             margin: 0,
+            border: 0,
+            outline: 0,
             width: `${effectiveWidth}px`,
           }}
           className={tableClassName}
