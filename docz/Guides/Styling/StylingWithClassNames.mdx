@@ -9,17 +9,8 @@ import { Playground } from 'docz';
 
 One of the most common ways of styling Window-Tables is by using CSS class names.
 
-A typical table is an aggregation of the following components:
-
-1. Table
-1. Table Heading
-1. Table Heading Row
-1. Table Heading Cell
-1. Table Body
-1. Table Body Row
-1. Table Body Cell
-
-All of these components have default class names as follows:
+The following table shows the list of components in a typical window-table,
+and their corresponding default class names:
 
 Component | Default className
 :--- | :---
@@ -57,7 +48,8 @@ This problem can be easily avoided by providing a className prefix to the table.
 />
 ```
 
-Now, all the simple class names above will be prefixed by this class name. So your CSS would like this:
+Now, all the simple class names above will be prefixed by `awesome_window_`.
+So the above CSS can now be written as:
 
 ```css
 .awesome_window_table {
@@ -70,8 +62,8 @@ Now, all the simple class names above will be prefixed by this class name. So yo
 ```
 
 You can also provide a root class name to the window table, and write your css based on that.
-This prevents WindowTable related styles polluting other parts of your application, but not the
-other way around.
+This prevents WindowTable related styles polluting other parts of your application, **but not the
+other way around.**
 
 ```jsx
 <WindowTable
@@ -93,8 +85,9 @@ other way around.
 ## Row Class Names
 Table Rows in the table are special in the context of WindowTable, the reason being, well, windowing.
 
-Therefore, we provide a way to pass in a explicit function to derive class names for rows, in addition to the
-static class names as above.
+Therefore, we provide a way to pass in a function to derive class names for rows, in addition to the
+static class names as above. The function will be called with the index of the row that is being
+rendered.
 
 ```jsx
 <WindowTable
@@ -104,7 +97,7 @@ static class names as above.
 />
 ```
 
-With this, all the even rows in the table will have the `even-row` class name, and all the other rows
-will have the `odd-row` class name.
+With the above implementation, all the even rows in the table will have the `even-row` class name,
+and all the rest of the rows will have the `odd-row` class name.
 
 This concept is also demonstrated in the "StripedTable" section in the guides.
