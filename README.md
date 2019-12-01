@@ -2,13 +2,11 @@
 
 > Render thousands of rows in a HTML table in React
 
-[![NPM](https://img.shields.io/npm/v/window-table.svg)](https://www.npmjs.com/package/window-table) 
+[![NPM](https://img.shields.io/npm/v/window-table.svg)](https://www.npmjs.com/package/window-table)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![CircleCI](https://circleci.com/gh/pupudu/window-table.svg?style=svg)](https://circleci.com/gh/pupudu/window-table)
 
 ## DEMO
-
-We have a website **now**!!!
 
 Checkout [**window-table.netlify.com**](https://window-table.netlify.com/)
 
@@ -16,26 +14,25 @@ Checkout [**window-table.netlify.com**](https://window-table.netlify.com/)
 
 ## Introduction
 
-This is a light-weight, powerful implementation of a virtualized 
-table, based off the awesome library, `react-window` 
-by Brian Vaughn(ReactJs core team member).
+This is a light-weight, powerful implementation of a virtualized
+table, based off `react-window` by Brian Vaughn(ReactJs core team member).
 
 **Brian Vaughn himself had a look at this library and was impressed
-by our efforts!** How cool is that? 
+by our efforts!** How cool is that?
 
 Why Window Table?
 
 * Blazing Fast - thanks to `react-window`
-* Tiny footprint - <2kB
+* Tiny footprint - <5kB
 * Super easy to customize - Custom tags, class names and what not
 * Supports HTML5 table tags
 * Production Ready - Being used all in the Admin application at hipages, Australia
 
-checkout the [website](https://window-table.netlify.com/) 
-for getting started, API docs, examples and guides. 
+checkout the [website](https://window-table.netlify.com/)
+for getting started, API docs, examples and guides.
 
 Check a [live preview](https://6w5ov594vn.codesandbox.io/) and
-the editable [code-sandbox](https://codesandbox.io/s/6w5ov594vn) 
+the editable [code-sandbox](https://codesandbox.io/s/6w5ov594vn)
 
 ## License
 
