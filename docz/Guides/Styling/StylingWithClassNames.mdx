@@ -1,0 +1,110 @@
+---
+menu: Guides
+name: Styling With ClassNames
+---
+
+import { Playground } from 'docz';
+
+# Styling With ClassNames
+
+One of the most common ways of styling Window-Tables is by using CSS class names.
+
+A typical table is an aggregation of the following components:
+
+1. Table
+1. Table Heading
+1. Table Heading Row
+1. Table Heading Cell
+1. Table Body
+1. Table Body Row
+1. Table Body Cell
+
+All of these components have default class names as follows:
+
+Component | Default className
+:--- | :---
+Table | `table`
+Table Heading | `table-header`
+Table Heading Row | `table-header-row`
+Table Heading Cell | `table-header-cell`
+Table Body | `table-body`
+Table Body Row | `table-row`
+Table Body Cell | `table-cell`
+
+These class names can be used to style the table as follows:
+
+```css
+.table {
+  width: 80%
+}
+
+.table-cell {
+  color: red
+}
+```
+
+## Class Name Conflicts
+This works great so far. However, there can be scenarios where the simple class names conflict with the
+styles from another framework, library or even app specific css.
+
+This problem can be easily avoided by providing a className prefix to the table.
+
+```jsx
+<WindowTable
+ data={data}
+ columns={columns}
+ classNamePrefix="awesome_window_"
+/>
+```
+
+Now, all the simple class names above will be prefixed by this class name. So your CSS would like this:
+
+```css
+.awesome_window_table {
+  width: 80%
+}
+
+.awesome_window_table-cell {
+  color: red
+}
+```
+
+You can also provide a root class name to the window table, and write your css based on that.
+This prevents WindowTable related styles polluting other parts of your application, but not the
+other way around.
+
+```jsx
+<WindowTable
+ data={data}
+ columns={columns}
+ className="awesome_window_table"
+/>
+```
+```css
+.awesome_window_table .table {
+  width: 80%
+}
+
+.awesome_window_table .table-cell {
+  color: red
+}
+```
+
+## Row Class Names
+Table Rows in the table are special in the context of WindowTable, the reason being, well, windowing.
+
+Therefore, we provide a way to pass in a explicit function to derive class names for rows, in addition to the
+static class names as above.
+
+```jsx
+<WindowTable
+ data={data}
+ columns={columns}
+ rowClassName={index => (index % 2 === 0 ? 'even-row' : 'odd-row')}
+/>
+```
+
+With this, all the even rows in the table will have the `even-row` class name, and all the other rows
+will have the `odd-row` class name.
+
+This concept is also demonstrated in the "StripedTable" section in the guides.
