@@ -42,7 +42,7 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "lodash-es": "^4.17.15",
-    "react-window": "^1.8.1"
+    "react-window": "^1.8.5"
   },
   "peerDependencies": {
     "react": "^16.8.0",
@@ -77,7 +77,7 @@
     "react-hot-loader": "^4.8.4",
     "react-select": "^2.4.3",
     "styled-components": "^4.2.0",
-    "stylestrap": "^0.13.5",
+    "stylestrap": "^0.18.1",
     "tsdx": "^0.9.3",
     "typescript": "^3.6.3"
   },

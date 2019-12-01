@@ -10952,11 +10952,6 @@ react-codemirror2@^6.0.0:
   resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-6.0.0.tgz#180065df57a64026026cde569a9708fdf7656525"
   integrity sha512-D7y9qZ05FbUh9blqECaJMdDwKluQiO3A9xB+fssd5jKM7YAXucRuEOlX32mJQumUvHUkHRHqXIPBjm6g0FW0Ag==
 
-react-css-spinners@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/react-css-spinners/-/react-css-spinners-3.1.1.tgz#30e84660555581659e11dfae63d82d57bf8c2c63"
-  integrity sha512-RBJOyyHr5wk72SgTwBpVbPKfYuaWg8yLqMDyVZE5owHrmcnDT3rT1cDi+DpAjwbhnr2gobBTg+o5Qt9nz7HyiQ==
-
 react-dev-utils@^5.0.2:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-5.0.3.tgz#92f97668f03deb09d7fa11ea288832a8c756e35e"
@@ -11195,7 +11190,7 @@ react-transition-group@^2.2.1, react-transition-group@^2.3.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-window@^1.8.1:
+react-window@^1.8.5:
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.8.5.tgz#a56b39307e79979721021f5d06a67742ecca52d1"
   integrity sha512-HeTwlNa37AFa8MDZFZOKcNEkuF2YflA0hpGPiTT9vR7OawEt+GZbfM6wqkBahD3D3pUjIabQYzsnY/BSJbgq6Q==
@@ -12980,13 +12975,12 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-stylestrap@^0.13.5:
-  version "0.13.5"
-  resolved "https://registry.yarnpkg.com/stylestrap/-/stylestrap-0.13.5.tgz#cbdbe3ef116afb83394e8adaa1035012cddb21d6"
-  integrity sha512-THSMDeH8icKAx89PVpplk4jp8V7h6IbuMO8V7kCEAZ/UNlCgEZr2dTXz2v7Wf4/1R+kuVg3T1LtT9uilPOep2A==
+stylestrap@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/stylestrap/-/stylestrap-0.18.1.tgz#c843b6b7805d2d27cd6bb4cdcbf8eb261daf698d"
+  integrity sha512-1G7+57gB0uo4iGSvzqhJGuwQVNmH68orkfiN+oGPpuT5RJYr/JAGd/Zwj26fMW/j8G2ggYNLUDYyQ0+pHorfMA==
   dependencies:
     classnames "^2.2.6"
-    react-css-spinners "^3.1.1"
     reactstrap "^8.0.0"
 
 stylis-rule-sheet@^0.0.10:
