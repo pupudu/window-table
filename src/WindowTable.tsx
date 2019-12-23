@@ -8,6 +8,7 @@ import {
   HeaderRowProps,
 } from './core/types';
 import { areTablePropsEqual } from './helpers/areTablePropsEqual';
+import { useRef } from 'react';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useMemo } = React;
@@ -19,6 +20,7 @@ const TableContext = createContext({
   Row: 'div' as React.ElementType,
   classNamePrefix: '',
   rowClassName: '' as string | Function,
+  rowWidthOffset: 0,
 });
 
 const RowCells = ({
@@ -59,9 +61,10 @@ const RowCells = ({
   );
 };
 
-const RowRenderer: React.FunctionComponent<
-  ReactWindow.ListChildComponentProps
-> = ({ index, style }) => {
+const RowRenderer: React.FunctionComponent<ReactWindow.ListChildComponentProps> = ({
+  index,
+  style,
+}) => {
   const {
     columns,
     data,
@@ -105,15 +108,27 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
   HeaderCell: DefaultHeaderCell,
   children,
 }) => {
-  const { columns, classNamePrefix } = useContext(TableContext);
+  const { columns, classNamePrefix, rowWidthOffset } = useContext(TableContext);
+  const rowRef = useRef<HTMLElement>(null);
+
+  const color =
+    rowRef &&
+    rowRef.current &&
+    rowRef.current.firstChild &&
+    getComputedStyle(rowRef.current.firstChild as Element).backgroundColor;
 
   return (
-    <Header className={`${classNamePrefix}table-header`}>
+    <Header
+      className={`${classNamePrefix}table-header`}
+      style={{ backgroundColor: color }}
+    >
       <HeaderRow
         style={{
           display: 'flex',
+          width: `calc(100% - ${rowWidthOffset}px)`,
         }}
         className={`${classNamePrefix}table-header-row`}
+        ref={rowRef}
       >
         {children}
         {columns.map(column => {
@@ -163,6 +178,8 @@ function WindowTable<T = any>({
   tableCellInnerElementType = 'div',
   ...rest
 }: WindowTableProps<T>) {
+  const measurerRowRef = useRef<HTMLElement>(null);
+
   const List: React.ElementType =
     rowHeight && typeof rowHeight === 'function'
       ? VariableSizeList
@@ -186,7 +203,20 @@ function WindowTable<T = any>({
     </Table>
   );
 
-  const tblCtx = { columns, data, Cell, Row, classNamePrefix, rowClassName };
+  const rowWidth =
+    (measurerRowRef.current && measurerRowRef.current.clientWidth) ||
+    tableWidth;
+  const rowWidthOffset = tableWidth - rowWidth;
+
+  const tblCtx = {
+    columns,
+    data,
+    Cell,
+    Row,
+    classNamePrefix,
+    rowClassName,
+    rowWidthOffset,
+  };
 
   return (
     <div
@@ -228,8 +258,15 @@ function WindowTable<T = any>({
               />
             </HeaderRowRenderer>
           </TableContext.Provider>
-          <Body className={`${classNamePrefix}table-body`}>
-            <Row className={`${classNamePrefix}table-row`}>
+          <Body
+            className={`${classNamePrefix}table-body`}
+            style={{ overflowY: 'scroll' }}
+          >
+            <Row
+              className={`${classNamePrefix}table-row`}
+              ref={measurerRowRef}
+              style={{ width: '100%', display: 'flex' }}
+            >
               <Measurer
                 measure={measure}
                 entity="row"

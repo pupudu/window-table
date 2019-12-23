@@ -3,9 +3,9 @@ import WindowTable from './WindowTable';
 import { Html5TableProps } from './core/types';
 
 const getTHead = (headerClassName: string = '') => {
-  const THead: React.FunctionComponent<
-    React.HTMLAttributes<HTMLTableSectionElement>
-  > = props => {
+  const THead: React.FunctionComponent<React.HTMLAttributes<
+    HTMLTableSectionElement
+  >> = props => {
     return (
       <thead {...props} className={`${headerClassName} ${props.className}`} />
     );
