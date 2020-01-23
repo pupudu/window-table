@@ -8,7 +8,7 @@ import {
   HeaderRowProps,
 } from './core/types';
 import { areTablePropsEqual } from './helpers/areTablePropsEqual';
-import { useRef } from 'react';
+import { createRef, useRef } from 'react';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useMemo } = React;
@@ -117,10 +117,12 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
     rowRef.current.firstChild &&
     getComputedStyle(rowRef.current.firstChild as Element).backgroundColor;
 
+  console.log({color, rowRef});
+
   return (
     <Header
       className={`${classNamePrefix}table-header`}
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, color: color && 'red' }}
     >
       <HeaderRow
         style={{
@@ -152,6 +154,12 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
     </Header>
   );
 };
+
+const ref = createRef();
+
+setInterval(() => {
+  console.log({ ref });
+}, 3000);
 
 function WindowTable<T = any>({
   columns,
@@ -218,6 +226,8 @@ function WindowTable<T = any>({
     rowWidthOffset,
   };
 
+  console.log(measurerRowRef);
+
   return (
     <div
       style={{
@@ -242,7 +252,9 @@ function WindowTable<T = any>({
             outline: 0,
             width: `${effectiveWidth}px`,
           }}
-          className={tableClassName}
+          className={`${tableClassName} measurer-table`}
+          aria-hidden
+          data-purpose="This hidden table is for here for core requirements of window-table. Ignore this markup if you see this"
         >
           <TableContext.Provider value={tblCtx}>
             <HeaderRowRenderer

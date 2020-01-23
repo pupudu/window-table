@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { Ref, useState } from 'react';
 import {
+  Button,
   Card,
   CardBody,
   CardFooter,
@@ -29,6 +30,8 @@ const Row = ({ index, ...rest }) => {
   );
 };
 
+const ref = React.createRef();
+
 export default function ShinobiTable() {
   const [state, setState] = useState({} as any);
   handlers.setState = rowIndex => {
@@ -40,13 +43,24 @@ export default function ShinobiTable() {
       <Card>
         <CardBody>
           <Html5Table
-            Row={Row}
+            Body={props => {
+              console.log('_ref', props._ref);
+              return <tbody {...props} ref={props._ref || ref} />;
+            }}
+            // Row={Row}
             data={data}
             columns={columns}
             className="table-sm table-hover"
             headerClassName="thead-dark"
             height={250}
           />
+          <Button
+            onClick={() => {
+              console.log(ref);
+            }}
+          >
+            Click Me
+          </Button>
         </CardBody>
         <CardFooter css={{ borderWidth: '5px', borderColor: state.color }}>
           <Heading size="h4">Selected Shinobi:</Heading>

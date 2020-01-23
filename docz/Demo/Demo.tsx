@@ -11,7 +11,7 @@ import { Card, CardBody } from 'stylestrap';
 
 const filterFn = createFilter(['name', 'clan']);
 
-function ShinobiTable(props) {
+function ShinobiTable(props: any) {
   const [text, debouncedText, setText] = useDebouncedState('');
   const filteredData = useFilter(filterFn, data, debouncedText);
 
