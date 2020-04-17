@@ -39,7 +39,7 @@ export type WindowTableProps<T> = {
   sampleRowIndex?: number;
   sampleRow?: T;
   className?: string;
-  rowClassName?: string;
+  rowClassName?: string | Function;
   classNamePrefix?: string;
   debounceWait?: number;
   headerCellInnerElementType?: string;
