@@ -11,6 +11,10 @@ Note: In addition to the props documented here, all basic props such as
 `className`, `style`, `key` and all the props from the react-window itself
 can be supplied.
 
+> NOTE: If you override any of the components you must define that component 
+> outside of the render function. Otherwise state updates will make the active
+> element lose focus.
+
 ## **data**: Array
 This should be an array of objects(`key`-`value` pairs); each object representing
 a single row of the table. The `key` will be picked up by the `columns`
