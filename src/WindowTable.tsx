@@ -153,176 +153,182 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
   );
 };
 
-function WindowTable<T = any>({
-  columns,
-  data,
-  rowHeight,
-  height,
-  width,
-  overscanCount = 1,
-  style = {},
-  Cell = 'div',
-  HeaderCell = 'div',
-  Table = 'div',
-  Header = 'div',
-  HeaderRow = 'div',
-  Row = 'div',
-  Body = 'div',
-  sampleRowIndex = 0,
-  sampleRow,
-  className = '',
-  rowClassName = 'table-row',
-  classNamePrefix = '',
-  debounceWait = 0,
-  headerCellInnerElementType = 'div',
-  tableCellInnerElementType = 'div',
-  ...rest
-}: WindowTableProps<T>) {
-  const measurerRowRef = useRef<HTMLElement>(null);
+const WindowTable = React.forwardRef(
+  <T extends any = any>(
+    {
+      columns,
+      data,
+      rowHeight,
+      height,
+      width,
+      overscanCount = 1,
+      style = {},
+      Cell = 'div',
+      HeaderCell = 'div',
+      Table = 'div',
+      Header = 'div',
+      HeaderRow = 'div',
+      Row = 'div',
+      Body = 'div',
+      sampleRowIndex = 0,
+      sampleRow,
+      className = '',
+      rowClassName = 'table-row',
+      classNamePrefix = '',
+      debounceWait = 0,
+      headerCellInnerElementType = 'div',
+      tableCellInnerElementType = 'div',
+      ...rest
+    }: WindowTableProps<T>,
+    ref: React.Ref<ReactWindow.FixedSizeList | ReactWindow.VariableSizeList>
+  ) => {
+    const measurerRowRef = useRef<HTMLElement>(null);
 
-  const List: React.ElementType =
-    rowHeight && typeof rowHeight === 'function'
-      ? VariableSizeList
-      : FixedSizeList;
-  const columnWidthsSum = columns.reduce((sum, { width }) => sum + width, 0);
+    const List: React.ElementType =
+      rowHeight && typeof rowHeight === 'function'
+        ? VariableSizeList
+        : FixedSizeList;
+    const columnWidthsSum = columns.reduce((sum, { width }) => sum + width, 0);
 
-  const [dimensions, measure] = useTableMeasurer();
+    const [dimensions, measure] = useTableMeasurer();
 
-  const [tableHeight, tableWidth] = dimensions.table;
-  const [headerHeight] = dimensions.header;
-  const [sampleRowHeight] = dimensions.row;
+    const [tableHeight, tableWidth] = dimensions.table;
+    const [headerHeight] = dimensions.header;
+    const [sampleRowHeight] = dimensions.row;
 
-  const bodyHeight: number = (height || tableHeight) - headerHeight - 2; // 2px less to avoid possible unnecessary scrollbars
-  const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
+    const bodyHeight: number = (height || tableHeight) - headerHeight - 2; // 2px less to avoid possible unnecessary scrollbars
+    const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
 
-  const tableClassName = `${classNamePrefix}table ${className}`;
+    const tableClassName = `${classNamePrefix}table ${className}`;
 
-  const TableBody: React.FunctionComponent = ({ children, ...props }) => (
-    <Table {...props} className={tableClassName}>
-      <Body className={`${classNamePrefix}table-body`}>{children}</Body>
-    </Table>
-  );
+    const TableBody: React.FunctionComponent = ({ children, ...props }) => (
+      <Table {...props} className={tableClassName}>
+        <Body className={`${classNamePrefix}table-body`}>{children}</Body>
+      </Table>
+    );
 
-  const rowWidth =
-    (measurerRowRef.current && measurerRowRef.current.clientWidth) ||
-    tableWidth;
-  const rowWidthOffset = tableWidth - rowWidth;
+    const rowWidth =
+      (measurerRowRef.current && measurerRowRef.current.clientWidth) ||
+      tableWidth;
+    const rowWidthOffset = tableWidth - rowWidth;
 
-  const tblCtx = {
-    columns,
-    data,
-    Cell,
-    Row,
-    classNamePrefix,
-    rowClassName,
-    rowWidthOffset,
-  };
+    const tblCtx = {
+      columns,
+      data,
+      Cell,
+      Row,
+      classNamePrefix,
+      rowClassName,
+      rowWidthOffset,
+    };
 
-  return (
-    <div
-      style={{
-        height: height ? `${height}px` : '100%',
-        width: width ? `${width}px` : '100%',
-        overflow: 'auto',
-        maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
-        ...style,
-      }}
-      {...rest}
-    >
-      {!rowHeight && !!data.length && (
-        /*Measure row height only if not supplied explicitly*/
-        <Table
-          style={{
-            height: 0,
-            opacity: 0,
-            display: 'grid',
-            overflow: 'hidden',
-            margin: 0,
-            border: 0,
-            outline: 0,
-            width: `${effectiveWidth}px`,
-          }}
-          className={tableClassName}
-        >
-          <TableContext.Provider value={tblCtx}>
-            <HeaderRowRenderer
-              Header={Header}
-              HeaderRow={HeaderRow}
-              HeaderCell={HeaderCell}
-            >
-              <Measurer
-                measure={measure}
-                entity="header"
-                debounceWait={debounceWait}
-                innerElementType={headerCellInnerElementType}
-              />
-            </HeaderRowRenderer>
-          </TableContext.Provider>
-          <Body
-            className={`${classNamePrefix}table-body`}
-            style={{ overflowY: 'scroll' }}
+    return (
+      <div
+        style={{
+          height: height ? `${height}px` : '100%',
+          width: width ? `${width}px` : '100%',
+          overflow: 'auto',
+          maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
+          ...style,
+        }}
+        {...rest}
+      >
+        {!rowHeight && !!data.length && (
+          /*Measure row height only if not supplied explicitly*/
+          <Table
+            style={{
+              height: 0,
+              opacity: 0,
+              display: 'grid',
+              overflow: 'hidden',
+              margin: 0,
+              border: 0,
+              outline: 0,
+              width: `${effectiveWidth}px`,
+            }}
+            className={tableClassName}
           >
-            <Row
-              className={`${classNamePrefix}table-row`}
-              ref={measurerRowRef}
-              style={{ width: '100%', display: 'flex' }}
-            >
-              <Measurer
-                measure={measure}
-                entity="row"
-                debounceWait={debounceWait}
-                innerElementType={tableCellInnerElementType}
-              />
-              <RowCells
-                datum={sampleRow || data[sampleRowIndex]}
-                columns={columns}
-                classNamePrefix={classNamePrefix}
-                Cell={Cell}
-              />
-            </Row>
-          </Body>
-        </Table>
-      )}
-
-      <TableContext.Provider value={tblCtx}>
-        <div>
-          {tableWidth > 0 && (
-            <Table
-              style={{ width: `${effectiveWidth}px`, marginBottom: 0 }}
-              className={tableClassName}
-            >
+            <TableContext.Provider value={tblCtx}>
               <HeaderRowRenderer
                 Header={Header}
                 HeaderRow={HeaderRow}
                 HeaderCell={HeaderCell}
-              />
-            </Table>
-          )}
-          {!!data.length && (
-            <List
-              height={bodyHeight}
-              itemCount={data.length}
-              itemSize={rowHeight || sampleRowHeight}
-              width={effectiveWidth}
-              innerElementType={TableBody}
-              overscanCount={overscanCount}
+              >
+                <Measurer
+                  measure={measure}
+                  entity="header"
+                  debounceWait={debounceWait}
+                  innerElementType={headerCellInnerElementType}
+                />
+              </HeaderRowRenderer>
+            </TableContext.Provider>
+            <Body
+              className={`${classNamePrefix}table-body`}
+              style={{ overflowY: 'scroll' }}
             >
-              {MemoRowRenderer}
-            </List>
-          )}
-        </div>
-      </TableContext.Provider>
+              <Row
+                className={`${classNamePrefix}table-row`}
+                ref={measurerRowRef}
+                style={{ width: '100%', display: 'flex' }}
+              >
+                <Measurer
+                  measure={measure}
+                  entity="row"
+                  debounceWait={debounceWait}
+                  innerElementType={tableCellInnerElementType}
+                />
+                <RowCells
+                  datum={sampleRow || data[sampleRowIndex]}
+                  columns={columns}
+                  classNamePrefix={classNamePrefix}
+                  Cell={Cell}
+                />
+              </Row>
+            </Body>
+          </Table>
+        )}
 
-      {(!height || !width) && (
-        /*Measure table dimensions only if explicit height or width are not supplied*/
-        <Measurer
-          measure={measure}
-          entity="table"
-          debounceWait={debounceWait}
-        />
-      )}
-    </div>
-  );
-}
+        <TableContext.Provider value={tblCtx}>
+          <div>
+            {tableWidth > 0 && (
+              <Table
+                style={{ width: `${effectiveWidth}px`, marginBottom: 0 }}
+                className={tableClassName}
+              >
+                <HeaderRowRenderer
+                  Header={Header}
+                  HeaderRow={HeaderRow}
+                  HeaderCell={HeaderCell}
+                />
+              </Table>
+            )}
+            {!!data.length && (
+              <List
+                ref={ref}
+                height={bodyHeight}
+                itemCount={data.length}
+                itemSize={rowHeight || sampleRowHeight}
+                width={effectiveWidth}
+                innerElementType={TableBody}
+                overscanCount={overscanCount}
+              >
+                {MemoRowRenderer}
+              </List>
+            )}
+          </div>
+        </TableContext.Provider>
+
+        {(!height || !width) && (
+          /*Measure table dimensions only if explicit height or width are not supplied*/
+          <Measurer
+            measure={measure}
+            entity="table"
+            debounceWait={debounceWait}
+          />
+        )}
+      </div>
+    );
+  }
+);
 
 export default memo(WindowTable, areTablePropsEqual) as typeof WindowTable;

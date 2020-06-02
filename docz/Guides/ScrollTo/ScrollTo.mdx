@@ -1,0 +1,34 @@
+---
+menu: Guides
+name: Scroll to Row
+---
+
+import { Playground } from 'docz';
+import BasicScroll from './BasicScroll';
+
+# Scroll to Row
+
+To scroll to a row `react-window` exposes a ref with a few functions.
+This ref exposes `scrollToItem` and `scrollTo` to let you control what items in the list are visible.
+
+<BasicScroll />
+
+```jsx harmony
+import { WindowTable } from 'window-table';
+
+function ShinobiTable(props) {
+  const listRef = React.useRef<ReactWindow.FixedSizeList>(null);
+  const [currentRow, setCurrentRow] = React.useState(0);
+
+  React.useEffect(() => {
+    listRef.current!.scrollToItem(currentRow);
+  }, [currentRow]);
+
+  return (
+    <div>
+      <input onChange={e => setCurrentRow(Number(e.target.value))} value={currentRow} />
+      <WindowTable ref={listRef} data={data} columns={columns} />
+    </div>
+  );
+}
+```
