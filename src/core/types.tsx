@@ -21,6 +21,11 @@ export type Column<T = string, K = any> = {
   HeaderCell?: React.ElementType;
 };
 
+export type ReactElementType =
+  | React.FunctionComponent<any>
+  | React.ComponentClass<any>
+  | string;
+
 export type WindowTableProps<T> = {
   columns: Column<keyof T, T>[];
   data: T[];
@@ -44,6 +49,8 @@ export type WindowTableProps<T> = {
   debounceWait?: number;
   headerCellInnerElementType?: string;
   tableCellInnerElementType?: string;
+  tableOuterRef?: React.Ref<any>;
+  tableOuterElementType?: ReactElementType;
 };
 
 export interface RowCellsProps {

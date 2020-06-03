@@ -193,6 +193,8 @@ const WindowTable = React.forwardRef(
       debounceWait = 0,
       headerCellInnerElementType = 'div',
       tableCellInnerElementType = 'div',
+      tableOuterRef,
+      tableOuterElementType,
       ...rest
     }: WindowTableProps<T>,
     ref: React.Ref<ReactWindow.FixedSizeList | ReactWindow.VariableSizeList>
@@ -322,6 +324,8 @@ const WindowTable = React.forwardRef(
                 width={effectiveWidth}
                 innerElementType={TableBodyRenderer}
                 overscanCount={overscanCount}
+                outerRef={tableOuterRef}
+                outerElementType={tableOuterElementType}
               >
                 {MemoRowRenderer}
               </List>
