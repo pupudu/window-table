@@ -18,7 +18,10 @@ const TableContext = createContext({
   data: [] as any[],
   Cell: 'div' as React.ElementType,
   Row: 'div' as React.ElementType,
+  Table: 'div' as React.ElementType,
+  Body: 'div' as React.ElementType,
   classNamePrefix: '',
+  tableClassName: '',
   rowClassName: '' as string | Function,
   rowWidthOffset: 0,
 });
@@ -153,6 +156,18 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
   );
 };
 
+const TableBodyRenderer: React.FunctionComponent = ({ children, ...props }) => {
+  const { Table, classNamePrefix, tableClassName, Body } = useContext(
+    TableContext
+  );
+
+  return (
+    <Table {...props} className={tableClassName}>
+      <Body className={`${classNamePrefix}table-body`}>{children}</Body>
+    </Table>
+  );
+};
+
 const WindowTable = React.forwardRef(
   <T extends any = any>(
     {
@@ -183,6 +198,7 @@ const WindowTable = React.forwardRef(
     ref: React.Ref<ReactWindow.FixedSizeList | ReactWindow.VariableSizeList>
   ) => {
     const measurerRowRef = useRef<HTMLElement>(null);
+    const tableClassName = `${classNamePrefix}table ${className}`;
 
     const List: React.ElementType =
       rowHeight && typeof rowHeight === 'function'
@@ -199,14 +215,6 @@ const WindowTable = React.forwardRef(
     const bodyHeight: number = (height || tableHeight) - headerHeight - 2; // 2px less to avoid possible unnecessary scrollbars
     const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
 
-    const tableClassName = `${classNamePrefix}table ${className}`;
-
-    const TableBody: React.FunctionComponent = ({ children, ...props }) => (
-      <Table {...props} className={tableClassName}>
-        <Body className={`${classNamePrefix}table-body`}>{children}</Body>
-      </Table>
-    );
-
     const rowWidth =
       (measurerRowRef.current && measurerRowRef.current.clientWidth) ||
       tableWidth;
@@ -217,7 +225,10 @@ const WindowTable = React.forwardRef(
       data,
       Cell,
       Row,
+      Table,
+      Body,
       classNamePrefix,
+      tableClassName,
       rowClassName,
       rowWidthOffset,
     };
@@ -309,7 +320,7 @@ const WindowTable = React.forwardRef(
                 itemCount={data.length}
                 itemSize={rowHeight || sampleRowHeight}
                 width={effectiveWidth}
-                innerElementType={TableBody}
+                innerElementType={TableBodyRenderer}
                 overscanCount={overscanCount}
               >
                 {MemoRowRenderer}
