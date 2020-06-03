@@ -25,7 +25,7 @@ export type WindowTableProps<T> = {
   columns: Column<keyof T, T>[];
   data: T[];
   height?: number;
-  width?: number;
+  width?: number | string;
   rowHeight?: number;
   overscanCount?: number;
   style?: React.CSSProperties;
