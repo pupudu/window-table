@@ -33,6 +33,7 @@ export type WindowTableProps<T> = {
   width?: number;
   rowHeight?: number;
   overscanCount?: number;
+  disableHeader?: boolean;
   style?: React.CSSProperties;
   Cell?: React.ElementType;
   HeaderCell?: React.ElementType;
