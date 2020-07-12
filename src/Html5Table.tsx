@@ -18,7 +18,7 @@ function Html5Table<T = any>({
   ...props
 }: Html5TableProps<T>) {
   return (
-    <WindowTable
+    <WindowTable<T>
       Cell="td"
       HeaderCell="th"
       Header={getTHead(headerClassName)}

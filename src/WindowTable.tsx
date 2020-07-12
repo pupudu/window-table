@@ -8,7 +8,7 @@ import {
   HeaderRowProps,
 } from './core/types';
 import { areTablePropsEqual } from './helpers/areTablePropsEqual';
-import { useRef } from 'react';
+import { ReactElement, useRef } from 'react';
 
 const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useMemo } = React;
@@ -347,4 +347,6 @@ const WindowTable = React.forwardRef(
   }
 );
 
-export default memo(WindowTable, areTablePropsEqual) as typeof WindowTable;
+declare function WindowTableType<T>(props: WindowTableProps<T>): ReactElement<T>;
+
+export default memo(WindowTable, areTablePropsEqual) as unknown as typeof WindowTableType;
