@@ -1,6 +1,6 @@
 {
   "name": "window-table",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "Windowing Table for React based on React Window",
   "author": "pupudu",
   "license": "MIT",
