@@ -44,11 +44,13 @@ export const Measurer: React.FunctionComponent<{
   );
   const dispatch = debounceWait > 0 ? debounced : measure;
   return (
-    <AutoSizer innerElementType={innerElementType}>
-      {({ height, width }) => {
+    <AutoSizer
+      innerElementType={innerElementType}
+      onResize={({ height, width }) => {
         dispatch({ dimensions: [height, width], entity });
-        return null;
       }}
+    >
+      {() => null}
     </AutoSizer>
   );
 };
