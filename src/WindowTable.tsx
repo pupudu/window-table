@@ -177,6 +177,7 @@ const WindowTable = React.forwardRef(
       height,
       width,
       overscanCount = 1,
+      disableHeader = false,
       style = {},
       Cell = 'div',
       HeaderCell = 'div',
@@ -211,7 +212,7 @@ const WindowTable = React.forwardRef(
     const [dimensions, measure] = useTableMeasurer();
 
     const [tableHeight, tableWidth] = dimensions.table;
-    const [headerHeight] = dimensions.header;
+    const [headerHeight] = disableHeader ? [0] : dimensions.header;
     const [sampleRowHeight] = dimensions.row;
 
     const bodyHeight: number = (height || tableHeight) - headerHeight - 2; // 2px less to avoid possible unnecessary scrollbars
@@ -303,7 +304,7 @@ const WindowTable = React.forwardRef(
 
         <TableContext.Provider value={tblCtx}>
           <div>
-            {tableWidth > 0 && (
+            {!disableHeader && tableWidth > 0 && (
               <Table
                 style={{ width: `${effectiveWidth}px`, marginBottom: 0 }}
                 className={tableClassName}

@@ -17,16 +17,13 @@ Checkout [**window-table.netlify.com**](https://window-table.netlify.com/)
 This is a light-weight, powerful implementation of a virtualized
 table, based off `react-window` by Brian Vaughn(ReactJs core team member).
 
-**Brian Vaughn himself had a look at this library and was impressed
-by our efforts!** How cool is that?
-
 Why Window Table?
 
 * Blazing Fast - thanks to `react-window`
 * Tiny footprint - <5kB
 * Super easy to customize - Custom tags, class names and what not
 * Supports HTML5 table tags
-* Production Ready - Being used all in the Admin application at hipages, Australia
+* Production Ready - Being used at hipages, Australia
 
 checkout the [website](https://window-table.netlify.com/)
 for getting started, API docs, examples and guides.
