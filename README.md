@@ -32,7 +32,7 @@ Check a [live preview](https://6w5ov594vn.codesandbox.io/) and
 the editable [code-sandbox](https://codesandbox.io/s/6w5ov594vn)
 
 ## Alternatives
-Checkout [React Fluid Table](https://mckervinc.github.io/react-fluid-table/#/)
+Checkout [React Fluid Table](https://mckervinc.github.io/react-fluid-table/#/),
 a drop in replacement for window-table with a ton of more features.
 
 ## License
