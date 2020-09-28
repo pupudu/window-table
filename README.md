@@ -17,9 +17,7 @@ the corresponding editable [code-sandbox](https://codesandbox.io/s/6w5ov594vn)
 ## Introduction
 
 This is a light-weight, powerful implementation of a virtualized
-table, based off `react-window` by Brian Vaughn.
-
-Why Window Table?
+table, based off `react-window`. Why Window Table?
 * Supports HTML5 table tags
 * Tiny footprint - ~10kB
 * Easy to customize - Custom tags, class names and what not
