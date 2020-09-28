@@ -46,12 +46,10 @@ export const Measurer: React.FunctionComponent<{
   return (
     <AutoSizer
       innerElementType={innerElementType}
-      onResize={({ height, width }) => {
+      onResize={({ height, width }: { height: number; width: number }) => {
         dispatch({ dimensions: [height, width], entity });
       }}
-    >
-      {() => null}
-    </AutoSizer>
+    />
   );
 };
 

@@ -125,7 +125,7 @@ const shinobi = [
 /* eslint-enable */
 
 const repeatingShinobi = [];
-for (let i = 0; i < 10000; i++) {
+for (let i = 0; i < 50; i++) {
   repeatingShinobi.push(...shinobi);
 }
 

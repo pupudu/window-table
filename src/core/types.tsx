@@ -72,5 +72,5 @@ export interface HeaderRowProps {
 }
 
 export interface Html5TableProps<T> extends WindowTableProps<T> {
-  headerClassName: string;
+  headerClassName?: string;
 }

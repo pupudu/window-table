@@ -265,7 +265,7 @@ const WindowTable = React.forwardRef(
     const [sizeMap, setSizeMap] = useState({} as any);
     const getItemSize = (index: number) => {
       if (!variableSizeRows) {
-        return sizeMap[0];
+        return sizeMap[0] || rowHeight;
       }
       return sizeMap[index] || rowHeight;
     };

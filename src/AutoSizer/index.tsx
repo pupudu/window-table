@@ -8,34 +8,8 @@ type Size = {
 };
 
 type Props = {
-  /** Function responsible for rendering children.*/
-  children: (Size: Size) => any;
-
-  /** Optional custom CSS class name to attach to root AutoSizer element.  */
-  className?: string;
-
-  /** Default height to use for initial render; useful for SSR */
-  defaultHeight?: number;
-
-  /** Default width to use for initial render; useful for SSR */
-  defaultWidth?: number;
-
-  /** Disable dynamic :height property */
-  disableHeight: boolean;
-
-  /** Disable dynamic :width property */
-  disableWidth: boolean;
-
-  /** Nonce of the inlined stylesheet for Content Security Policy */
-  nonce?: string;
-
-  /** Callback to be invoked on-resize */
   onResize: (Size: Size) => void;
-
   innerElementType: any;
-
-  /** Optional inline style */
-  style?: Object;
 };
 
 type State = {
@@ -53,14 +27,11 @@ type DetectElementResize = {
 export default class AutoSizer extends React.PureComponent<Props, State> {
   static defaultProps = {
     onResize: () => {},
-    disableHeight: false,
-    disableWidth: false,
-    style: {},
   };
 
   state = {
-    height: this.props.defaultHeight || 0,
-    width: this.props.defaultWidth || 0,
+    height: 0,
+    width: 0,
   };
 
   _parentNode?: HTMLElement;
@@ -68,7 +39,6 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
   _detectElementResize: DetectElementResize;
 
   componentDidMount() {
-    const { nonce } = this.props;
     if (
       this._autoSizer &&
       this._autoSizer.parentNode &&
@@ -84,7 +54,7 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
 
       // Defer requiring resize handler in order to support server-side rendering.
       // See issue #41
-      this._detectElementResize = createDetectElementResize(nonce);
+      this._detectElementResize = createDetectElementResize('');
       this._detectElementResize.addResizeListener(
         this._parentNode,
         this._onResize
@@ -104,59 +74,21 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const {
-      children,
-      className,
-      disableHeight,
-      disableWidth,
-      style,
-    } = this.props;
-    const { height, width } = this.state;
-
     // Outer div should not force width/height since that may prevent containers from shrinking.
     // Inner component should overflow and use calculated width/height.
     // See issue #68 for more information.
     const outerStyle: any = { overflow: 'visible' };
-    const childParams: any = {};
 
-    // Avoid rendering children before the initial measurements have been collected.
-    // At best this would just be wasting cycles.
-    let bailoutOnChildren = false;
-
-    if (!disableHeight) {
-      if (height === 0) {
-        bailoutOnChildren = true;
-      }
-      outerStyle.height = 0;
-      childParams.height = height;
-    }
-
-    if (!disableWidth) {
-      if (width === 0) {
-        bailoutOnChildren = true;
-      }
-      outerStyle.width = 0;
-      childParams.width = width;
-    }
+    outerStyle.height = 0;
+    outerStyle.width = 0;
 
     const Component = this.props.innerElementType || 'div';
 
-    return (
-      <Component
-        className={className}
-        ref={this._setRef as any}
-        style={{
-          ...outerStyle,
-          ...style,
-        }}
-      >
-        {!bailoutOnChildren && children(childParams)}
-      </Component>
-    );
+    return <Component ref={this._setRef as any} style={outerStyle} />;
   }
 
   _onResize = () => {
-    const { disableHeight, disableWidth, onResize } = this.props;
+    const { onResize } = this.props;
 
     if (this._parentNode) {
       // Guard against AutoSizer component being removed from the DOM immediately after being added.
@@ -175,10 +107,7 @@ export default class AutoSizer extends React.PureComponent<Props, State> {
       const newHeight = height - paddingTop - paddingBottom;
       const newWidth = width - paddingLeft - paddingRight;
 
-      if (
-        (!disableHeight && this.state.height !== newHeight) ||
-        (!disableWidth && this.state.width !== newWidth)
-      ) {
+      if (this.state.height !== newHeight || this.state.width !== newWidth) {
         this.setState({
           height: height - paddingTop - paddingBottom,
           width: width - paddingLeft - paddingRight,
