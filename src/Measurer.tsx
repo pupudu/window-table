@@ -1,6 +1,5 @@
 import * as React from 'react';
-import debounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
+import debounce from 'lodash.debounce';
 import AutoSizer from './AutoSizer';
 import { MeasureAction, ReducerState, TableEntity } from './core/types';
 
@@ -21,11 +20,8 @@ export const reducer: React.Reducer<ReducerState, MeasureAction> = (
 ) => {
   if (entity) {
     // Keep updates in cache
-    cache = {
-      ...cache,
-      [entity]: dimensions,
-    };
-    if (!isEqual(state[entity], cache[entity])) {
+    cache = { ...cache, [entity]: dimensions };
+    if (JSON.stringify(state[entity]) !== JSON.stringify(cache[entity])) {
       return cache;
     }
   }

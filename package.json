@@ -6,32 +6,24 @@
   "license": "MIT",
   "sideEffects": false,
   "repository": "pupudu/window-table",
+  "main": "dist/index.js",
+  "module": "dist/window-table.esm.js",
+  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "react",
     "react-window-table",
     "react-virtualized-table",
     "window-table",
-    "reactjs",
-    "virtual",
-    "window",
-    "windowed",
-    "list",
     "infinite-scrolling",
     "virtualized",
     "table",
     "data-table",
-    "fixed-data-table",
-    "brian-vaughn",
-    "typescript",
-    "light-weight"
+    "fixed-data-table"
   ],
-  "main": "dist/index.js",
-  "module": "dist/window-table.esm.js",
-  "typings": "dist/index.d.ts",
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
-  },
   "scripts": {
     "start": "docz dev",
     "build": "tsdx build",
@@ -41,9 +33,7 @@
     "lint": "tsdx lint src"
   },
   "dependencies": {
-    "@types/faker": "^5.1.2",
     "lodash.debounce": "^4.0.8",
-    "lodash.isequal": "^4.5.0",
     "react-window": "^1.8.5"
   },
   "peerDependencies": {
@@ -51,15 +41,10 @@
     "react-dom": "^16.8.0",
     "react-window": "^1.0.0"
   },
-  "prettier": {
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
   "devDependencies": {
+    "@types/faker": "^5.1.2",
     "@types/jest": "^24.0.12",
     "@types/lodash.debounce": "^4.0.6",
-    "@types/lodash.isequal": "^4.5.5",
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
     "@types/react-window": "^1.7.1",
@@ -85,9 +70,11 @@
     "tsdx": "^0.12.0",
     "typescript": "^3.7.4"
   },
-  "files": [
-    "dist"
-  ],
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",

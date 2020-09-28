@@ -18,7 +18,13 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "downlevelIteration": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "build", "dist", "example", "src/__tests__"]
