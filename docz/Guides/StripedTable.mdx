@@ -1,5 +1,5 @@
 ---
-menu: Guides
+menu: Guides & Examples
 name: Striped Table
 ---
 
@@ -22,7 +22,7 @@ windowed table**. Table rows are created and destroyed as you scroll,
 changing the odd-even nature of the rows. This would cause the
 table strips to flip as you scroll, causing a janky behaviour.
 
-<ShinobiTable 
+<ShinobiTable
   className="table-sm table-striped"
 />
 
@@ -55,7 +55,7 @@ And then apply a CSS rule for the className as follows,
 ## Using the `Row` prop
 You've seen that the WindowTable components allow you to
 pass custom components for the different "parts" of the
-table. Thus you can pass a custom Row component to get strips. 
+table. Thus you can pass a custom Row component to get strips.
 
 ```jsx harmony
 const StripedRow = props => {
@@ -67,7 +67,7 @@ const StripedRow = props => {
  );
 };
 
-<Table 
+<Table
   data={data}
   columns={columns}
   Row={StripedRow}

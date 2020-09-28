@@ -1,5 +1,5 @@
 ---
-menu: Guides
+menu: Guides & Examples
 name: Adding Event Listeners
 ---
 
@@ -10,18 +10,18 @@ import RowEventListener from './RowEventListener';
 
 In this guide, we will explore how we can leverage the
 customizability of this library to add a table row **event listener**
-in a matter of few lines of code. 
+in a matter of few lines of code.
 
 To explain this concept, we will add a click listener to the
 rows of the table. let's have a
-sneak peak at what we are going to achieve. 
-Go ahead and click on a row. 
+sneak peak at what we are going to achieve.
+Go ahead and click on a row.
 
 <RowEventListener />
 
 For the purpose of styling, we will use a bootstrap based
 library called `stylestrap`, but pretty much any library
-out there can be used for that. 
+out there can be used for that.
 
 First let's see what the final implementation looks like.
 
@@ -39,13 +39,13 @@ const handlers = {
 
 // Here we define our custom Row component
 // along with our intended click event listener
-// index: The index of each row being rendered 
+// index: The index of each row being rendered
 const CustomRow = ({ index, ...rest }) => {
   return (
     <tr
       // Here we call the stored state handler
       onClick={() => handlers.setState(index)}
-      
+
       // It's important that we pass all the remaining props here
       {...rest}
     />
@@ -54,7 +54,7 @@ const CustomRow = ({ index, ...rest }) => {
 
 export default function ShinobiTable(props) {
   const [state, setState] = useState({});
-  
+
   // Store the setState handler in an object outside the parent component
   // This is done, only as a performance optimization
   handlers.setState = rowIndex => {
@@ -95,14 +95,14 @@ both flexibility and performance.**
 In this guide, we created our own custom Row component. This allows
 us to customize pretty much anything in addition to the event
 listener we added. For example, you can add classNames, inline-styles,
-use a component from a 3rd party components library and what not. 
+use a component from a 3rd party components library and what not.
 
 ```jsx harmony
 const CustomRow = props => {
   // Here we are using the `Tr` component from stylestrap
-  // ...which allows us to pass in a css attribute  
+  // ...which allows us to pass in a css attribute
   return (
-    <Tr 
+    <Tr
       {...props} // It is important that we forward the original props
       styles={{
         // It is important that we merge the original styles
@@ -118,32 +118,32 @@ const CustomRow = props => {
 ```
 As commented on the code snippet above, it is important that
 we forward the original props. This is because, WindowTable internally
-passes such attributes which are crucial for the rows to 
+passes such attributes which are crucial for the rows to
 get windowed as expected. If you are using the style attribute,
-you should merge it with the original styles as above. 
-Yet, you would normally avoid using inline styles anyway. 
+you should merge it with the original styles as above.
+Yet, you would normally avoid using inline styles anyway.
 
 If you head on to the Components API, you will see that all
 other Table elements like, `Table`, `Body`, `Cell`, etc can be
-fully customized in the same way as above. 
+fully customized in the same way as above.
 
 ## External Event handlers
 I bet the first thing you noticed about this example is that
-we store the `setState` function outside the `ShinobiTable` 
+we store the `setState` function outside the `ShinobiTable`
 component. This has nothing to do with `window-table` itself.
 This is a powerful technique to prevent unnecessary re-renders in React.
 
 We want to access `setState` from the `onClick` listener
-of `CustomRow`. The most intuitive way of doing that is to 
-define the component inside the ShinobiTable. 
+of `CustomRow`. The most intuitive way of doing that is to
+define the component inside the ShinobiTable.
 
 ```jsx harmony
 export default function ShinobiTable(props) {
   const [rowIndex, setRowIndex] = useState({});
   const CustomRow = ({index, ...props}) => {
-    return <tr onClick={() => setRowIndex(index)} {...props} />  
+    return <tr onClick={() => setRowIndex(index)} {...props} />
   };
-  
+
   return <WindowTable {/*props*/} />
 }
 ```
@@ -151,35 +151,35 @@ export default function ShinobiTable(props) {
 However, if we do that, the `CustomRow` will be declared
 on each row click. This is because, the component internal
 state is changed every time we call `setRowIndex`, making
-React trigger another render. 
+React trigger another render.
 
 The performance impact explained here may not be
-visible to the eye at first, but will start to appear as the 
-application grows. 
+visible to the eye at first, but will start to appear as the
+application grows.
 
 One way of working around this issue is by using the `React.useMemo`
 hook. We can wrap the CustomRow in a useMemo call as follows.
 Then, `CustomRow` will not be updated every time `rowIndex` changes.
 
 ```jsx harmony
-const CustomRow = useMemo(  
+const CustomRow = useMemo(
   () => ({index, props}) => {
-    return <tr onClick={() => setRowIndex(index)} {...props} />  
+    return <tr onClick={() => setRowIndex(index)} {...props} />
   },
   [setRowIndex]
 )
 ```
 
 You can use this technique if you prefer that, or else,
-we can avoid the issue in the first place, by defining the 
-`CustomRow` component outside of the `ShinobiTable`. 
+we can avoid the issue in the first place, by defining the
+`CustomRow` component outside of the `ShinobiTable`.
 However, this takes the access to the `setRowIndex` function
-away from the `CustomRow`. This can be solved by attaching the 
-function to a regular JS object defined outside of both the 
-components, as shown in the first example. 
+away from the `CustomRow`. This can be solved by attaching the
+function to a regular JS object defined outside of both the
+components, as shown in the first example.
 
-This may first seem like React's context, except, changes to 
-this plain JS object does not trigger any re-renders. 
+This may first seem like React's context, except, changes to
+this plain JS object does not trigger any re-renders.
 
 ## Using row instead of row Index
 In the above example, we used the `index` prop to find the row index
@@ -190,7 +190,7 @@ access the row data is to use the `row` prop directly.
 const CustomRow = ({index, row, ...props}) => {
   console.log(data[index]); // {id: 2, name: 'Naruto', ...}
   console.log(row); // {id: 2, name: 'Naruto', ...}
-  
+
   // render TableRow.
 }
 ```

@@ -1,5 +1,5 @@
 ---
-menu: Guides
+menu: Guides & Examples
 name: Filtering
 ---
 
@@ -9,12 +9,12 @@ import FuzzyFilterTable from './FuzzyFilter';
 
 # Filtering
 
-As of today, window-table does not expose a built in filter input. 
+As of today, window-table does not expose a built in filter input.
 Instead, it exports utilities to make your own filter easily,
 in a matter of few lines of code.
 
 Let's have a sneak peak at what
-we are going to build, and the code(excluding styles) for that. 
+we are going to build, and the code(excluding styles) for that.
 
 <BasicFilterTable />
 
@@ -26,7 +26,7 @@ function ShinobiTable(props) {
   // An alternative for `useState` for a better user experience
   // `text` as input value and `debouncedText` for filtering
   const [text, debouncedText, setText] = useDebouncedState('');
-  
+
   // Rather than calling `filterFn` directly, we call it indirectly using the useFilter hook
   // Same as `filterFn(data, debouncedText)`, but faster
   const filteredData = useFilter(filterFn, data, debouncedText);
@@ -46,12 +46,12 @@ Now let's have a look at what each of the code chunks mean.
 ## The filter function
 In the above example, we used the `createFilter` utility
 to create a filter function. Basically, you tell it by which
-field(s) you want to filter the data on. 
+field(s) you want to filter the data on.
 
 Instead, let's create our own filter function to see how that
-works internally. 
+works internally.
 
-Given a `data` array and a `filterText` string, the 
+Given a `data` array and a `filterText` string, the
 function should return the filtered data. Let's use the
 `array.filter` and `array.includes` native functions to
 do the filtering. For now, let's do filtering based on the
@@ -69,20 +69,20 @@ much different from that. The two main differences are:
 * Instead of using just one field name,
 it allows us to base filtering on multiple attributes.
 * Makes the filtering **case insensitive**
-(by using `toLowercase` at filter time) 
+(by using `toLowercase` at filter time)
 
 The built-in `createFilter` method covers most trivial cases.
-If you want to do some advanced filter magic, 
+If you want to do some advanced filter magic,
 ee the [FuzzySearch](#fuzzy-search) section to learn how we
 can use a 3rd party library for the filter function.
 
 ## The `UseDebouncedState` hook
 Remember that our table has thousands of rows, making
-performance a critical factor. 
+performance a critical factor.
 
 If we use a regular `useState`
-hook to store the filter text, it will cause the search input to 
-freeze while the data is being filtered. 
+hook to store the filter text, it will cause the search input to
+freeze while the data is being filtered.
 Thus instead, we use a debounced version of `useState`.
 
 `const [state, debouncedState, setState] = useDebouncedState('', 50);`
@@ -91,8 +91,8 @@ Thus instead, we use a debounced version of `useState`.
 `useState`. The `debouncedState` is a slight variation of state
 which gets updated at most once per every `50`(default) milliseconds.
 
-Anything more will be chunked together to avoid too many 
-calls to our filter function.  
+Anything more will be chunked together to avoid too many
+calls to our filter function.
 
 We can pass the `state` as the value for the `input` element since
 we want the updates to show immediately on self. And we can
@@ -100,29 +100,29 @@ pass the `debouncedState` to the filter function.
 
 ## The `useFilter` hook
 In the example above, instead of calling the filter function
-directly, we used a hook to call it for us. 
+directly, we used a hook to call it for us.
 
 ```jsx harmony
 const filteredList1 = useFilter(filterFn, data, filterText);
 const filteredList2 = filterFn(data, filterText);
-``` 
+```
 Both `filteredList1` and `filteredList2` will have the same
 filtered data. However, the one with the `useFilter` hook
 returns the result much faster than the direct call.
 
 To learn more and for the full API, there's a dedicated
-API documentation section for these hooks. 
+API documentation section for these hooks.
 
 ## Fuzzy Search
 
 In the example above, we used our own hand written filter function.
-Now let's see how we can use a 3rd party library to do fuzzy 
-filtering for us. 
+Now let's see how we can use a 3rd party library to do fuzzy
+filtering for us.
 
 In the following example, you will see that the filter
 yields results even when there are small typos. Go ahead and
-type something like  "Norto" or "Niruso" instead of "Naruto" 
-to see what that means. 
+type something like  "Norto" or "Niruso" instead of "Naruto"
+to see what that means.
 
 <FuzzyFilterTable />
 
@@ -131,7 +131,7 @@ Now let's see how we can change our code to support that.
 We'll use the `fuse.js` library here, but the idea is you can use
 pretty much any library out there.
 
-All we got to do is, change the filterFn from above. 
+All we got to do is, change the filterFn from above.
 
 ```jsx harmony
 import Fuse from 'fuse.js';

@@ -11,7 +11,7 @@ Note: In addition to the props documented here, all basic props such as
 `className`, `style`, `key` and all the props from the react-window itself
 can be supplied.
 
-> NOTE: If you override any of the components you must define that component 
+> NOTE: If you override any of the components you must define that component
 > outside of the render function. Otherwise state updates will make the active
 > element lose focus.
 
@@ -121,6 +121,8 @@ This will result in the table not having to measure, giving a
 performance boost. However, it will stop the table from adjusting its
 content based on the window size or window resize events.
 
+## **variableSizeRows**: Boolean
+Pass `true` to enable variable sized rows. i.e. the row height is determined by the cell contents.
 
 ## **rowHeight**: Number|Function
 Similar to how we can supply explicit values for the table width and height,
@@ -130,25 +132,6 @@ We can also supply a function which accepts the row index of the data array
 that's being rendered. This can be useful for changing the row height
 based on each row content. Nonetheless, how you measure the height based on the content
 can be tricky.
-
-
-## **sampleRow**: Object
-By default, the height of a row in the table is determined by measuring the
-row rendered by the first data row. In cases where you customize what is being
-rendered in columns, this behavior may not be ideal.
-
-There can be instances where the first data row cannot represent the whole
-data array. In such cases, you can pass a sample row of data, which will
-be used internally to measure the content.
-
-The sampleRow should take the exact same form as a typical row of data from the
-data array.
-
-
-## **sampleRowIndex**: Number
-In case you know the index, you can pass this index instead of supplying
-a sample data row as mentioned above in `sampleRow` prop.
-
 
 ## **classNamePrefix**: String
 All important elements will be given a className by the window-table.

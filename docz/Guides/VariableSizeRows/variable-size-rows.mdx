@@ -1,0 +1,32 @@
+---
+menu: Guides & Examples
+name: Variable Size Rows
+---
+
+import VariableSizeRows from './VariableSizeRows';
+
+# VariableSizeRows
+
+<VariableSizeRows />
+
+By default, a window table renders fixed size rows.
+To render a table with variable sized rows, pass the `variableSizeRows` prop as `true`.
+
+> In most cases, the performance impact from `variableSizeRows` is unnoticeable.
+Please measure the render performance with and without variableSizeRows for performance critical applications.
+
+```jsx harmony
+import { WindowTable } from 'window-table';
+
+function ShinobiTable(props) {
+  return (
+    <div style={{ height: '500px' }}>
+      <WindowTable
+        variableSizeRows={true}
+        data={data}
+        columns={columns}
+      />
+    </div>
+  );
+}
+```
