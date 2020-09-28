@@ -47,6 +47,7 @@ export type WindowTableProps<T> = {
   className?: string;
   rowClassName?: string | Function;
   classNamePrefix?: string;
+  variableSizeRows?: boolean;
   debounceWait?: number;
   headerCellInnerElementType?: string;
   tableCellInnerElementType?: string;
@@ -60,6 +61,7 @@ export interface RowCellsProps {
   datum: any;
   Cell: React.ElementType;
   index?: number;
+  setSize?: any;
 }
 
 export interface HeaderRowProps {

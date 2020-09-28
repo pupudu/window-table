@@ -15,6 +15,9 @@ import {
   createContext,
   memo,
   useMemo,
+  useState,
+  useEffect,
+  useCallback,
 } from 'react';
 
 const TableContext = createContext({
@@ -28,6 +31,8 @@ const TableContext = createContext({
   tableClassName: '',
   rowClassName: '' as string | Function,
   rowWidthOffset: 0,
+  setSize: (() => ({})) as any,
+  variableSizeRows: false as boolean,
 });
 
 const RowCells = ({
@@ -36,6 +41,7 @@ const RowCells = ({
   datum,
   Cell,
   index = 0,
+  setSize,
 }: RowCellsProps) => {
   return (
     <>
@@ -50,7 +56,6 @@ const RowCells = ({
               width: `${width}px`,
               flexGrow: width,
               display: 'inline-block',
-              overflow: 'auto',
               boxSizing: 'border-box',
             }}
             className={`${classNamePrefix}table-cell`}
@@ -58,7 +63,12 @@ const RowCells = ({
             column={column}
             index={index}
           >
-            <Component row={datum} column={column} index={index}>
+            <Component
+              row={datum}
+              column={column}
+              index={index}
+              setSize={setSize || (() => {})}
+            >
               {datum[key]}
             </Component>
           </Cell>
@@ -79,6 +89,8 @@ const RowRenderer: React.FunctionComponent<ReactWindow.ListChildComponentProps> 
     classNamePrefix,
     Row,
     rowClassName,
+    setSize,
+    variableSizeRows,
   } = useContext(TableContext);
 
   const rowClassNameStr = useMemo(
@@ -87,13 +99,30 @@ const RowRenderer: React.FunctionComponent<ReactWindow.ListChildComponentProps> 
     [index, rowClassName]
   );
 
+  const ref = useRef<any>();
+  const setSizeRef = useRef(setSize);
+  const setSizeCb = useCallback(() => {
+    if (!variableSizeRows && index !== 0) {
+      return;
+    }
+    setSizeRef.current(index, ref?.current?.scrollHeight);
+  }, [index, variableSizeRows]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSizeCb();
+    }, 0);
+  }, [index, style.height, setSizeCb]);
+
   return (
     <Row
+      ref={ref}
       style={{
         ...style,
         display: 'flex',
+        overflow: 'auto',
       }}
-      className={`${classNamePrefix}${rowClassNameStr}`}
+      className={`${classNamePrefix}${rowClassNameStr} ${classNamePrefix}${rowClassNameStr}-${index}`}
       index={index}
       row={data[index]}
     >
@@ -103,6 +132,7 @@ const RowRenderer: React.FunctionComponent<ReactWindow.ListChildComponentProps> 
         classNamePrefix={classNamePrefix}
         columns={columns}
         index={index}
+        setSize={setSizeCb}
       />
     </Row>
   );
@@ -177,7 +207,7 @@ const WindowTable = React.forwardRef(
     {
       columns,
       data,
-      rowHeight,
+      rowHeight = 40,
       height,
       width,
       overscanCount = 1,
@@ -190,20 +220,22 @@ const WindowTable = React.forwardRef(
       HeaderRow = 'div',
       Row = 'div',
       Body = 'div',
-      sampleRowIndex = 0,
-      sampleRow,
       className = '',
       rowClassName = 'table-row',
       classNamePrefix = '',
       debounceWait = 0,
       headerCellInnerElementType = 'div',
       tableCellInnerElementType = 'div',
+      variableSizeRows = false,
       tableOuterRef,
       tableOuterElementType,
       ...rest
     }: WindowTableProps<T>,
     ref: React.Ref<ReactWindow.VariableSizeList>
   ) => {
+    const localRef = useRef<any>();
+    ref = ref || localRef;
+
     const measurerRowRef = useRef<HTMLElement>(null);
     const tableClassName = `${classNamePrefix}table ${className}`;
 
@@ -213,7 +245,6 @@ const WindowTable = React.forwardRef(
 
     const [tableHeight, tableWidth] = dimensions.table;
     const [headerHeight] = disableHeader ? [0] : dimensions.header;
-    const [sampleRowHeight] = dimensions.row;
 
     const bodyHeight: number = (height || tableHeight) - headerHeight - 2; // 2px less to avoid possible unnecessary scrollbars
     const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
@@ -222,6 +253,14 @@ const WindowTable = React.forwardRef(
       (measurerRowRef.current && measurerRowRef.current.clientWidth) ||
       tableWidth;
     const rowWidthOffset = tableWidth - rowWidth;
+
+    const [sizeMap, setSizeMap] = useState({} as any);
+    const getItemSize = (index: number) => {
+      if (!variableSizeRows) {
+        return sizeMap[0];
+      }
+      return sizeMap[index] || rowHeight;
+    };
 
     const tblCtx = {
       columns,
@@ -234,9 +273,19 @@ const WindowTable = React.forwardRef(
       tableClassName,
       rowClassName,
       rowWidthOffset,
+      variableSizeRows,
+      setSize: (index: any, height: any) => {
+        if (!height) {
+          return;
+        }
+        // console.log(sizeMap, index, height);
+        setSizeMap((map: any) => ({
+          ...map,
+          [index]: Math.max(height, map[index] || 0),
+        }));
+        (ref as any)?.current?.resetAfterIndex?.(index);
+      },
     };
-
-    const itemSize = rowHeight || sampleRowHeight;
 
     return (
       <div
@@ -278,29 +327,6 @@ const WindowTable = React.forwardRef(
                 />
               </HeaderRowRenderer>
             </TableContext.Provider>
-            <Body
-              className={`${classNamePrefix}table-body`}
-              style={{ overflowY: 'scroll' }}
-            >
-              <Row
-                className={`${classNamePrefix}table-row`}
-                ref={measurerRowRef}
-                style={{ width: '100%', display: 'flex' }}
-              >
-                <Measurer
-                  measure={measure}
-                  entity="row"
-                  debounceWait={debounceWait}
-                  innerElementType={tableCellInnerElementType}
-                />
-                <RowCells
-                  datum={sampleRow || data[sampleRowIndex]}
-                  columns={columns}
-                  classNamePrefix={classNamePrefix}
-                  Cell={Cell}
-                />
-              </Row>
-            </Body>
           </Table>
         )}
 
@@ -323,9 +349,7 @@ const WindowTable = React.forwardRef(
                 ref={ref}
                 height={bodyHeight}
                 itemCount={data.length}
-                itemSize={
-                  typeof itemSize === 'function' ? itemSize : () => itemSize
-                }
+                itemSize={getItemSize}
                 width={effectiveWidth}
                 innerElementType={TableBodyRenderer}
                 overscanCount={overscanCount}

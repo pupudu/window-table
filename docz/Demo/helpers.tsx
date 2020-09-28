@@ -37,9 +37,10 @@ export const getData = (limit = 100000) => {
 };
 export const data = getData();
 
-const Avatar = ({ row, column }) => {
+const Avatar = ({ row, column, setSize }) => {
   return (
     <img
+      onLoad={setSize}
       src={row[column.key]}
       alt="avatar"
       style={{
