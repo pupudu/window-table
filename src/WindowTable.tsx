@@ -10,7 +10,7 @@ import {
 import { areTablePropsEqual } from './helpers/areTablePropsEqual';
 import { ReactElement, useRef } from 'react';
 
-const { FixedSizeList, VariableSizeList, areEqual } = ReactWindow;
+const { VariableSizeList, areEqual } = ReactWindow;
 const { useContext, createContext, memo, useMemo } = React;
 
 const TableContext = createContext({
@@ -198,15 +198,11 @@ const WindowTable = React.forwardRef(
       tableOuterElementType,
       ...rest
     }: WindowTableProps<T>,
-    ref: React.Ref<ReactWindow.FixedSizeList | ReactWindow.VariableSizeList>
+    ref: React.Ref<ReactWindow.VariableSizeList>
   ) => {
     const measurerRowRef = useRef<HTMLElement>(null);
     const tableClassName = `${classNamePrefix}table ${className}`;
 
-    const List: React.ElementType =
-      rowHeight && typeof rowHeight === 'function'
-        ? VariableSizeList
-        : FixedSizeList;
     const columnWidthsSum = columns.reduce((sum, { width }) => sum + width, 0);
 
     const [dimensions, measure] = useTableMeasurer();
@@ -235,6 +231,8 @@ const WindowTable = React.forwardRef(
       rowClassName,
       rowWidthOffset,
     };
+
+    const itemSize = rowHeight || sampleRowHeight;
 
     return (
       <div
@@ -317,11 +315,11 @@ const WindowTable = React.forwardRef(
               </Table>
             )}
             {!!data.length && (
-              <List
+              <VariableSizeList
                 ref={ref}
                 height={bodyHeight}
                 itemCount={data.length}
-                itemSize={rowHeight || sampleRowHeight}
+                itemSize={typeof itemSize === "function" ? itemSize : () => itemSize}
                 width={effectiveWidth}
                 innerElementType={TableBodyRenderer}
                 overscanCount={overscanCount}
@@ -329,7 +327,7 @@ const WindowTable = React.forwardRef(
                 outerElementType={tableOuterElementType}
               >
                 {MemoRowRenderer}
-              </List>
+              </VariableSizeList>
             )}
           </div>
         </TableContext.Provider>
