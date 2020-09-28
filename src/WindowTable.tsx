@@ -306,7 +306,7 @@ const WindowTable = React.forwardRef(
         }}
         {...rest}
       >
-        {!rowHeight && !!data.length && (
+        {!!data.length && (
           /*Measure row height only if not supplied explicitly*/
           <Table
             style={{
