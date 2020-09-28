@@ -29,5 +29,5 @@ a drop in replacement for window-table with a ton of more features.
 a library which also offers a ton more features, with a slightly different API.
 
 ## Looking for contributions
-I, the author of this library has been unable to provide support for the issues opened in the library
+I, the author of this library, have been unable to provide support for the issues opened in the library
 in the past few months. Contributions highly appreciated.

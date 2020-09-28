@@ -6,7 +6,7 @@ import {
   useFilter,
 } from '../../src';
 import { data, columns } from './helpers';
-import './demo.scss';
+import './demo.css';
 import { Card, CardBody } from 'stylestrap';
 
 const filterFn = createFilter(['name', 'clan']);

@@ -21,7 +21,6 @@ export default function ShinobiTable() {
           <Html5Table
             data={data}
             variableSizeRows={true}
-            // @ts-ignore
             columns={columns}
             className="table-sm table-hover"
             headerClassName="thead-dark"
