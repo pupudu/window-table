@@ -3,29 +3,20 @@ menu: Getting Started
 name: Introduction
 route: /
 ---
-
 import GhStars from './GhStars';
 import ShinobiTable from '../Demo/Demo';
 
 # Window-Table
+Window Table is a fixed data table for React, which is capable of rendering thousands of rows of data
+without compromising performance. The following table renders **100,000** rows of data.
 
-Window Table is a fixed data table for React, which
-is capable of rendering thousands of rows of data
-without compromising performance.
+<ShinobiTable rowClassName={index => (index % 2 === 0 ? 'even-row' : 'odd-row')} />
 
-Let's render a table with **100,000** rows of data.
-Scroll as fast as you can!
-
-<ShinobiTable 
-  rowClassName={index => (index % 2 === 0 ? 'even-row' : 'odd-row')}
-/>
-
-Like the idea? **Don't forget to support us by giving a Star on Github!**
+**Support us by giving a Star on Github!**
 <GhStars />
 
 Now Let's have a quick look at the minimal code we needed to get started.
-Note that we are using [bootstrap](https://getbootstrap.com/docs/4.1/content/tables/) 
-table classes for styling.
+Note that we are using [bootstrap](https://getbootstrap.com/docs/4.1/content/tables/) table classes for styling.
 ```jsx harmony
 <Html5Table
     data={data}
@@ -35,46 +26,27 @@ table classes for styling.
 />
 ```
 
-## Blazing Fast 💨
-
-Window Tables uses the awesome React Window library
-for virtualizing the content. Thanks to that, we are
-able to lazily render rows, as if they were always there.
-
-## Tiny Footprint 👶
-
-The code for this library is written in a way
-which minimizes the lines of code
-while still allowing the users to customize and extend
-it however they want. 
-**This resulted in the library to be less than 2KB in size.**
-
 ## HTML5 tags 💅
+One of the biggest pain points in using a fixed data table is styling. In contrast, basic HTML5 tags based tables
+can be easily styled using an off the shelf style system like bootstrap.
 
-One of the biggest pain points in using a fixed data table
-is styling. In contrast, basic HTML5 tags based tables
-can be easily styled using an off the shelf style system
-like bootstrap.
-
-Thus you can optionally use default HTML 5 tags like `table`,
-`thead`, `tbody`, `tr`, `td` and `th` for the table
-nodes by importing the `HTML5Table` component from this
-library.
+Thus, you can optionally use default HTML 5 tags like `table`, `thead`, `tbody`, `tr`, `td` and `th` for the table
+nodes by importing the `HTML5Table` component from this library.
 
 ```jsx harmony
 import { Html5Table } from 'window-table';
 ```
 
-## Production Ready 💪
+## Tiny Footprint 👶
+The code for this library is written in a way which minimizes the lines of code
+while still allowing the users to customize and extend it however they want.
 
-This library is a product of **Hipages, Australia**; The no.1
-place to hire tradies in Australia.
+## Alternatives
+* [React Fluid Table](https://mckervinc.github.io/react-fluid-table/#/),
+a drop in replacement for window-table with a ton of more features.
+* [React Base Table](https://autodesk.github.io/react-base-table),
+a library which also offers a ton more features, with a slightly different API.
 
-This also means that this library runs in production
-in a leading technology company. Thus you can always
-expect fast turnaround for questions, issues, feature requests
-and even bug fixes.
-
-## Built with Typescript
-If your project uses typescript, you will be glad that even the
-internals of this library are type checked. 
+## Contributions welcome
+I, the author of this library has been unable to provide support for the issues opened in the library
+in the past few months. Contributions highly appreciated.
