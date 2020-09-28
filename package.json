@@ -4,6 +4,7 @@
   "description": "Windowing Table for React based on React Window",
   "author": "pupudu",
   "license": "MIT",
+  "sideEffects": false,
   "repository": "pupudu/window-table",
   "keywords": [
     "react",
