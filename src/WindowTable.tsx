@@ -244,6 +244,7 @@ const WindowTable = React.forwardRef(
   ) => {
     const localRef = useRef<any>();
     ref = ref || localRef;
+    const [headerHeight, setHeaderHeight] = useState(0);
 
     const measurerRowRef = useRef<HTMLElement>(null);
     const tableClassName = `${classNamePrefix}table ${className}`;
@@ -253,8 +254,6 @@ const WindowTable = React.forwardRef(
     const [dimensions, measure] = useTableMeasurer();
 
     const [tableHeight, tableWidth] = dimensions.table;
-    const headerHeight =
-      document.querySelector('#window-table-header-ref')?.scrollHeight || 0;
 
     const bodyHeight: number = (height || tableHeight) - headerHeight;
     const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
@@ -296,6 +295,13 @@ const WindowTable = React.forwardRef(
         (ref as any)?.current?.resetAfterIndex?.(index);
       },
     };
+
+    const first = sizeMap[0];
+    useEffect(() => {
+      setHeaderHeight(
+        document.querySelector('#window-table-header-ref')?.scrollHeight || 0
+      );
+    }, [first]);
 
     return (
       <div
