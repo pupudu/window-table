@@ -106,10 +106,14 @@ const RowRenderer: React.FunctionComponent<ReactWindow.ListChildComponentProps> 
     if (!variableSizeRows && index !== 0) {
       return;
     }
-    setSizeRef.current(
-      index,
-      document.querySelector(`#window-table-row-ref-${index}`)?.scrollHeight
-    );
+    const el = document.querySelector(`#window-table-row-ref-${index}`);
+    if (!el) {
+      return;
+    }
+
+    if (el.scrollHeight > el.getBoundingClientRect().height) {
+      setSizeRef.current(index, el?.scrollHeight + 1 || 0);
+    }
   }, [index, variableSizeRows]);
 
   useEffect(() => {
