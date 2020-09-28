@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactWindow from 'react-window';
+import ReactWindow, { VariableSizeList, areEqual } from 'react-window';
 import { Measurer, useTableMeasurer } from './Measurer';
 import {
   Column,
@@ -8,10 +8,14 @@ import {
   HeaderRowProps,
 } from './core/types';
 import { areTablePropsEqual } from './helpers/areTablePropsEqual';
-import { ReactElement, useRef } from 'react';
-
-const { VariableSizeList, areEqual } = ReactWindow;
-const { useContext, createContext, memo, useMemo } = React;
+import {
+  ReactElement,
+  useRef,
+  useContext,
+  createContext,
+  memo,
+  useMemo,
+} from 'react';
 
 const TableContext = createContext({
   columns: [] as Column<any, any>[],
@@ -319,7 +323,9 @@ const WindowTable = React.forwardRef(
                 ref={ref}
                 height={bodyHeight}
                 itemCount={data.length}
-                itemSize={typeof itemSize === "function" ? itemSize : () => itemSize}
+                itemSize={
+                  typeof itemSize === 'function' ? itemSize : () => itemSize
+                }
                 width={effectiveWidth}
                 innerElementType={TableBodyRenderer}
                 overscanCount={overscanCount}
@@ -345,6 +351,11 @@ const WindowTable = React.forwardRef(
   }
 );
 
-declare function WindowTableType<T>(props: WindowTableProps<T>): ReactElement<T>;
+declare function WindowTableType<T>(
+  props: WindowTableProps<T>
+): ReactElement<T>;
 
-export default memo(WindowTable, areTablePropsEqual) as unknown as typeof WindowTableType;
+export default (memo(
+  WindowTable,
+  areTablePropsEqual
+) as unknown) as typeof WindowTableType;
