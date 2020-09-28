@@ -17,7 +17,7 @@ export default function ShinobiTable() {
   return (
     <div className="bootstrap-wrapper">
       <Card>
-        <CardBody>
+        <CardBody css={{ height: '500px' }}>
           <Html5Table
             data={data}
             variableSizeRows={true}

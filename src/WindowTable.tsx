@@ -164,6 +164,7 @@ const HeaderRowRenderer: React.FunctionComponent<HeaderRowProps> = ({
 
   return (
     <Header
+      id="window-table-header-ref"
       className={`${classNamePrefix}table-header`}
       style={{ backgroundColor: color }}
     >
@@ -252,9 +253,10 @@ const WindowTable = React.forwardRef(
     const [dimensions, measure] = useTableMeasurer();
 
     const [tableHeight, tableWidth] = dimensions.table;
-    const [headerHeight] = disableHeader ? [0] : dimensions.header;
+    const headerHeight =
+      document.querySelector('#window-table-header-ref')?.scrollHeight || 0;
 
-    const bodyHeight: number = (height || tableHeight) - headerHeight - 2; // 2px less to avoid possible unnecessary scrollbars
+    const bodyHeight: number = (height || tableHeight) - headerHeight;
     const effectiveWidth = width || Math.max(columnWidthsSum, tableWidth);
 
     const rowWidth =
@@ -302,42 +304,11 @@ const WindowTable = React.forwardRef(
           width: width ? `${width}px` : '100%',
           overflow: 'auto',
           maxHeight: '100vh', // By default, table height will be bounded by 100% of viewport height
+          minHeight: '200px', // By default, table will have a minimum height
           ...style,
         }}
         {...rest}
       >
-        {!!data.length && (
-          /*Measure row height only if not supplied explicitly*/
-          <Table
-            style={{
-              height: 0,
-              opacity: 0,
-              display: 'grid',
-              overflow: 'hidden',
-              margin: 0,
-              border: 0,
-              outline: 0,
-              width: `${effectiveWidth}px`,
-            }}
-            className={tableClassName}
-          >
-            <TableContext.Provider value={tblCtx}>
-              <HeaderRowRenderer
-                Header={Header}
-                HeaderRow={HeaderRow}
-                HeaderCell={HeaderCell}
-              >
-                <Measurer
-                  measure={measure}
-                  entity="header"
-                  debounceWait={debounceWait}
-                  innerElementType={headerCellInnerElementType}
-                />
-              </HeaderRowRenderer>
-            </TableContext.Provider>
-          </Table>
-        )}
-
         <TableContext.Provider value={tblCtx}>
           <div>
             {!disableHeader && tableWidth > 0 && (
