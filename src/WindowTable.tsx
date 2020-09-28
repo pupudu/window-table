@@ -49,6 +49,15 @@ const RowCells = ({
         const { key, width, Component = 'div' } = column;
         // Using i as the key, because it doesn't matter much,
         // as we are only looping through columns in one row only
+        const extraProps =
+          typeof Component === 'string'
+            ? {}
+            : {
+                row: datum,
+                column,
+                index,
+                setSize: setSize || (() => {}),
+              };
         return (
           <Cell
             key={i}
@@ -63,14 +72,7 @@ const RowCells = ({
             column={column}
             index={index}
           >
-            <Component
-              row={datum}
-              column={column}
-              index={index}
-              setSize={setSize || (() => {})}
-            >
-              {datum[key]}
-            </Component>
+            <Component {...extraProps}>{datum[key]}</Component>
           </Cell>
         );
       })}
@@ -99,13 +101,15 @@ const RowRenderer: React.FunctionComponent<ReactWindow.ListChildComponentProps> 
     [index, rowClassName]
   );
 
-  const ref = useRef<any>();
   const setSizeRef = useRef(setSize);
   const setSizeCb = useCallback(() => {
     if (!variableSizeRows && index !== 0) {
       return;
     }
-    setSizeRef.current(index, ref?.current?.scrollHeight);
+    setSizeRef.current(
+      index,
+      document.querySelector(`#window-table-row-ref-${index}`)?.scrollHeight
+    );
   }, [index, variableSizeRows]);
 
   useEffect(() => {
@@ -116,7 +120,7 @@ const RowRenderer: React.FunctionComponent<ReactWindow.ListChildComponentProps> 
 
   return (
     <Row
-      ref={ref}
+      id={`window-table-row-ref-${index}`}
       style={{
         ...style,
         display: 'flex',
