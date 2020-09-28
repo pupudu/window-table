@@ -5,7 +5,7 @@ import './bootstrap.scss';
 
 const cacheState = {
   setState: null,
-  state: null
+  state: null,
 };
 
 export function setState(theme) {
