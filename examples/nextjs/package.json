@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "next": "^9.4.4",
+    "next": "^11.1.3",
     "window-table": "link:../../dist/"
   },
   "scripts": {
